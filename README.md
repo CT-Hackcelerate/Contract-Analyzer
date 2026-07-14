@@ -8,6 +8,7 @@ Upload a contract (**PDF** or **DOCX**), and the app extracts the text, runs it 
 >
 > **Built with Claude Code.** The agent design, the analysis prompt, and the entire Node.js codebase were developed using **Claude Code**. At runtime the app calls the **Claude API** to analyze each uploaded contract.
 
+
 ---
 
 ## Contents
