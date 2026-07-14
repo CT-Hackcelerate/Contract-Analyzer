@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contract Analyzer — Pitch Deck</title>
+<style>
+  :root{
+    --indigo:#4f46e5; --purple:#7c3aed; --cyan:#06b6d4;
+    --ink:#0f172a; --sub:#475569; --line:#e2e8f0; --bg:#f5f6fb; --card:#ffffff;
+    --good:#059669; --warn:#d97706; --bad:#dc2626;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:#1e1b4b}
+  .deck{max-width:1120px;margin:0 auto}
+  .slide{
+    position:relative;background:var(--bg);min-height:640px;padding:56px 64px 72px;
+    display:none;border-radius:18px;margin:22px auto;box-shadow:0 20px 60px rgba(0,0,0,.35);
+    overflow:hidden;
+  }
+  .slide.active{display:block}
+  .slide::before{content:"";position:absolute;left:0;top:0;height:8px;width:100%;
+    background:linear-gradient(90deg,var(--indigo),var(--purple),var(--cyan))}
+  .kicker{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--purple);background:#efeafe;padding:5px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:40px;line-height:1.12;margin:.1em 0 .35em}
+  h2{font-size:30px;line-height:1.15;margin:.1em 0 .55em}
+  p{font-size:18px;line-height:1.55;color:var(--sub);margin:.5em 0}
+  .lead{font-size:21px;color:var(--ink)}
+  .grid{display:grid;gap:16px;margin-top:14px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px}
+  .card h3{margin:.1em 0 .3em;font-size:17px}
+  .card p{font-size:15px;margin:.25em 0}
+  .num{font-size:34px;font-weight:800;line-height:1}
+  .grad{background:linear-gradient(90deg,var(--indigo),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .cyan{color:var(--cyan)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+  ul.clean{margin:.4em 0 0;padding-left:0;list-style:none}
+  ul.clean li{font-size:17px;color:var(--sub);padding:7px 0 7px 30px;position:relative;line-height:1.4}
+  ul.clean li::before{content:"";position:absolute;left:0;top:13px;width:12px;height:12px;border-radius:3px;
+    background:linear-gradient(135deg,var(--indigo),var(--cyan))}
+  .flow{display:flex;align-items:stretch;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .step{flex:1;min-width:120px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+  .step .n{width:26px;height:26px;border-radius:50%;background:var(--indigo);color:#fff;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:14px}
+  .step p{font-size:13.5px;margin:0}
+  .arrow{align-self:center;color:var(--purple);font-size:22px;font-weight:700}
+  .shot{margin-top:16px;border:2px dashed #c4b5fd;border-radius:14px;background:#faf9ff;
+    min-height:210px;display:flex;align-items:center;justify-content:center;text-align:center;color:#8b7fd6;
+    font-size:14px;padding:18px}
+  .foot{position:absolute;left:64px;right:64px;bottom:20px;display:flex;justify-content:space-between;
+    font-size:12px;color:#94a3b8;border-top:1px solid var(--line);padding-top:10px}
+  .pill{display:inline-block;font-size:12.5px;font-weight:600;color:#3730a3;background:#e0e7ff;
+    padding:4px 11px;border-radius:999px;margin:3px 5px 3px 0}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14.5px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+  th{color:#334155;font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+  .badge{font-size:12px;font-weight:700;padding:3px 9px;border-radius:6px;color:#fff}
+  .bH{background:var(--bad)}.bM{background:var(--warn)}.bL{background:var(--indigo)}
+  .title{background:radial-gradient(1200px 500px at 15% 0%,#312e81,#1e1b4b)}
+  .title::before{height:0}
+  .title h1{color:#fff;font-size:52px}
+  .title p{color:#c7d2fe}
+  .title .kicker{background:rgba(255,255,255,.14);color:#e9d5ff}
+  .title .tag{margin-top:26px}
+  .title .tag .pill{background:rgba(255,255,255,.12);color:#e0e7ff}
+  .meta{margin-top:34px;color:#a5b4fc;font-size:15px}
+  .meta b{color:#fff}
+  .ph{color:#f0abfc}
+  .bar{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:10}
+  .bar button{background:#ffffff;border:1px solid #cbd5e1;color:#1e293b;font-size:14px;font-weight:600;
+    padding:9px 16px;border-radius:10px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  .bar button:hover{background:#eef2ff}
+  .count{background:#312e81;color:#fff;border:none}
+  @media print{
+    body{background:#fff}
+    .slide{display:block;page-break-after:always;box-shadow:none;margin:0;border-radius:0;min-height:96vh}
+    .slide::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .bar{display:none}
+    .title{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1 TITLE -->
+  <section class="slide title active">
+    <span class="kicker">CitiusTech · GenAI Hackathon</span>
+    <h1>Contract Analyzer</h1>
+    <p class="lead" style="color:#e0e7ff;max-width:760px">An AI agent that reads a customer contract and returns a management-ready dashboard of SLA risk, commercial impact, and negotiation recommendations — in minutes.</p>
+    <div class="tag">
+      <span class="pill">Built with Claude Code</span>
+      <span class="pill">Healthcare · Payers · Providers · MedTech · SDLC</span>
+      <span class="pill">PDF / DOCX in → dashboard out</span>
+    </div>
+    <div class="meta">
+      <b>Team:</b> <span class="ph">[Team name / members]</span> &nbsp;·&nbsp; <b>Track:</b> <span class="ph">[Use case]</span> &nbsp;·&nbsp; <b>Date:</b> <span class="ph">[Date]</span>
+    </div>
+  </section>
+
+  <!-- 2 PROBLEM -->
+  <section class="slide">
+    <span class="kicker">The problem</span>
+    <h2>SLA and contract review is slow, manual, and expensive to get wrong</h2>
+    <div class="grid g3">
+      <div class="card"><div class="num grad">Hours</div><p>A single services/SLA contract takes a reviewer hours to read, cross-reference, and summarize.</p></div>
+      <div class="card"><div class="num bad">$$$</div><p>Missed SLA penalties, service credits, and mispriced engagement models leak real money.</p></div>
+      <div class="card"><div class="num warn">Inconsistent</div><p>Findings vary by reviewer; evidence and page references are rarely captured.</p></div>
+    </div>
+    <ul class="clean">
+      <li>Commitments (uptime, response times, remedies) are buried across sections and annexures.</li>
+      <li>Leadership needs a clear "proceed / renegotiate" call — not a 40-page read.</li>
+      <li>In healthcare, the same contracts carry data-handling and compliance sensitivity.</li>
+    </ul>
+    <div class="foot"><span>CitiusTech Confidential</span><span>Contract Analyzer</span></div>
+  </section>
+
+  <!-- 3 SOLUTION -->
+  <section class="slide">
+    <span class="kicker">The solution</span>
+    <h2>Upload a contract → get a management dashboard in ~10–15 minutes</h2>
+    <p class="lead">A Claude-powered agent extracts the contract, grounds every finding in the source text, and assembles a fixed, self-contained HTML dashboard.</p>
+    <div class="grid g4">
+      <div class="card"><h3>SLA risk</h3><p>Key commitments, targets, remedies, and a colour-coded risk ledger.</p></div>
+      <div class="card"><h3>Commercial impact</h3><p>Pricing model, engagement model, and directional value-at-risk.</p></div>
+      <div class="card"><h3>Recommendations</h3><p>Risky clause vs improved negotiation wording, side by side.</p></div>
+      <div class="card"><h3>Decision</h3><p>A management-ready "Proceed if / Renegotiate now" call with a concise summary.</p></div>
+    </div>
+    <div class="foot"><span>CitiusTech Confidential</span><span>Contract Analyzer</span></div>
+  </section>
+
+  <!-- 4 PIPELINE -->
+  <section class="slide">
+    <span class="kicker">How it works</span>
+    <h2>A grounded, self-verifying pipeline</h2>
+    <div class="flow">
+      <div class="step"><div class="n">1</div><p><b>Upload</b><br>PDF / DOCX (validated)</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">2</div><p><b>Extract</b><br>text + page markers</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">3</div><p><b>Guardrails</b><br>injection &amp; PHI screen</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">4</div><p><b>Claude</b><br>grounded JSON (temp 0)</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">5</div><p><b>Reconcile</b><br>counts · pages · EM↔pricing</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">6</div><p><b>Dashboard</b><br>self-contained HTML</p></div>
+    </div>
+    <ul class="clean">
+      <li><b>Deterministic:</b> temperature 0 + a content-addressed cache — the same contract always yields the same result.</li>
+      <li><b>Grounded:</b> the model uses only the uploaded contract; missing values render as "Not stated," never invented.</li>
+      <li><b>Verified in code:</b> risk counts, status, money, page references, and EM↔pricing consistency are recomputed, not trusted blindly.</li>
+    </ul>
+    <div class="foot"><span>CitiusTech Confidential</span><span>Contract Analyzer</span></div>
+  </section>
+
+  <!-- 5 OUTPUT OVERVIEW -->
+  <section class="slide">
+    <span class="kicker">The output</span>
+    <h2>One self-contained dashboard, eight pages</h2>
+    <div class="grid g2" style="grid-template-columns:1.15fr 1fr">
+      <div>
+        <ul class="clean">
+          <li>Executive Decision Brief — KPIs, contract strip, management-ready decision, summary.</li>
+          <li>Contract Dates &amp; Status</li>
+          <li>SLA Risk Assessment — colour-coded risk ledger</li>
+          <li>Top Risks — evidence + recommended action</li>
+          <li>Commercial Impact — exposure model</li>
+          <li>Recommendations — clause rewrites</li>
+          <li>Legends &amp; assumptions</li>
+          <li>Benchmark vs Standard — SLAs scored against the playbook</li>
+        </ul>
+      </div>
+      <div class="shot">[ Screenshot: Executive Decision Brief page ]</div>
+    </div>
+    <div class="foot"><span>CitiusTech Confidential</span><span>Contract Analyzer</span></div>
+  </section>
+
+  <!-- 6 SLA FOCUS -->
+  <section class="slide">
+    <span class="kicker">SLA focus</span>
+    <h2>Key SLA Commitments, made explicit</h2>
+    <table>
+      <tr><th>SLA</th><th>Target</th><th>Remedy / penalty</th><th>Risk</th></tr>
+      <tr><td>System uptime</td><td>99.9% monthly</td><td>Service credits</td><td><span class="badge bH">High</span></td></tr>
+      <tr><td>P1 response time</td><td>&le; 30 min</td><td>Escalation + credit</td><td><span class="badge bM">Medium</span></td></tr>
+      <tr><td>Resolution SLA</td><td>&le; 4 hours</td><td>Not stated</td><td><span class="badge bL">Low</span></td></tr>
+    </table>
+    <p style="font-size:14px">Illustrative — every row in the live dashboard quotes the supporting clause and a page reference, with a confidence score. Empty cells render as "Not stated," not guessed.</p>
+    <p style="font-size:14px"><b>It also judges, not just extracts.</b> A dedicated <b>Benchmark vs Standard</b> page scores each SLA <b>in code</b> against a house playbook (uptime, response/resolution by priority, latency, defects, security, delivery, penalties) — Meets / Below / Uncapped — and ships the full playbook, plus <b>Supplier</b> and <b>AI/Token safeguards</b>, as searchable reference.</p>
+    <div class="shot" style="min-height:150px">[ Screenshot: SLA Risk Assessment / Key SLA Commitments table ]</div>
+    <div class="foot"><span>CitiusTech Confidential</span><span>Contract Analyzer</span></div>
+  </section>
+
+  <!-- 7 TRUST -->
+  <section class="slide">
+    <span class="kicker">Why you can trust it</span>
+    <h2>Anti-hallucination by design</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Evidence for every finding</h3><p>Each risk quotes the clause it came from, with a page reference and a confidence score.</p></div>
+      <div class="card"><h3>Deterministic re-computation</h3><p>Counts, contract status, monetary exposure, and page numbers are computed in code from the evidence.</p></div>
+      <div class="card"><h3>EM ↔ pricing reconciliation</h3><p>Engagement model and pricing are forced into agreement (EM trusted) — no contradictory output reaches the user.</p></div>
+      <div class="card"><h3>Schema-validated output</h3><p>The model's JSON is validated with a corrective retry before the dashboard is built.</p></div>
+    </div>
+    <div class="foot"><span>CitiusTech Confidential</span><span>Contract Analyzer</span></div>
+  </section>
+
+  <!-- 8 SAFETY -->
+  <section class="slide">
+    <span class="kicker">Safety &amp; compliance</span>
+    <h2>Built for sensitive, healthcare-adjacent data</h2>
+    <div class="grid g2">
+      <div class="card"><h3>No real PHI/PII</h3><p>Synthetic samples only; uploads deleted immediately after processing; logs &amp; audit trail PII-masked (email, phone, PAN, Aadhaar, SSN, MRN, keys).</p></div>
+      <div class="card"><h3>PHI screening <span class="cyan">(above &amp; beyond)</span></h3><p>Every upload is scanned for MRN, DOB, SSN, ICD codes, claim/beneficiary IDs, NPI — any hit is flagged and audited.</p></div>
+      <div class="card"><h3>Prompt-injection defense</h3><p>The contract is treated as untrusted data inside markers; embedded "instructions" are ignored and flagged.</p></div>
+      <div class="card"><h3>Human-in-the-loop</h3><p>A decision-support aid, not legal advice — it recommends, never auto-executes; unseen referenced docs are flagged for review.</p></div>
+    </div>
+    <div class="foot"><span>CitiusTech Confidential</span><span>Contract Analyzer</span></div>
+  </section>
+
+  <!-- 9 IMPACT -->
+  <section class="slide">
+    <span class="kicker">Business impact</span>
+    <h2>Hours of review → minutes, consistently</h2>
+    <div class="grid g3">
+      <div class="card"><div class="num grad">~90%</div><p>less first-pass review effort per contract.</p></div>
+      <div class="card"><div class="num grad">~10–15<span style="font-size:18px"> min</span></div><p>from upload to a management-ready dashboard.</p></div>
+      <div class="card"><div class="num grad">100%</div><p>of findings evidence-backed and reproducible.</p></div>
+    </div>
+    <ul class="clean">
+      <li>Faster deal reviews and renewals; penalty exposure surfaced before signature.</li>
+      <li>Consistent, auditable output across reviewers and engagements.</li>
+      <li>Applies across payers, providers, MedTech, life sciences, and SDLC engagements.</li>
+    </ul>
+    <div class="foot"><span>CitiusTech Confidential</span><span>Contract Analyzer</span></div>
+  </section>
+
+  <!-- 10 BUILT WITH -->
+  <section class="slide">
+    <span class="kicker">Implementation</span>
+    <h2>Built end-to-end with Claude Code</h2>
+    <div class="grid g2">
+      <div>
+        <ul class="clean">
+          <li>The agent, the analysis prompt, and the entire Node.js codebase were developed in Claude Code.</li>
+          <li>At run time the app calls the Claude API to analyze each contract.</li>
+          <li>Modular design: <b>extract · guardrails · analyze · reconcile · buildHtml</b>.</li>
+          <li>Reproducible from the repo + README + synthetic sample data.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Stack</h3>
+        <span class="pill">Node.js + Express</span><span class="pill">Claude API</span>
+        <span class="pill">pdf-parse</span><span class="pill">mammoth (DOCX)</span>
+        <span class="pill">guardrails.js</span><span class="pill">deterministic cache</span>
+        <span class="pill">self-contained HTML dashboard</span>
+        <h3 style="margin-top:14px">Secrets</h3>
+        <p style="font-size:14px">API key lives only in a git-ignored <code>.env</code>; a placeholder <code>.env.example</code> ships instead.</p>
+      </div>
+    </div>
+    <div class="foot"><span>CitiusTech Confidential</span><span>Contract Analyzer</span></div>
+  </section>
+
+  <!-- 11 CLOSE -->
+  <section class="slide title">
+    <span class="kicker">Thank you</span>
+    <h1>Read the contract.<br>Decide with confidence.</h1>
+    <p class="lead" style="color:#e0e7ff;max-width:720px">A grounded, self-verifying, safety-first contract agent — from upload to a management-ready decision in minutes.</p>
+    <div class="tag">
+      <span class="pill">Live demo ready</span>
+      <span class="pill">Synthetic data only</span>
+      <span class="pill">Built with Claude Code</span>
+    </div>
+    <div class="meta"><b>Contact:</b> <span class="ph">[name / email]</span> &nbsp;·&nbsp; <b>Repo:</b> <span class="ph">[link]</span></div>
+  </section>
+
+</div>
+
+<div class="bar">
+  <button onclick="go(-1)">‹ Prev</button>
+  <button class="count" id="count">1 / 11</button>
+  <button onclick="go(1)">Next ›</button>
+</div>
+
+<script>
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var i=0;
+  function show(n){slides[i].classList.remove('active');i=(n+slides.length)%slides.length;
+    slides[i].classList.add('active');document.getElementById('count').textContent=(i+1)+' / '+slides.length;
+    window.scrollTo(0,0);}
+  function go(d){show(i+d);}
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')go(1);
+    else if(e.key==='ArrowLeft'||e.key==='PageUp')go(-1);
+  });
+  show(0);
+</script>
+</body>
+</html>

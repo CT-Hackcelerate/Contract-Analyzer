@@ -1,0 +1,445 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>Contract Analyzer — Submission Document</title>
+<style>
+  body{font-family:"Calibri","Segoe UI",Arial,sans-serif;font-size:11pt;color:#1a1a1a;line-height:1.5;margin:0.9in}
+  h1{font-size:19pt;color:#1E1B4B;border-bottom:2px solid #211CE8;padding-bottom:4px;margin-top:26pt}
+  h2{font-size:14pt;color:#211CE8;margin-top:18pt}
+  h3{font-size:12pt;color:#333;margin-top:12pt}
+  .title{font-size:27pt;font-weight:bold;color:#1E1B4B;margin-bottom:2pt}
+  .subtitle{font-size:12.5pt;color:#555;font-style:italic;margin-bottom:6pt}
+  .cover-note{font-size:10.5pt;color:#666}
+  .badge{display:inline-block;background:#ECEBFF;color:#211CE8;border:1px solid #cfcbff;border-radius:6px;padding:3px 9px;font-size:9.5pt;font-weight:bold;margin-right:6px}
+  p{margin:6pt 0}
+  ul,ol{margin:6pt 0}
+  li{margin:3pt 0}
+  table{border-collapse:collapse;width:100%;margin:8pt 0;font-size:10pt}
+  th,td{border:1px solid #b9c0d0;padding:6px 9px;text-align:left;vertical-align:top}
+  th{background:#211CE8;color:#fff;font-weight:bold}
+  tr:nth-child(even) td{background:#f5f6ff}
+  code{background:#f2f2f7;padding:1px 4px;border-radius:3px;font-family:Consolas,monospace;font-size:9.5pt}
+  a{color:#211CE8;text-decoration:none}
+  .idx a{line-height:1.75}
+  .rule{border:0;border-top:1px solid #ddd;margin:16pt 0}
+  .ph{border:2px dashed #F59E0B;background:#FFF8E8;color:#8a5a00;border-radius:8px;padding:14px;margin:10pt 0;text-align:center;font-size:10.5pt;font-weight:bold}
+  .ph small{display:block;font-weight:normal;color:#a06a10;margin-top:4px}
+  .exec{border:1.5px solid #211CE8;background:#F7F8FF;padding:12px 16px;margin:10pt 0}
+  .ok{color:#0E7A3B;font-weight:bold}
+  .extra{color:#5B21B6;font-weight:bold}
+  .flowtbl{width:82%;border-collapse:collapse;margin:8pt auto}
+  .flowtbl td{border:0;padding:2pt 0}
+  .flowtbl .step{border:1.5px solid #211CE8;background:#F0F4FF;padding:7px 11px;font-size:10pt}
+  .flowtbl .step b{color:#1E1B4B}
+  .flowtbl .arr{text-align:center;color:#211CE8;font-size:15pt;font-weight:bold}
+  .flowtbl .g{color:#7a4a00;font-size:9pt;font-style:italic}
+  .figcap{text-align:center;font-size:9.5pt;color:#666;font-style:italic;margin-top:4pt}
+  .arch td{border:1px solid #cfd6e6;padding:8px;font-size:9.5pt;text-align:center;vertical-align:middle}
+  .arch .lane{background:#211CE8;color:#fff;font-weight:bold;width:120px}
+  .chk{font-size:10.5pt}
+  .pill-red{background:#FFE3E3;color:#B00020;border-radius:999px;padding:2px 8px;font-size:9pt;font-weight:bold}
+  .pill-amber{background:#FAEEDA;color:#633806;border-radius:999px;padding:2px 8px;font-size:9pt;font-weight:bold}
+  .pill-green{background:#E6F4EA;color:#0E7A3B;border-radius:999px;padding:2px 8px;font-size:9pt;font-weight:bold}
+  .pill-grey{background:#EEF1F5;color:#5C6B83;border-radius:999px;padding:2px 8px;font-size:9pt;font-weight:bold}
+</style>
+</head>
+<body>
+
+<p class="title">Contract Analyzer</p>
+<p class="subtitle">AI-Powered SLA Risk &amp; Negotiation Intelligence Agent — Submission Document</p>
+<p><span class="badge">Submission Pack: one repo + demo + evidence</span><span class="badge">Built with Claude Code</span><span class="badge">Healthcare / SDLC contracts</span></p>
+<p class="cover-note">This document packages the submission for judging. It explains the use case, business impact, and Definition of Done; maps every mandatory component and judging criterion to concrete evidence; documents the controls and validations; and lists what the solution delivers over and above the DoD. Placeholders marked in orange show where to paste screenshots, the demo link, and team details.</p>
+
+<div class="ph">[ INSERT: Team name, member names, and event/track ]
+<small>Replace with your team and hackathon details.</small></div>
+
+<hr class="rule">
+
+<h1>Index</h1>
+<div class="idx">
+<p>
+1. <a href="#s1">Executive Summary</a><br>
+2. <a href="#s2">Objective &amp; Use Case</a><br>
+3. <a href="#s3">Business Impact</a><br>
+4. <a href="#s4">Definition of Done (DoD)</a><br>
+5. <a href="#s5">DoD Coverage — How We Meet Each Item</a><br>
+6. <a href="#s6">Over and Above the DoD</a><br>
+7. <a href="#s7">How It Works — Architecture &amp; Pipeline</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;7.3 <a href="#s7c">File map &amp; data flow</a> &nbsp;·&nbsp; 7.4 <a href="#s7d">File-by-file reference</a> &nbsp;·&nbsp; 7.5 <a href="#s7e">The analysis prompt, explained</a><br>
+8. <a href="#s8">The Output — Dashboard, Page by Page (with screenshots)</a><br>
+9. <a href="#s9">Controls, Checks &amp; Validations</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;9.1 <a href="#s9a">Anti-hallucination</a> &nbsp;·&nbsp; 9.2 <a href="#s9b">Injection defense</a> &nbsp;·&nbsp; 9.3 <a href="#s9c">Determinism</a> &nbsp;·&nbsp; 9.4 <a href="#s9d">EM↔pricing</a> &nbsp;·&nbsp; 9.5 <a href="#s9e">Data protection</a> &nbsp;·&nbsp; 9.6 <a href="#s9f">Robustness</a><br>
+10. <a href="#s10">Mandatory Submission Components</a><br>
+11. <a href="#s13">Setup, Commands, Inputs &amp; Outputs</a><br>
+12. <a href="#s14">Demo Script &amp; Evidence</a><br>
+13. <a href="#s15">Safety &amp; Compliance Note</a><br>
+14. <a href="#s16">Final Pre-Submit Checklist</a><br>
+15. <a href="#s17">Submission Readiness Checklist</a><br>
+16. <a href="#s18">Appendix — Configuration, Glossary &amp; File Inventory</a>
+</p>
+</div>
+
+<hr class="rule">
+
+<h1 id="s1">1. Executive Summary</h1>
+<div class="exec">
+<p><b>What it is.</b> An AI agent that reads a customer/healthcare services contract (SOW/MSA/etc.) and produces a management-ready SLA risk &amp; negotiation dashboard — extracting the key SLA clauses, classifying and scoring risk, and recommending safer clause wording.</p>
+<p><b>Built with Claude Code.</b> The agent, the analysis prompt, and the entire Node.js codebase were developed in Claude Code; at run time the app calls the Claude API to analyze each contract.</p>
+<p><b>Value.</b> Cuts contract review from hours to ~10–15 minutes, applies one consistent standard to every contract, surfaces penalty/SLA exposure before signing, and produces a self-contained, downloadable report.</p>
+<p><b>Why it's trustworthy.</b> Engineered against the two biggest AI risks — hallucination and prompt injection — with grounded extraction, evidence per finding, deterministic re-computation of critical facts, output validation, and enforced EM/pricing consistency. The same contract always yields the same result.</p>
+</div>
+
+<h1 id="s2">2. Objective &amp; Use Case</h1>
+<table>
+<tr><th style="width:22%">Field</th><th>Content</th></tr>
+<tr><td><b>Use case</b></td><td>AI-Powered SLA Risk &amp; Negotiation Intelligence Agent</td></tr>
+<tr><td><b>Description</b></td><td>An AI agent that extracts key SLA clauses from SOWs, identifies potential risks, and generates actionable recommendations for better contract decisions.</td></tr>
+<tr><td><b>Agent roles</b></td><td>SLA Risk Intelligence Agent &middot; Contract Review Agent &middot; Negotiation Recommendation Agent</td></tr>
+<tr><td><b>Primary users</b></td><td>Payers/health plans, providers/hospitals, MedTech &amp; Life Sciences, and healthcare-IT (SDLC) delivery, commercial, legal, and PMO teams.</td></tr>
+<tr><td><b>Inputs</b></td><td>One contract file per run — PDF or DOCX, up to 25 MB (machine-readable text).</td></tr>
+<tr><td><b>Output</b></td><td>A single, self-contained, interactive HTML dashboard (7 sections), saved to history and downloadable.</td></tr>
+</table>
+<p><b>The problem.</b> Manual SLA review is slow, inconsistent between reviewers, and error-prone; unfavourable SLA commitments and penalty exposure are easy to miss and expensive to discover after signing.</p>
+
+<h1 id="s3">3. Business Impact</h1>
+<p>Directly addresses the stated business impact — prevents unfavourable SLA commitments, reduces penalty exposure, improves deal quality, accelerates review, and enables informed pre-deal decisions.</p>
+<table>
+<tr><th style="width:30%">Impact area</th><th>How the agent delivers it</th><th>Indicative metric</th></tr>
+<tr><td>Accelerates review</td><td>AI first pass + human validation instead of full manual reading.</td><td>Hours &rarr; ~10–15 min per contract</td></tr>
+<tr><td>Consistency / deal quality</td><td>Same rules on every contract; comparable across a portfolio.</td><td>100% reviewed to one standard</td></tr>
+<tr><td>Prevents unfavourable SLAs</td><td>Key SLA Commitments table + risk scoring + recommended rewrites.</td><td>Every SLA target &amp; remedy surfaced</td></tr>
+<tr><td>Reduces penalty exposure</td><td>Service-credit / penalty flagged and separated from value-at-risk.</td><td>Penalty clauses highlighted</td></tr>
+<tr><td>Pre-deal decision-making</td><td>Management decision (Proceed / Conditions / Renegotiate / Do Not Proceed).</td><td>1 clear recommendation</td></tr>
+<tr><td>Cost</td><td>AI cost tracked per run in the audit log.</td><td>~cents per contract</td></tr>
+</table>
+<p><b>Illustration.</b> A team reviewing ~200 contracts/year at ~3 hours each spends ~600 hours; at ~10–15 minutes of human validation on an AI first pass that drops to ~35–50 hours — roughly a <b>90% reduction in review effort</b>. <i>(Planning figures, not a guarantee.)</i></p>
+
+<h1 id="s4">4. Definition of Done (DoD)</h1>
+<p>The agent is "done" when it delivers all of the following:</p>
+<ol>
+<li>Extracts key SLA clauses (deliverables, availability, response time, resolution time, penalties).</li>
+<li>Classifies SLA types.</li>
+<li>Identifies potentially risky clauses using AI reasoning.</li>
+<li>Highlights top risk areas with explanations.</li>
+<li>Generates actionable recommendations and improved clause rewrites.</li>
+<li>Produces a concise executive summary with overall contract risk indication.</li>
+</ol>
+
+<h1 id="s5">5. DoD Coverage — How We Meet Each Item</h1>
+<p>Every DoD item is met. <span class="ok">✔ = delivered.</span></p>
+<table>
+<tr><th style="width:30%">DoD item</th><th style="width:8%">Status</th><th>Where in the solution</th></tr>
+<tr><td>Extract key SLA clauses (deliverables, availability, response/resolution time, penalties)</td><td class="ok">✔</td><td><b>Key SLA Commitments</b> table (Executive Decision Brief) + <b>SLA Risk Assessment</b> ledger — Metric, Target, Measurement, Remedy/Penalty per clause.</td></tr>
+<tr><td>Classify SLA types</td><td class="ok">✔</td><td><code>slaType</code> per row + <b>SLA / Clause Type Legend</b> (SLA/Service Level, Service Credit/Penalty, Termination/Step-in, Cost Impact, Security/Compliance, Governance/Evidence, Referenced Agreement).</td></tr>
+<tr><td>Identify risky clauses via AI reasoning</td><td class="ok">✔</td><td>Each row carries Risk (High/Medium/Low), a Reasoning field, and a Confidence score.</td></tr>
+<tr><td>Highlight top risk areas with explanations</td><td class="ok">✔</td><td><b>Top Risks</b> page + <b>Top decision blockers</b> — reason, evidence, recommended action.</td></tr>
+<tr><td>Actionable recommendations + improved clause rewrites</td><td class="ok">✔</td><td><b>Recommendations &amp; Rewrites</b> page (original vs improved wording) + Management-ready Decision.</td></tr>
+<tr><td>Concise executive summary + overall risk</td><td class="ok">✔</td><td><b>Executive Decision Brief</b> — Overall Risk KPI, Management Decision, 5-point Concise Management Summary.</td></tr>
+</table>
+
+<div class="ph">[ INSERT SCREENSHOT: Key SLA Commitments table (Executive Decision Brief) ]
+<small>Shows SLA metric, target, measurement, remedy/penalty (colour-coded) and risk — the core DoD deliverable.</small></div>
+
+<h1 id="s6">6. Over and Above the DoD</h1>
+<p>Beyond the six DoD items, the solution adds substantial capability. <span class="extra">◆ = extra.</span></p>
+<table>
+<tr><th style="width:34%">Capability</th><th>What it adds</th></tr>
+<tr><td class="extra">◆ Contract metadata extraction</td><td>Parties, dates, term, category, renewal, governing agreement, execution evidence — full Contract Overview.</td></tr>
+<tr><td class="extra">◆ EM Level classification</td><td>Engagement model (EM 1 Staff Aug … EM 4 Fixed Price / Output+ / Outcome+) with inference basis.</td></tr>
+<tr><td class="extra">◆ Commercial Impact analysis</td><td>Value-at-risk, commercial baseline, revenue-protection controls, leakage scenarios, exposure model.</td></tr>
+<tr><td class="extra">◆ Priority (P1–P4) &amp; confidence</td><td>Incident-priority classification and a confidence score on every finding, with colour coding.</td></tr>
+<tr><td class="extra">◆ Page-level traceability</td><td>Deterministic page numbers derived from the evidence quote in the source text.</td></tr>
+<tr><td class="extra">◆ Management decision + risk chart</td><td>Proceed / Conditions / Renegotiate / Do Not Proceed, plus a donut chart of risk distribution &amp; value-at-risk.</td></tr>
+<tr><td class="extra">◆ SLA benchmarking vs standard</td><td>Each extracted SLA is compared <b>in code</b> against an internal SLA/SOW/Project-Risk playbook — availability &amp; API/microservice uptime, incident response &amp; resolution by priority (P1–P4), latency &amp; error rate, defect/regression quality, service-desk metrics, security (breach notice, vulnerability remediation, RTO/RPO), delivery variances and penalty caps — and flagged Meets / Below standard / Uncapped, with a "SLAs below standard" count on the Executive Brief. So the tool <b>judges</b> the contract, not just extracts it. Deterministic, so it never hallucinates a verdict; vague targets are left for human review. A dedicated <b>Benchmark vs Standard</b> page presents the scorecard, the per-SLA verdicts, and the full house playbook (Supplier Safeguards, AI / LLM Usage &amp; Token Safeguards, and sections A–W including ARR/cloud-funding) as searchable, collapsible reference.</td></tr>
+<tr><td class="extra">◆ Determinism &amp; reproducibility</td><td>Temperature 0 + content-addressed cache — the same contract always yields the same report.</td></tr>
+<tr><td class="extra">◆ Guardrails</td><td>Input validation, prompt-injection/jailbreak screening, PII masking, output/schema validation, grounding checks, EM↔pricing consistency, rate limiting, access control, audit trail.</td></tr>
+<tr><td class="extra">◆ Multi-format &amp; multi-contract-type</td><td>PDF/DOCX; SOW/MSA/GSA/Order Form/Amendment/…; healthcare and general services contracts.</td></tr>
+<tr><td class="extra">◆ History, dedup &amp; self-contained output</td><td>Analysis history, content de-duplication, and offline-openable HTML dashboards.</td></tr>
+</table>
+
+<h1 id="s7">7. How It Works — Architecture &amp; Pipeline</h1>
+
+<h2>7.1 Processing pipeline</h2>
+<table class="flowtbl">
+<tr><td class="step"><b>1 · Upload</b> — user submits one contract file (PDF / DOCX).</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>2 · Validate</b> — file type, size (&le;25 MB), safe name; rate-limited. <span class="g">[Guardrail]</span></td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>3 · Extract</b> — PDF/DOCX &rarr; text; tag PDF pages with <code>[[PAGE n]]</code>; count pages.</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>4 · Content dedup</b> — fingerprint the text; if already analyzed, point to the existing report. <span class="g">[Determinism]</span></td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>5 · Analyze</b> — hardened prompt + contract as untrusted data &rarr; Claude (temp 0) &rarr; JSON. Deterministic cache reused when available. <span class="g">[Injection defense]</span></td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>6 · Validate &amp; reconcile</b> — schema + enum checks (retry), EM↔pricing consistency, deterministic page numbers, grounding checks. <span class="g">[Anti-hallucination]</span></td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>7 · Build</b> — inject data into the fixed template; recompute counts; null fabricated money; add legends.</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>8 · Save &amp; record</b> — write dashboard to <code>/output</code>, append history, write PII-masked audit line.</td></tr>
+</table>
+<p class="figcap">Figure 1 — End-to-end pipeline with the guardrail applied at each stage.</p>
+
+<h2>7.2 Component architecture</h2>
+<table class="arch">
+<tr><td class="lane">Front end</td><td><code>index.html</code> (upload UI)</td><td><code>analysis-history.html</code> (history)</td><td>self-contained dashboard (output)</td></tr>
+<tr><td class="lane">Server</td><td colspan="3"><code>server.js</code> — rate limit, validate, dedup, save, history API, audit, controlled static serving</td></tr>
+<tr><td class="lane">Processing</td><td><code>extract.js</code> (PDF/DOCX + page tags)</td><td><code>analyze.js</code> (Claude, cache, retries, validation)</td><td><code>buildHtml.js</code> (assemble + reconcile)</td></tr>
+<tr><td class="lane">Safety</td><td colspan="3"><code>guardrails.js</code> — validation, injection detection, PII masking, output/grounding/consistency checks</td></tr>
+<tr><td class="lane">AI</td><td colspan="3"><code>analysis-prompt.txt</code> — instruction set + JSON schema (+ run-time hardening block) &rarr; Claude API</td></tr>
+</table>
+<p class="figcap">Figure 2 — Modules and layers (Node.js + Express; no heavy front-end framework).</p>
+
+<div class="ph">[ OPTIONAL: replace Figures 1–2 with a polished diagram image if preferred ]</div>
+
+<h2 id="s7c">7.3 File map &amp; data flow</h2>
+<p>The application is deliberately small and modular — each file has one job, and data flows in one direction from upload to saved dashboard. The flow below names the file responsible at every step and what it produces.</p>
+<table class="flowtbl">
+<tr><td class="step"><b>index.html</b> — the user chooses one PDF/DOCX and clicks Analyze; the browser POSTs the file to <code>/analyze</code>.</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>server.js</b> — receives the upload, rate-limits, validates it (via <code>guardrails.js</code>), then orchestrates every step below and returns the saved report path.</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>extract.js</b> — turns the file into plain text; for PDFs it tags each page with <code>[[PAGE n]]</code> and returns the page count.</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>server.js</b> — fingerprints the text (SHA-256) and checks history for a content or file-name duplicate; if found, it stops and points the user to the existing report.</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>analyze.js</b> — reads <b>analysis-prompt.txt</b>, appends the <b>guardrails.js</b> hardening block, wraps the contract as untrusted data, and calls the <b>Claude API</b> (temperature 0). Returns validated JSON, reusing the deterministic <code>cache/</code> when the same contract was seen before.</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>guardrails.js</b> — validates the JSON (schema/enums), reconciles page numbers from the evidence quotes, checks EM↔pricing consistency, and runs grounding/PHI checks.</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>buildHtml.js</b> — normalizes the data (recomputes counts, nulls fabricated money, reconciles EM/pricing, adds the fixed legends) and injects it into <b>dashboard-template.html</b> at the data token.</td></tr>
+<tr><td class="arr">&#9660;</td></tr>
+<tr><td class="step"><b>server.js</b> — writes the finished dashboard to <code>output/</code>, appends a record to <code>output/history.json</code>, and writes a PII-masked line to <code>output/audit.log</code>.</td></tr>
+</table>
+<p class="figcap">Figure 3 — Which file does what, in order. <b>analysis-history.html</b> sits to the side: it reads <code>GET /api/history</code> to list every saved report.</p>
+
+<table class="arch">
+<tr><td class="lane">Input</td><td colspan="3">One contract file — <b>.pdf</b> or <b>.docx</b> (&le; 25 MB, machine-readable text)</td></tr>
+<tr><td class="lane">Produced</td><td><code>output/&lt;client&gt;-&lt;file&gt;-analysis-&lt;timestamp&gt;.html</code> (the dashboard)</td><td><code>output/history.json</code> (index of reports)</td><td><code>output/audit.log</code> + <code>cache/&lt;hash&gt;.json</code></td></tr>
+</table>
+<p class="figcap">Figure 4 — What goes in, and the four things that come out.</p>
+
+<h2 id="s7d">7.4 File-by-file reference</h2>
+<p>Every file in the project, what it is for, why it is required, and what it covers.</p>
+<table>
+<tr><th style="width:20%">File</th><th style="width:30%">Purpose &amp; why it is required</th><th>What it contains / covers</th></tr>
+<tr><td><code>index.html</code></td><td>The upload screen — the only page a user needs. Required as the entry point to the tool.</td><td>Branded upload card (indigo/purple/cyan), single-file picker restricted to PDF/DOCX, drag-and-drop guard, Analyze / Clear / View Analysis History buttons, progress state, duplicate-and-error popups, and the download of the finished dashboard.</td></tr>
+<tr><td><code>analysis-history.html</code></td><td>Lets the user find and reopen past analyses. Required so results persist and are reusable across sessions.</td><td>Calls <code>GET /api/history</code> and renders a table — Client Name, File Name, View, Download — plus a New Contract link back to the upload page.</td></tr>
+<tr><td><code>server.js</code></td><td>The Express coordinator — the backend that ties every module together. Required to receive uploads and run the pipeline safely.</td><td>Route handling (<code>/analyze</code>, <code>/api/history</code>, controlled static serving of the two pages and <code>/output/*.html</code> only), rate limiting, upload handling (Multer), content/name de-duplication, page-count injection, history persistence, PII-masked audit logging, and safe error responses.</td></tr>
+<tr><td><code>extract.js</code></td><td>Converts an uploaded file into the plain text the model reads. Required because the model cannot read binary PDF/DOCX directly.</td><td>PDF extraction via <code>pdf-parse</code> with a custom page renderer that inserts <code>[[PAGE n]]</code> markers and returns the page count; DOCX extraction via <code>mammoth</code>; whitespace normalization; rejection of scanned/empty files and legacy <code>.doc</code>.</td></tr>
+<tr><td><code>analysis-prompt.txt</code></td><td>The instruction set that turns Claude into a contract analyst. Required — it defines exactly what to extract and the JSON to return (explained in 7.5).</td><td>Grounding/anti-hallucination rules, extraction fields, status logic, page-citation rule, EM-level classification, EM↔pricing consistency, the risk ledger and SLA rows, the executive brief, commercial impact, recommendations, assumptions, and the full output JSON schema.</td></tr>
+<tr><td><code>analyze.js</code></td><td>Runs the prompt through the Claude API and returns clean, validated data. Required as the bridge between the prompt and the rest of the app.</td><td>Loads the prompt + hardening block, wraps the contract as untrusted data, calls Claude at temperature 0, auto-continues on truncation, retries transient errors with backoff, extracts and validates the JSON (one corrective retry), reconciles page numbers, runs the deterministic <code>cache/</code>, and returns run metadata (tokens, cost, warnings, PHI/injection flags).</td></tr>
+<tr><td><code>guardrails.js</code></td><td>The central safety and quality module. Required to make the tool trustworthy — it defends against injection and hallucination and protects sensitive data.</td><td>Limits/constants, the system-hardening text, upload &amp; text validation, prompt-injection detection, untrusted-data wrapping, PII/secret masking and PHI detection (for logs/audit), output schema validation, grounding checks, EM↔pricing consistency checks, deterministic page reconciliation, and cost estimation.</td></tr>
+<tr><td><code>buildHtml.js</code></td><td>Assembles the final dashboard from the validated data. Required to guarantee a consistent, tamper-resistant output regardless of model wording.</td><td>Data normalization (recomputes risk counts, nulls fabricated money, reconciles EM/pricing trusting EM, derives contract status, snaps pricing labels), the SLA benchmark engine (compares each SLA to the fixed playbook and tags Meets / Below standard / Uncapped), the fixed legend definitions, colour-coding logic, and safe injection of the JSON into the template's data token.</td></tr>
+<tr><td><code>benchmark-reference.js</code></td><td>The full SLA/SOW/Project-Risk playbook (sections A–W + Supplier and AI/Token safeguards) shown as Reference Standards on the Benchmark vs Standard page. Kept separate because of its size; display-only reference, not auto-scored.</td><td>Grouped Category / Metric / Standard rows for every playbook section, the applicability matrix, derived metrics, and automated cross-checks.</td></tr>
+<tr><td><code>dashboard-template.html</code></td><td>The finalized visual design of the report. Required so the model never has to produce HTML — it only supplies data.</td><td>All eight pages, KPI cards, the contract strip, Management-ready Decision, Concise Management Summary, risk donut chart, Key SLA Commitments table, the full risk ledger, commercial-impact and recommendations pages, every legend, the Benchmark vs Standard page, and the CitiusTech-Confidential footer.</td></tr>
+<tr><td><code>package.json</code></td><td>Declares dependencies and the start script. Required for a clean, reproducible install.</td><td><code>express</code>, <code>multer</code>, <code>pdf-parse</code>, <code>mammoth</code>, <code>dotenv</code>, <code>@anthropic-ai/sdk</code>, and the <code>npm start</code> command.</td></tr>
+<tr><td><code>.env</code> / <code>.env.example</code></td><td>Holds configuration and the API key. Required to run; the key must never be committed.</td><td>Real secrets live only in the git-ignored <code>.env</code>; <code>.env.example</code> is the committed placeholder (API key, optional model, port, token/rate/pricing/cache settings).</td></tr>
+<tr><td><code>.gitignore</code></td><td>Keeps secrets and generated files out of source control. Required for safe GitHub publishing.</td><td>Ignores <code>.env</code>, <code>node_modules/</code>, <code>output/</code>, and <code>cache/</code>.</td></tr>
+<tr><td><code>README.md</code></td><td>The single run-and-rebuild reference. Required so a judge can reproduce the result independently.</td><td>Prerequisites, install, commands, inputs/outputs, configuration, how it works, dashboard pages, architecture, security &amp; guardrails, GitHub key protection, and troubleshooting.</td></tr>
+<tr><td><code>output/</code></td><td>Where results and their trail live. Generated at run time (git-ignored).</td><td>The saved dashboard HTML files, <code>history.json</code> (report index + content fingerprints), and the PII-masked <code>audit.log</code>.</td></tr>
+<tr><td><code>cache/</code></td><td>Guarantees determinism. Generated at run time (git-ignored).</td><td>One <code>&lt;sha256&gt;.json</code> per analyzed contract, keyed on contract text + prompt, so the same document always yields the same report.</td></tr>
+</table>
+
+<h2 id="s7e">7.5 The analysis prompt, explained section by section</h2>
+<p><code>analysis-prompt.txt</code> is the heart of the agent. It never asks the model to write HTML — it asks for a single, strictly-shaped JSON object that the template renders. Each block below has a specific job.</p>
+<table>
+<tr><th style="width:26%">Prompt section</th><th>What it instructs, and why it matters</th></tr>
+<tr><td><b>Role &amp; task framing</b> (opening lines)</td><td>Sets the job: read the uploaded contract and return the DATA (JSON) for a dashboard whose visuals are already fixed. Stops the model wasting effort — and drift — on styling or HTML.</td></tr>
+<tr><td><b>General rules</b> (grounding &amp; anti-hallucination)</td><td>The core safety contract: use only what is in the document; write "Not stated in uploaded contract" (or null) when a value is missing; never invent parties, dates, money, penalties or clauses; quote real text as evidence and score confidence honestly; be deterministic. Includes the PHI rule — this analyzes contracts, not patient records, so any patient identifiers are flagged in Assumptions, never reproduced.</td></tr>
+<tr><td><b>Contract extraction</b></td><td>Lists the ~30 fields to pull (parties, dates, term, category, pricing, governing agreement, SLA/security/termination terms, execution evidence, …), the <code>DD-MMM-YYYY</code> date format, and the <b>status logic</b> (Upcoming / Active / On Hold / Expired / Not determinable) computed against the current date.</td></tr>
+<tr><td><b>Page numbers &amp; citations</b></td><td>Tells the model to set each row's page only from the nearest preceding <code>[[PAGE n]]</code> marker, to keep citations out of text fields, and to make <code>evidence</code> a verbatim quote — because the app re-derives every page number by finding that quote in the source text. This is what makes page references trustworthy.</td></tr>
+<tr><td><b>EM level classification</b></td><td>Defines EM 1 (Staff Aug) through EM 4 (Fixed Price / Output+ / Outcome+) with explicit tie-breakers, and forbids defaulting to EM 4 just because a contract looks risky. Produces the engagement-model read that leadership cares about.</td></tr>
+<tr><td><b>EM ↔ pricing consistency</b></td><td>Maps each pricing model to its valid EM (T&amp;M &rarr; EM 1/2/3, never EM 4; fixed &rarr; EM 4 Fixed Price; output &rarr; Output+; outcome &rarr; Outcome+) and declares contradictions invalid. The app enforces this again in code, so the two can never disagree in the output.</td></tr>
+<tr><td><b>Risk ledger</b></td><td>Builds one grounded row per obligation and, importantly, a dedicated <b>SLA row</b> for every service-level commitment with metric, target, measurement, remedy and cap — this is what feeds the Key SLA Commitments table. Fixes the risk vocabulary to High / Medium / Low and priority to P1–P4 with clear definitions.</td></tr>
+<tr><td><b>Executive Decision Brief</b></td><td>Specifies the five KPI values, the overall-risk logic, the Management Decision enum (Proceed / Proceed with Conditions / Renegotiate / Do Not Proceed), the two decision boxes (proceed-if / renegotiate) as header+statement items, the five-bullet Concise Management Summary, and the risk chart rules.</td></tr>
+<tr><td><b>Commercial impact</b></td><td>Asks for financial notes, a commercial baseline, revenue-protection controls, leakage scenarios and penalty exposure — while forbidding invented values and keeping Contract Value at Risk separate from service-credit exposure.</td></tr>
+<tr><td><b>Recommendations &amp; rewrites</b></td><td>For each recommendation: risk level, contract area, recommended action, the original risky wording, and improved negotiation wording — only for clauses actually present in the contract.</td></tr>
+<tr><td><b>Assumptions</b></td><td>Forces the model to state its own limitations — extraction gaps, unuploaded agreements, value treatment, confidence basis, page-number reliability, OCR needs — so the reader knows exactly how far to trust each figure.</td></tr>
+<tr><td><b>Output format (JSON schema)</b></td><td>The exact object shape the app parses: <code>metadata</code>, <code>rows</code>, <code>counts</code>, <code>overall</code>, <code>boardDecision</code>, <code>bucketValues</code>, <code>boardSummary</code>, <code>decisionList</code>, <code>financialNotes</code>, <code>revenueControls</code>, <code>commercialBaseline</code>, <code>leakageScenarios</code>, <code>penaltyExposure</code>, <code>recos</code>, <code>assumptions</code>. Notes enforce the rules that matter: exclude legends (the app adds them), counts must equal the row totals, pricing/type labels are constrained, and only valid JSON with no control characters.</td></tr>
+<tr><td><b>Run-time hardening block</b> (appended from <code>guardrails.js</code>)</td><td>Not stored in the file — <code>analyze.js</code> appends it to the system prompt at run time. It restates, at highest priority, that the contract between the <code>&lt;&lt;&lt;CONTRACT&gt;&gt;&gt;</code> markers is untrusted data to be analyzed, never obeyed, and that the instructions must never be revealed or changed. This is the primary prompt-injection defense.</td></tr>
+</table>
+
+<h1 id="s8">8. The Output — Dashboard, Page by Page</h1>
+<p>The dashboard has eight sections. Paste a screenshot of each below.</p>
+<h3>8.1 Executive Decision Brief</h3>
+<p>Five KPI cards (Overall Risk, Management Decision, Contract Value at Risk, # High Risks, Total Risks); snapshot strip (Type · Status · Term · Pricing · EM); Management-ready Decision; Concise Management Summary; risk donut chart; <b>Key SLA Commitments</b> table with a <b>vs Standard</b> benchmark column and a "SLAs below standard" flag; top decision blockers.</p>
+<div class="ph">[ INSERT SCREENSHOT: Executive Decision Brief (full page) ]</div>
+<h3>8.2 Contract Overview</h3>
+<p>Contract identity; dates &amp; status; commercial/category/renewal terms; total pages &amp; pages scanned by AI.</p>
+<div class="ph">[ INSERT SCREENSHOT: Contract Overview ]</div>
+<h3>8.3 Top Risks</h3>
+<p>High-risk items with reasoning, evidence, and recommended action (colour-coded priority icons).</p>
+<div class="ph">[ INSERT SCREENSHOT: Top Risks ]</div>
+<h3>8.4 SLA Risk Assessment</h3>
+<p>The full, filterable clause/risk ledger (metric, target, measurement, remedy, cap, risk, priority, confidence, evidence), including a deterministic <b>vs Standard</b> benchmark verdict on every SLA row (Meets / Below standard / Uncapped) computed in code against the fixed playbook.</p>
+<div class="ph">[ INSERT SCREENSHOT: SLA Risk Assessment table ]</div>
+<h3>8.5 Commercial Impact</h3>
+<p>Financial interpretation, commercial baseline, revenue-protection controls, leakage scenarios, exposure model.</p>
+<div class="ph">[ INSERT SCREENSHOT: Commercial Impact ]</div>
+<h3>8.6 Recommendations &amp; Rewrites</h3>
+<p>Risky clause vs improved negotiation wording.</p>
+<div class="ph">[ INSERT SCREENSHOT: Recommendations &amp; Rewrites ]</div>
+<h3>8.7 Legends &amp; Assumptions</h3>
+<p>All legends (management decision, risk, priority, type, status, pricing, EM level, clause type, SLA remedy/penalty, confidence, benchmark verdict), how the decision/summary are derived, assumptions, and limitations.</p>
+<div class="ph">[ INSERT SCREENSHOT: Legends &amp; Assumptions ]</div>
+<h3>8.8 Benchmark vs Standard</h3>
+<p>Judges each extracted SLA against a fixed benchmark playbook, <b>deterministically in code</b>. Includes a "how to use" guide that states plainly what is and isn't auto-scored; a scorecard (SLAs benchmarked / meets / below / uncapped); a <b>This contract vs standard</b> table with clear verdicts (Meets standard / Below standard / Uncapped penalty / No target stated); and the full <b>Reference standards</b> playbook, rendered as <b>searchable, collapsible</b> sections — <b>Supplier Safeguards</b> and <b>AI / LLM Usage &amp; Token Safeguards</b> plus the complete sections A–W (availability, incident response &amp; resolution, performance/APIs, defects, service desk, security, delivery, governance, milestones, dependencies, estimation, scope/change, testing, third-party/IP, migration/hypercare, commercial, cross-SOW, cloud funding &amp; ARR T1–T14, financial controls, migration inventory, platform parity), plus the applicability matrix, derived metrics and automated cross-checks.</p>
+<div class="ph">[ INSERT SCREENSHOT: Benchmark vs Standard ]</div>
+
+<h1 id="s9">9. Controls, Checks &amp; Validations</h1>
+<p>Every stage is guarded. This is the core of the "well made / safe" evaluation.</p>
+<table>
+<tr><th style="width:26%">Control</th><th>What it does</th></tr>
+<tr><td>Input validation</td><td>File type (PDF/DOCX only), 25 MB cap, safe file name (blocks path traversal/control chars), empty/scanned rejection.</td></tr>
+<tr><td>Prompt-injection / jailbreak screening</td><td>Contract passed as untrusted data in <code>&lt;&lt;&lt;CONTRACT&gt;&gt;&gt;</code> markers; injection phrases detected and logged; system prompt protected.</td></tr>
+<tr><td>PII / secret masking</td><td>Emails, phones, PAN, Aadhaar, API keys, passwords redacted from all logs and the audit trail.</td></tr>
+<tr><td>Output &amp; schema validation</td><td>JSON schema + enum checks (risk, priority, overall, decision) with one corrective retry.</td></tr>
+<tr><td>Anti-hallucination / grounding</td><td>Evidence per risk; counts recomputed from rows; fabricated money nulled; confidence + missing-evidence flags.</td></tr>
+<tr><td>EM ↔ pricing consistency</td><td>Deterministically enforced (EM trusted, pricing corrected) so an impossible pair (e.g. T&amp;M + EM4) can never display.</td></tr>
+<tr><td>Deterministic page numbers</td><td>Each page re-derived by locating the evidence quote in the page-marked source.</td></tr>
+<tr><td>Determinism</td><td>Temperature 0 + content-addressed cache — identical contract yields identical report.</td></tr>
+<tr><td>Rate limiting</td><td>Per-IP sliding window on <code>/analyze</code>.</td></tr>
+<tr><td>Access control</td><td>Only the app pages and generated dashboards are served; prompt, source, cache, audit, history are not exposed.</td></tr>
+<tr><td>Audit trail</td><td><code>output/audit.log</code> records each run (tokens, cost estimate, warnings) — PII-masked.</td></tr>
+</table>
+<p>The subsections below explain <b>how</b> each of the most important controls is actually achieved in the code, not just what it does.</p>
+
+<h2 id="s9a">9.1 Anti-hallucination — how we achieved it</h2>
+<p>Hallucination (the model stating something the contract does not) is the single biggest risk for a tool like this, so it is defended in layers — first by instruction, then by verification in code, so that even if the model slips, the output is corrected before the user ever sees it.</p>
+<p><b>1 · Grounding by instruction.</b> The prompt's General Rules require the model to use <i>only</i> the uploaded contract, to write <code>"Not stated in uploaded contract"</code> (or <code>null</code>) for anything missing, and to never invent parties, dates, money, penalties, caps or clauses. It must copy names, dates and amounts verbatim, and prefer a lower confidence score over a confident guess. This removes the model's incentive to "fill in the blanks."</p>
+<p><b>2 · Evidence for every finding.</b> Each risk row must carry a short, <i>verbatim</i> quote from the contract in its <code>evidence</code> field, plus a <code>confidence</code> score. A claim with no locatable source text is visible immediately, and the grounding check (below) flags any High-risk row that lacks evidence.</p>
+<p><b>3 · Deterministic re-computation of the numbers that matter.</b> The figures a manager reads are never trusted from the model — they are recomputed in code by <code>buildHtml.js</code>. Risk counts (High/Medium/Low) are recounted from the actual rows; the "# High Risks" and "Total Risks" KPIs and the chart are derived from those recounts. If no numeric contract value was extracted, any monetary "value at risk" the model produced is <b>nulled</b> and the page renders "Contract value not stated" rather than a fabricated number.</p>
+<p><b>4 · Deterministic page numbers.</b> Rather than trust the model's page references, <code>guardrails.reconcilePages()</code> splits the page-marked source text on the <code>[[PAGE n]]</code> markers and re-locates each row's evidence quote in that text, setting <code>pageNo</code> to the page where the quote actually appears. A quote that cannot be found becomes "Not available" — never a wrong page.</p>
+<p><b>5 · Output validation with a corrective retry.</b> <code>guardrails.validateOutput()</code> checks the JSON shape and the controlled vocabularies (risk ∈ High/Medium/Low, priority ∈ P1–P4, overall, and the management decision enum). If the first response is malformed or off-schema, <code>analyze.js</code> sends one corrective retry describing the problem before accepting or failing gracefully.</p>
+<p><b>6 · Grounding warnings.</b> <code>guardrails.groundingChecks()</code> looks for tell-tale signs of drift — counts that disagree with the rows, money present without a stated value, a negative contract value, end-date before start-date, out-of-range confidence, or a High-risk row with no evidence — and records them to the audit log and the run's warnings for QA.</p>
+<p><b>7 · Determinism.</b> The model runs at <b>temperature 0</b>, and every analysis is cached by a hash of the contract text plus the prompt, so the same contract always produces the same report (see 9.3). This makes any hallucination reproducible — and therefore fixable — rather than a moving target.</p>
+
+<h2 id="s9b">9.2 Prompt-injection &amp; jailbreak defense — how we achieved it</h2>
+<p>Because the tool feeds an untrusted document straight into an LLM, a contract could contain hidden instructions ("ignore previous instructions", "reveal your system prompt"). The defense is layered so no single trick can subvert it.</p>
+<p><b>Untrusted-data framing.</b> The contract is never concatenated into the instructions. <code>guardrails.wrapContract()</code> encloses it in explicit <code>&lt;&lt;&lt;CONTRACT&gt;&gt;&gt; … &lt;&lt;&lt;END CONTRACT&gt;&gt;&gt;</code> markers, and a high-priority hardening block (<code>guardrails.SYSTEM_HARDENING</code>, appended to the system prompt at run time by <code>analyze.js</code>) states that everything between those markers is data to be analyzed, quoted or summarized — <i>never obeyed</i> — and that the instructions must never be revealed or modified.</p>
+<p><b>Detection and logging (not blocking).</b> <code>guardrails.detectInjection()</code> scans the text against a set of jailbreak signatures (e.g. "ignore previous instructions", "developer mode", "act as", role tags). It deliberately does <i>not</i> block — a real contract may legitimately quote such phrases — but records a <code>injection_flagged</code> audit event so the run is traceable. The hardening + delimiters neutralize any effect regardless.</p>
+<p><b>File-name sanitization.</b> The uploaded file name is also untrusted, so before it is embedded in the prompt <code>analyze.js</code> strips quotes, brackets and newlines and caps its length; the real name is re-applied to the output in code afterward.</p>
+
+<h2 id="s9c">9.3 Determinism &amp; reproducibility — how we achieved it</h2>
+<p><b>Temperature 0 + content-addressed cache.</b> The model is called at temperature 0, and <code>analyze.js</code> keys a persistent cache on <code>sha256(contractText + prompt)</code>. An identical contract reuses the exact stored result, so risk counts and the decision never drift between runs. The cache lives in <code>cache/</code>, deliberately <i>separate</i> from <code>output/</code>, so clearing generated dashboards, history or the audit log does not change results (and <code>DISABLE_CACHE=1</code> turns it off for testing).</p>
+<p><b>Self-healing cache.</b> A cached result is reused only if it still passes the consistency checks; an older entry with, say, an EM/pricing conflict is discarded so the corrected logic re-runs.</p>
+<p><b>Content de-duplication.</b> <code>server.js</code> fingerprints the extracted text (whitespace-normalized SHA-256) and, before spending any tokens, checks history: the same document — even renamed — is not re-analyzed; the user is pointed to the existing report. A same-name-different-content upload is caught too.</p>
+<p><b>Resilience.</b> Long analyses auto-continue until the JSON object is complete (<code>completeJson</code>), and transient API errors (timeouts, 429, 5xx) are retried with exponential backoff (<code>withRetry</code>), so a large contract or a blip does not corrupt the output.</p>
+
+<h2 id="s9d">9.4 EM ↔ pricing consistency — how we achieved it</h2>
+<p>An engagement-model that contradicts the pricing model (for example Time &amp; Materials shown as "EM 4 – Fixed Price") would undermine trust instantly. This is enforced three times over. The prompt states the valid mapping; <code>guardrails.consistencyChecks()</code> detects any contradiction and triggers a corrective retry (and disqualifies an inconsistent cache entry); and finally <code>buildHtml.js</code> reconciles deterministically — <b>trusting the EM classification and correcting the pricing label to match</b> — so an impossible pair can never reach the screen, with the adjustment noted in the pricing detail.</p>
+
+<h2 id="s9e">9.5 Data protection &amp; privacy — how we achieved it</h2>
+<p><b>No file retention.</b> Uploads are written to a temporary folder and deleted immediately after processing (success or failure); only the generated dashboard is kept.</p>
+<p><b>PII / secret masking.</b> Everything written to logs or the audit trail passes through <code>guardrails.maskPII()</code>, which redacts emails, phone numbers, Indian PAN, Aadhaar, US SSN, medical record numbers, API keys, cloud keys and passwords — so sensitive values never land in a log file.</p>
+<p><b>PHI screening (above &amp; beyond).</b> Because this analyzes contracts, not patient records, <code>guardrails.detectPHI()</code> scans every upload for patient identifiers (MRN, DOB, SSN, ICD codes, health-insurance claim/beneficiary IDs, NPI). Any hit is raised as a run warning, written as a <code>phi_flagged</code> audit event, and surfaced in the dashboard's Limitations legend — so no real patient data can slip in unnoticed.</p>
+<p><b>Access control.</b> The server does not expose the project folder. Only <code>index.html</code>, <code>analysis-history.html</code> and generated <code>/output/*.html</code> files are served (with path-traversal and non-HTML requests rejected); the prompt, source, <code>cache/</code>, <code>audit.log</code> and <code>history.json</code> are never reachable over HTTP. The framework version header is disabled.</p>
+<p><b>Secret hygiene.</b> The API key lives only in a git-ignored <code>.env</code>; <code>.env.example</code> is the committed placeholder, and <code>.gitignore</code> also excludes <code>node_modules/</code>, <code>output/</code> and <code>cache/</code>.</p>
+
+<h2 id="s9f">9.6 Robustness &amp; abuse controls — how we achieved it</h2>
+<p><b>Input validation.</b> <code>guardrails.validateUpload()</code> and Multer's file filter accept only <code>.pdf</code>/<code>.docx</code> up to 25 MB and reject long, path-traversing or control-character file names; <code>validateContractText()</code> rejects empty or scanned (image-only) documents with guidance to run OCR, and caps the text sent to the model.</p>
+<p><b>Rate limiting.</b> <code>server.js</code> applies a per-IP sliding window to <code>/analyze</code> (default 20 requests/minute), returning HTTP 429 and logging <code>rate_limited</code> — protecting against runaway cost and abuse.</p>
+<p><b>Safe failure &amp; auditability.</b> All errors return a clean message (never a stack trace), logging must never break a request, and every run — success, duplicate, warning, injection/PHI flag, or error — is recorded as a PII-masked JSON line in <code>output/audit.log</code>.</p>
+
+<h1 id="s10">10. Mandatory Submission Components</h1>
+<p>Mapping the submission pack's mandatory components to our evidence.</p>
+<table>
+<tr><th style="width:22%">Component</th><th style="width:10%">Status</th><th>Our evidence</th></tr>
+<tr><td>Repository access / ZIP (code, prompts, agent config, tools, sample inputs, generated outputs)</td><td class="ok">✔</td><td>Whole project folder; prompt <code>analysis-prompt.txt</code>; code modules; <code>package.json</code>, <code>.env.example</code>; sample inputs in <code>Submission/sample-data/</code>; outputs in <code>Submission/output-artifacts/</code>.</td></tr>
+<tr><td>README run document</td><td class="ok">✔</td><td><code>README.md</code> — prerequisites, install, commands, inputs, outputs, configuration, troubleshooting, rebuild-from-scratch.</td></tr>
+<tr><td>Definition-of-Done evidence</td><td class="ok">✔</td><td>Section 5 of this document + <code>Submission/01_DoD_Evidence.md</code>.</td></tr>
+<tr><td>Sample data pack (optional; synthetic only)</td><td class="ok">✔</td><td>Synthetic contracts in <code>Submission/sample-data/</code> — no real PHI/PII.</td></tr>
+<tr><td>Demo script / video</td><td>◐</td><td>Script in Section 12 / <code>Submission/03_Demo_Script.md</code>; record the video (placeholder below).</td></tr>
+<tr><td>Output artifacts (+ screenshots/logs)</td><td>◐</td><td>Generated dashboard(s), screenshots (Section 8), and <code>output/audit.log</code> in <code>Submission/output-artifacts/</code>.</td></tr>
+<tr><td>Compliance note</td><td class="ok">✔</td><td>Section 13 + <code>Submission/02_Compliance_and_Safety_Note.md</code>.</td></tr>
+</table>
+<p><small>◐ = ready to finalize during the clean run (capture artifacts / record demo).</small></p>
+
+<h1 id="s13">11. Setup, Commands, Inputs &amp; Outputs</h1>
+<p><b>Prerequisites:</b> Node.js 18+, npm, an Anthropic API key, a browser.</p>
+<p><b>Setup &amp; run:</b></p>
+<ol>
+<li><code>npm install</code></li>
+<li>Copy <code>.env.example</code> to <code>.env</code>; set <code>ANTHROPIC_API_KEY</code>.</li>
+<li><code>npm start</code> &rarr; open <code>http://localhost:3000</code>.</li>
+<li>Upload a PDF/DOCX contract &rarr; <b>Upload Contract</b>; open it from <b>View Analysis History</b>.</li>
+</ol>
+<p><b>Inputs:</b> one PDF/DOCX (&le;25 MB, machine-readable text). <b>Outputs:</b> a self-contained HTML dashboard (saved to <code>output/</code> and history), a PII-masked <code>output/audit.log</code>, and a deterministic <code>cache/</code> entry. Full details in <code>README.md</code>.</p>
+<div class="ph">[ INSERT SCREENSHOT: Upload page (index.html) ]</div>
+<div class="ph">[ INSERT SCREENSHOT: Analysis History page ]</div>
+
+<h1 id="s14">12. Demo Script &amp; Evidence</h1>
+<p>Target 3–4 minutes (full script in <code>Submission/03_Demo_Script.md</code>):</p>
+<ol>
+<li><b>Problem (20s)</b> — manual SLA review is slow and inconsistent.</li>
+<li><b>Upload &amp; run (40s)</b> — drop a synthetic contract; explain extract &rarr; analyze &rarr; validate &rarr; render.</li>
+<li><b>Walkthrough (90s)</b> — Executive Brief (KPIs, Key SLA Commitments), Top Risks (evidence), SLA Risk Assessment, Commercial Impact, Legends/Limitations.</li>
+<li><b>Trust &amp; reproducibility (40s)</b> — same contract &rarr; same result; audit log; injection defense.</li>
+<li><b>Close (20s)</b> — from contract to decision, safely, in minutes.</li>
+</ol>
+<div class="ph">[ INSERT: Demo video link or file — Submission/demo-video.mp4 ]
+<small>Prefer a live demo (bonus points); keep the recording as backup.</small></div>
+
+<h1 id="s15">13. Safety &amp; Compliance Note</h1>
+<p><b>No real PHI/PII.</b> Only synthetic sample contracts are used; uploaded files are deleted immediately after processing; logs and the audit trail are PII-masked (emails, phones, PAN, Aadhaar, SSN, MRN, keys, passwords).</p>
+<p><b>PHI screening (above and beyond).</b> The tool analyzes contracts, not patient records. Every upload is screened for patient identifiers — MRN, date of birth, SSN, ICD codes, health-insurance claim/beneficiary IDs, and NPI; any hit is flagged in the audit log (<code>phi_flagged</code>), raised as a run warning, and noted in the dashboard's Limitations legend, so no real PHI can slip in unnoticed.</p>
+<p><b>Responsible-AI safeguards.</b> Grounded extraction (no fabrication; "Not stated" for missing data), evidence + confidence per finding, injection/jailbreak defense, output validation, and deterministic re-computation of critical facts.</p>
+<p><b>Human-in-the-loop.</b> The dashboard is a decision-support aid, not legal advice; it recommends but never auto-executes; referenced-but-unuploaded agreements are flagged for manual validation.</p>
+<table>
+<tr><th style="width:40%">Risk</th><th>Mitigation</th></tr>
+<tr><td>AI misreads / misses a clause</td><td>Evidence + confidence per row; human review; "first-pass aid" framing</td></tr>
+<tr><td>Different results across runs</td><td>Temperature 0 + deterministic cache</td></tr>
+<tr><td>Fabricated money</td><td>Nulled when not stated; value-at-risk labelled directional</td></tr>
+<tr><td>Hidden instructions in a contract</td><td>Untrusted-data framing + injection screening + system-prompt protection</td></tr>
+<tr><td>Sensitive data in logs</td><td>PII masking everywhere</td></tr>
+<tr><td>Inconsistent EM/pricing</td><td>Deterministically reconciled (EM trusted, pricing corrected)</td></tr>
+<tr><td>Referenced agreement not provided</td><td>Flagged for manual validation, not assumed</td></tr>
+</table>
+
+<h1 id="s16">14. Final Pre-Submit Checklist</h1>
+<p class="chk">
+&#9744; Run the agent once from a clean environment (fresh install, valid key).<br>
+&#9744; Verify the generated artifact (values correct; "Not stated" where missing).<br>
+&#9744; Remove any confidential data; confirm samples are synthetic; ensure <code>.env</code> is not included.<br>
+&#9744; Confirm the README steps reproduce the result independently.<br>
+&#9744; Include the DoD-to-evidence mapping (Section 5).<br>
+&#9744; Capture output artifacts (screenshots + <code>audit.log</code>) and the demo (link/file).
+</p>
+
+<h1 id="s17">15. Submission Readiness Checklist</h1>
+<p class="chk">
+<b>Build &amp; run</b><br>
+&#9744; <code>npm install</code> succeeds &nbsp;&nbsp; &#9744; <code>.env</code> has a valid key &nbsp;&nbsp; &#9744; <code>npm start</code> serves the app<br>
+&#9744; Upload a PDF and a DOCX — both analyze successfully<br>
+&#9744; EM &amp; pricing are consistent; page numbers match clauses; counts match the ledger<br>
+<b>Evidence</b><br>
+&#9744; Screenshots pasted in Section 8 &nbsp;&nbsp; &#9744; <code>audit.log</code> copied to <code>Submission/output-artifacts/</code><br>
+&#9744; Demo recorded / rehearsed &nbsp;&nbsp; &#9744; Sample contracts in <code>Submission/sample-data/</code> (synthetic)<br>
+<b>Docs</b><br>
+&#9744; README complete &nbsp;&nbsp; &#9744; DoD evidence (Section 5) &nbsp;&nbsp; &#9744; Compliance note (Section 13)<br>
+<b>Package</b><br>
+&#9744; Team details filled at top &nbsp;&nbsp; &#9744; ZIP excludes <code>.env</code>, <code>node_modules/</code>, <code>output/</code>, <code>cache/</code><br>
+&#9744; "Built with Claude Code" stated &nbsp;&nbsp; &#9744; Submitted before the deadline
+</p>
+
+<h1 id="s18">16. Appendix — Configuration, Glossary &amp; File Inventory</h1>
+<h2>16.1 Configuration (environment variables)</h2>
+<table>
+<tr><th>Setting</th><th>Default</th><th>Purpose</th></tr>
+<tr><td><code>ANTHROPIC_API_KEY</code></td><td>—</td><td>AI service key (in <code>.env</code>, never committed)</td></tr>
+<tr><td><code>ANTHROPIC_MODEL</code></td><td>claude-sonnet-4-5-20250929</td><td>Model used</td></tr>
+<tr><td><code>PORT</code></td><td>3000</td><td>Web server port</td></tr>
+<tr><td><code>MAX_TOKENS</code></td><td>16000</td><td>Output tokens per request (auto-continues)</td></tr>
+<tr><td><code>RATE_MAX</code> / <code>RATE_WINDOW_MS</code></td><td>20 / 60000</td><td>Rate limit</td></tr>
+<tr><td><code>PRICE_PER_MTOK_IN</code> / <code>_OUT</code></td><td>3 / 15</td><td>Cost-estimate rates (USD per 1M tokens)</td></tr>
+<tr><td><code>DISABLE_CACHE</code></td><td>0</td><td>Set 1 to force a fresh model call</td></tr>
+</table>
+<h2>16.2 Glossary</h2>
+<p><b>SLA</b> — service-level agreement. <b>EM Level</b> — engagement/delivery model (EM 1 Staff Aug … EM 4 Fixed Price/Output+/Outcome+). <b>Priority (P1–P4)</b> — urgency. <b>Value at Risk</b> — directional money exposure. <b>Grounding</b> — using only the source document. <b>Hallucination</b> — unsupported AI output. <b>Prompt injection</b> — hidden instructions in input. <b>Temperature</b> — AI randomness (0 = most repeatable).</p>
+<h2>16.3 File inventory</h2>
+<p><code>index.html</code>, <code>analysis-history.html</code>, <code>server.js</code>, <code>extract.js</code>, <code>analyze.js</code>, <code>guardrails.js</code>, <code>buildHtml.js</code>, <code>dashboard-template.html</code>, <code>analysis-prompt.txt</code>, <code>package.json</code>, <code>.env.example</code>, <code>.gitignore</code>, <code>README.md</code>, and the <code>Submission/</code> pack (index, DoD evidence, compliance note, demo script, sample data, output artifacts).</p>
+
+<p style="margin-top:20pt;color:#888;font-style:italic">End of document. Replace all orange placeholders before submitting.</p>
+
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contract Reviewer — Upload Contract</title>
+  <style>
+    :root {
+      --primary: #211CE8;
+      --primary-dark: #1712B0;
+      --purple: #5B21B6;
+      --cyan: #73E3EA;
+      --navy: #1E1B4B;
+      --blue: #211CE8;
+      --blue-dark: #1712B0;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #dde5f2;
+      --bg: #eef1ff;
+      --panel: #fff;
+      --info-bg: #f0f4ff;
+      --info-border: #211CE8;
+      --red: #b00020
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eef1ff, #e6e9fb);
+      min-height: 100vh
+    }
+
+    header.appbar {
+      background: linear-gradient(135deg, #211CE8 0%, #4B2FD6 55%, #5B21B6 100%);
+      color: #fff;
+      padding: 20px 40px;
+      box-shadow: 0 2px 12px rgba(33, 28, 232, .22)
+    }
+
+    header.appbar h1 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: .2px
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 34px auto;
+      padding: 0 20px
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(33, 28, 232, .12);
+      padding: 34px 40px
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 30px;
+      font-weight: 900
+    }
+
+    .lead {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      max-width: 900px
+    }
+
+    .lead b {
+      color: var(--ink)
+    }
+
+    .info {
+      background: var(--info-bg);
+      border-left: 5px solid var(--info-border);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-bottom: 26px
+    }
+
+    .info h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: var(--ink);
+      font-weight: 800
+    }
+
+    .info ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--ink);
+      font-size: 14.5px;
+      line-height: 1.9
+    }
+
+    .drop {
+      display: block;
+      width: 100%;
+      border: 2px dashed #b9c6d4;
+      border-radius: 14px;
+      padding: 46px 20px;
+      text-align: center;
+      background: #fff;
+      transition: .15s;
+      cursor: pointer
+    }
+
+    .drop.drag {
+      border-color: var(--blue);
+      background: #f3f8fd
+    }
+
+    .doc-ico {
+      width: 66px;
+      height: 66px;
+      margin: 0 auto 18px;
+      display: block
+    }
+
+    .drop h4 {
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--navy)
+    }
+
+    .fileRow {
+      margin-left: 80px;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      color: var(--ink)
+    }
+
+    input[type=file] {
+      font-size: 14px
+    }
+
+    .selected {
+      margin-top: 14px;
+      font-size: 13.5px;
+      color: var(--blue-dark);
+      font-weight: 700;
+      word-break: break-all;
+      min-height: 18px
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      margin-top: 28px;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      padding: 13px 26px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      line-height: 1
+    }
+
+    .btn-history {
+      background: #fff;
+      color: var(--blue-dark);
+      border: 1.5px solid var(--blue)
+    }
+
+    .btn-history:hover {
+      background: #f0f6fd
+    }
+
+    .btn-clear {
+      background: #e6ebf1;
+      color: #4b5a6b
+    }
+
+    .btn-clear:hover {
+      background: #dbe2ea
+    }
+
+    .btn-upload {
+      background: var(--blue);
+      color: #fff
+    }
+
+    .btn-upload:hover {
+      background: var(--blue-dark)
+    }
+
+    .btn-upload:disabled {
+      background: #b9b6e8;
+      color: #f2f1ff;
+      cursor: not-allowed
+    }
+
+    .status {
+      margin-top: 22px;
+      font-size: 14px;
+      display: none;
+      padding: 13px 16px;
+      border-radius: 10px;
+      line-height: 1.5
+    }
+
+    .status.show {
+      display: block
+    }
+
+    .status.working {
+      background: #eef6f9;
+      color: #274c66
+    }
+
+    .status.error {
+      background: #fdecec;
+      color: #8a1420
+    }
+
+    .status.ok {
+      background: #e8f5ec;
+      color: #1e6b3e
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #bcd0e6;
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      vertical-align: -2px;
+      margin-right: 8px
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .footer {
+      margin-top: 26px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12.5px
+    }
+  </style>
+</head>
+
+<body>
+  <header class="appbar">
+    <h1>Contract Reviewer</h1>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Upload Contract Document</h2>
+      <p class="lead">Please upload the contract for executive review. PDF and DOCX files are accepted.
+        The maximum permitted file size is <b>25 MB</b>.</p>
+
+      <div class="info">
+        <h3>Submission Requirements</h3>
+        <ul>
+          <li>Accepted formats: PDF, DOCX</li>
+          <li>Maximum file size: 25 MB</li>
+          <li>Only one document may be uploaded</li>
+          <li>Files exceeding 25 MB cannot be submitted</li>
+        </ul>
+      </div>
+
+      <form id="form">
+        <label class="drop" id="drop">
+          <svg class="doc-ico" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 2.5h7.5L19 8v12.5A1.5 1.5 0 0 1 17.5 22h-11A1.5 1.5 0 0 1 5 20.5v-16A1.5 1.5 0 0 1 6 2.5Z"
+              fill="#E6E3FA" stroke="#8B84D6" stroke-width="1.3" />
+            <path d="M13.5 2.5V8H19" stroke="#8B84D6" stroke-width="1.3" fill="none" />
+            <path d="M8 12h8M8 15h8M8 18h5" stroke="#8B84D6" stroke-width="1.3" stroke-linecap="round" />
+          </svg>
+          <h4>Select Contract File</h4>
+          <div class="fileRow">
+            <input type="file" id="file" name="contract" accept=".pdf,.docx" />
+          </div>
+          <div class="selected" id="selected"></div>
+        </label>
+
+        <div class="status" id="status"></div>
+
+        <div class="actions">
+          <a class="btn btn-history" href="analysis-history.html">View Analysis History</a>
+          <button type="button" class="btn btn-clear" id="clear">Clear</button>
+          <button type="submit" class="btn btn-upload" id="submit" disabled>Upload Contract</button>
+        </div>
+      </form>
+
+      <div class="footer">© 2026 CitiusTech • Contract Reviewer Portal</div>
+    </div>
+  </div>
+
+ <script>
+  const drop = document.getElementById('drop');
+  const fileInput = document.getElementById('file');
+  const selected = document.getElementById('selected');
+  const submit = document.getElementById('submit');
+  const clearBtn = document.getElementById('clear');
+  const form = document.getElementById('form');
+  const status = document.getElementById('status');
+
+  function setStatus(cls, html) { status.className = 'status show ' + cls; status.innerHTML = html; }
+  function clearStatus() { status.className = 'status'; status.innerHTML = ''; }
+
+  function showFile() {
+    const f = fileInput.files[0];
+    if (f) { selected.textContent = 'Selected: ' + f.name; submit.disabled = false; }
+    else { selected.textContent = ''; submit.disabled = true; }
+  }
+  fileInput.addEventListener('change', showFile);
+
+  // Clear button — remove the attached file and reset the form state.
+  clearBtn.addEventListener('click', () => {
+    fileInput.value = '';
+    selected.textContent = '';
+    submit.disabled = true;
+    clearStatus();
+  });
+
+  // Drag & drop support on the dashed area — single file only.
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('drag'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('drag'); }));
+  drop.addEventListener('drop', e => {
+    const files = e.dataTransfer.files;
+    if (!files || !files.length) return;
+    if (files.length > 1) alert('Only one file can be uploaded. The first file will be used.');
+
+    const f = files[0];
+    if (!/\.(pdf|docx)$/i.test(f.name)) {
+      alert('Unsupported file type. Please drop a PDF or DOCX file.');
+      return;
+    }
+
+    // Put ONLY the first file into the input.
+    const dt = new DataTransfer();
+    dt.items.add(f);
+    fileInput.files = dt.files;
+    showFile();
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!fileInput.files[0]) return;
+    submit.disabled = true;
+    setStatus('working', '<span class="spinner"></span>Extracting text and analyzing the contract… this can take few minutes.');
+
+    try {
+      const body = new FormData();
+      body.append('contract', fileInput.files[0]);
+      const resp = await fetch('/analyze', { method: 'POST', body });
+
+      // Duplicate file name -> popup alert, nothing generated.
+      if (resp.status === 409) {
+        let msg = 'Analysis report already exists for this file.';
+        try { const j = await resp.json(); msg = j.error || msg; } catch (_) { }
+        alert(msg);
+        setStatus('error', '⚠️ ' + msg);
+        return;
+      }
+
+      if (!resp.ok) {
+        let msg = 'Analysis failed.';
+        try { const j = await resp.json(); msg = j.error || msg; } catch (_) { }
+        throw new Error(msg);
+      }
+
+      const result = await resp.json();
+      const fileUrl = '/' + result.outputFile;           // e.g. /output/xxx.html
+      const downloadName = result.downloadName || 'contract-analyzer-dashboard.html';
+
+      // Download the saved file (no new tab).
+      const a = document.createElement('a');
+      a.href = fileUrl; a.download = downloadName; document.body.appendChild(a); a.click();
+      a.remove();
+
+      setStatus('ok', '✅ Dashboard generated for <b>' + (result.clientName || result.fileName) +
+        '</b> — downloaded and saved to your history. Open it from View Analysis History anytime.');
+    } catch (err) {
+      setStatus('error', '⚠️ ' + err.message);
+    } finally {
+      submit.disabled = false;
+    }
+  });
+</script>
+</body>
+
+</html>

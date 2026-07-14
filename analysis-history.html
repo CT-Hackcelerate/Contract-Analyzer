@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contract Analyzer — Analysis History</title>
+<style>
+  :root{--primary:#211CE8;--ink:#0F172A;--muted:#5C6B83;--line:#DDE5F2;--bg:#F7F9FE;--panel:#fff}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);padding:28px}
+  .wrap{max-width:960px;margin:0 auto}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:44px;height:44px;border-radius:14px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:16px;font-weight:900}
+  h1{font-size:22px;font-weight:900;margin:0}
+  .sub{color:var(--muted);font-size:13.5px;margin:2px 0 22px}
+  .btn-primary{border:0;border-radius:12px;background:var(--primary);color:#fff;font-size:14.5px;font-weight:800;padding:11px 18px;cursor:pointer;text-decoration:none;display:inline-block}
+  .btn-primary:hover{opacity:.92}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 30px rgba(13,7,51,.08);padding:8px;overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{padding:12px 14px;border-bottom:1px solid #EDF2F7;text-align:left;vertical-align:middle}
+  th{background:#F8FAFC;color:#475569;text-transform:uppercase;font-size:11.5px;letter-spacing:.04em}
+  tr:last-child td{border-bottom:0}
+  td.file{color:var(--muted);word-break:break-all}
+  .link{display:inline-block;border-radius:9px;padding:7px 14px;font-weight:800;font-size:12.5px;text-decoration:none}
+  .link.view{background:#ECEBFF;color:var(--primary)}
+  .link.view:hover{background:#dcd9ff}
+  .link.dl{background:#E6F4EA;color:#006A4E}
+  .link.dl:hover{background:#d4ecdb}
+  .when{color:var(--muted);font-size:11.5px;margin-top:3px}
+  .empty{padding:40px;text-align:center;color:var(--muted);font-size:14px}
+  .count{color:var(--muted);font-size:12.5px;margin:0 0 10px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <div class="brand"><div class="logo">AI</div><div><h1>Analysis History</h1></div></div>
+      <a class="btn-primary" href="index.html">＋ New Contract</a>
+    </div>
+    <p class="sub">Previously analyzed contracts. Open or download any generated dashboard.</p>
+
+    <p class="count" id="count"></p>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>Client Name</th><th>File Name</th><th>View</th><th>Download</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none">No analyses yet. Click <b>New Contract</b> to analyze your first contract.</div>
+    </div>
+  </div>
+
+<script>
+  const rowsEl = document.getElementById('rows');
+  const emptyEl = document.getElementById('empty');
+  const countEl = document.getElementById('count');
+
+  function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function fileHref(rec){ const p = String(rec.outputFile || ''); return '/' + p.replace(/^\/+/, ''); }
+  function downloadName(rec){
+    const base = String(rec.fileName || 'contract').replace(/\.[^.]+$/, '').replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'').toLowerCase() || 'contract';
+    return 'contract-analyzer-' + base + '.html';
+  }
+
+  async function load(){
+    let history = [];
+    try {
+      const resp = await fetch('/api/history', { cache: 'no-store' });
+      if (resp.ok) history = await resp.json();
+    } catch (_) { history = []; }
+
+    if (!Array.isArray(history)) history = [];
+
+    if (history.length === 0){
+      emptyEl.style.display = 'block';
+      countEl.textContent = '';
+      return;
+    }
+
+    // Show newest first.
+    history = history.slice().reverse();
+    countEl.textContent = history.length + (history.length === 1 ? ' record' : ' records');
+
+    rowsEl.innerHTML = history.map(rec => {
+      const href = fileHref(rec);
+      return '<tr>' +
+        '<td>' + esc(rec.clientName || 'Not stated') + (rec.createdAt ? '<div class="when">' + esc(rec.createdAt) + '</div>' : '') + '</td>' +
+        '<td class="file">' + esc(rec.fileName || '') + '</td>' +
+        '<td><a class="link view" href="' + esc(href) + '" target="_blank" rel="noopener">View</a></td>' +
+        '<td><a class="link dl" href="' + esc(href) + '" download="' + esc(downloadName(rec)) + '">Download</a></td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  load();
+</script>
+</body>
+</html>

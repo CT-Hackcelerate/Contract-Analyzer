@@ -1,0 +1,27 @@
+# ---- Secrets: NEVER commit these ----
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# ---- Node ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json.bak
+
+# ---- Generated analysis output (user data, not source) ----
+# The server recreates this folder automatically on startup.
+output/
+
+# ---- Deterministic analysis cache (recreated automatically) ----
+cache/
+
+# ---- OS / editor cruft ----
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
