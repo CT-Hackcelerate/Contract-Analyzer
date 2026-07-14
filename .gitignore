@@ -14,10 +14,10 @@ package-lock.json.bak
 
 # ---- Generated analysis output (user data, not source) ----
 # The server recreates this folder automatically on startup.
-output/
+#output/
 
 # ---- Deterministic analysis cache (recreated automatically) ----
-cache/
+#cache/
 
 # ---- OS / editor cruft ----
 .DS_Store
