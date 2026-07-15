@@ -8,7 +8,6 @@ Upload a contract (**PDF** or **DOCX**), and the app extracts the text, runs it 
 >
 > **Built with Claude Code.** The agent design, the analysis prompt, and the entire Node.js codebase were developed using **Claude Code**. At runtime the app calls the **Claude API** to analyze each uploaded contract.
 
-
 ---
 
 ## Contents
@@ -54,6 +53,7 @@ Upload a contract (**PDF** or **DOCX**), and the app extracts the text, runs it 
 - A **self-contained HTML dashboard** (seven sections) that opens in any browser offline — downloaded automatically and saved under `output/`.
 - A **history record** in `output/history.json`, re-openable/downloadable from the History page.
 - A **PII-masked audit line** in `output/audit.log` (event, tokens, cost estimate, warnings).
+- A **per-run log file** in `output/logs/` — one `run-<stamp>-<file>.log` is written on **every analyze click** (success, duplicate, or error) with the run's status, model, tokens, cost, page counts, injection/PHI flags, and warnings (PII-masked).
 - A **deterministic cache** entry in `cache/` so re-runs of the same contract are identical.
 
 ---
@@ -121,8 +121,10 @@ contract-analyzer/
 ├── README.md
 │
 ├── output/                  # Created automatically at runtime
-│   ├── history.json         # Analysis history records (incl. contentHash)
+│   ├── history.json         # Analysis history records (incl. contentHash, logFile)
 │   ├── audit.log            # PII-masked audit trail (events, tokens, cost, warnings)
+│   ├── logs/                # One PII-masked log file per analyze click
+│   │   └── run-<stamp>-<file>.log   # Per-run log (status, tokens, cost, flags, warnings)
 │   └── <generated>.html     # Saved dashboards
 └── cache/                   # Deterministic analysis cache (recreated automatically)
     └── <hash>.json          # Cached AI result per unique contract+prompt
@@ -188,7 +190,7 @@ There is no build/compile step — the app runs directly on Node. After editing 
 4. **Content dedup** — the server fingerprints the extracted text (SHA-256). If that content is already in `/output/history.json` (any file name), it returns the existing report and stops — no re-analysis. A different document reusing an existing name returns HTTP 409.
 5. **Analyze** — `analyze.js` first checks the **deterministic cache** (keyed by contract text + prompt in the `cache/` folder; an inconsistent cached result is discarded). On a miss it sends the hardened prompt + contract text (wrapped as untrusted data) to Claude at `temperature 0`, then caches the result. Long responses auto-continue; transient errors retry; the JSON is **schema-validated and EM↔pricing-consistency-checked with one corrective retry**; **page numbers are then re-derived deterministically** from the evidence quotes; grounding checks flag possible hallucinations.
 6. **Build** — `buildHtml.js` recomputes risk counts from the rows, allocates directional value-at-risk (only when a numeric contract value exists), adds the fixed legends, and injects the JSON into `dashboard-template.html`.
-7. **Save & record** — the HTML is written to `/output` with a unique name; a record `{clientName, fileName, outputFile, createdAt, contentHash}` is appended to `/output/history.json`; and a PII-masked line (tokens, cost estimate, warnings) is appended to `/output/audit.log`.
+7. **Save & record** — the HTML is written to `/output` with a unique name; a record `{clientName, fileName, outputFile, logFile, createdAt, contentHash}` is appended to `/output/history.json`; a PII-masked line (tokens, cost estimate, warnings) is appended to `/output/audit.log`; and a per-run log file is written to `/output/logs/` for that click.
 8. **Return** — the saved file path is sent back so the browser downloads it.
 
 ---
@@ -274,7 +276,7 @@ Set these in `.env` (or as host environment variables when deploying):
 
 All guardrail logic lives in `guardrails.js` and is applied by `server.js` and `analyze.js`:
 
-- **Access control (server)** — the server does **not** serve the whole folder. Only `index.html`, `analysis-history.html`, and generated dashboards at `/output/<name>.html` are reachable over HTTP. The prompt, source files, `cache/`, `output/audit.log`, and `output/history.json` are **not** served (history is exposed only via the read-only `/api/history`); `x-powered-by` is disabled; the `/output` route validates the file name and blocks path traversal and non-HTML files.
+- **Access control (server)** — the server does **not** serve the whole folder. Only `index.html`, `analysis-history.html`, and generated dashboards at `/output/<name>.html` are reachable over HTTP. The prompt, source files, `cache/`, `output/audit.log`, `output/logs/`, and `output/history.json` are **not** served (history is exposed only via the read-only `/api/history`); `x-powered-by` is disabled; the `/output` route validates the file name and blocks path traversal and non-HTML files.
 - **Input validation** — allowed file types, 25 MB size cap, safe file names (blocks path-traversal / control characters), and empty/scanned-document detection. The uploaded file name is also sanitized before being placed in the prompt.
 - **Output value validation** — beyond schema, `overall` must be High/Medium/Low, `boardDecision` must be one of the four allowed values, dates are sanity-checked (end not before start; status left "not determinable" if reversed), and negative contract values are flagged.
 - **Prompt-injection & jailbreak screening** — the extracted text is scanned for override attempts ("ignore previous instructions", "system prompt", "act as", "developer mode", jailbreak/DAN, fake role tags) and flagged in the audit log.
@@ -286,7 +288,7 @@ All guardrail logic lives in `guardrails.js` and is applied by `server.js` and `
 - **Deterministic page numbers** — each row's page is re-derived **in code** by locating its verbatim evidence quote within the page-marked source text, so page references can't be misreported by the model. A clause whose evidence can't be located shows **"Not available"** rather than a wrong page. Location never appears inside clause/evidence text — only in the Section and Page columns.
 - **Rate limiting** — per-IP sliding window on `/analyze` (returns HTTP 429 when exceeded).
 - **Determinism** — `temperature 0` plus content-based dedup means identical content always yields the identical stored report.
-- **Audit trail** — `/output/audit.log` records each event (analysis, reuse, name conflict, rate-limit, injection flag, errors) with tokens, cost estimate and warnings — all PII-masked.
+- **Audit trail** — `/output/audit.log` records each event (analysis, reuse, name conflict, rate-limit, injection flag, errors) with tokens, cost estimate and warnings — all PII-masked. In addition, a **per-run log file** is written to `/output/logs/` on every analyze click (also PII-masked).
 
 ---
 

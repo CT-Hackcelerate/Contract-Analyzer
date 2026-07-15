@@ -1,9 +1,10 @@
 [
   {
-    "clientName": "North America Inc, United States",
-    "fileName": "North America Inc.pdf.pdf",
-    "outputFile": "output/north-america-inc-united-states-north-america-inc-pdf-analysis-20260714-210324.html",
-    "createdAt": "2026-07-14 21:03:24",
-    "contentHash": "4643c4d8bce6d631ba0fe6590dbcffb4ae89d326bfdef4c2d22b0982823ae23e"
+    "clientName": "ClientDBA",
+    "fileName": "CTIND_ClientDBA_Physician_Diagnostic_AI_Rules_Engine.pdf",
+    "outputFile": "output/clientdba-ctind-clientdba-physician-diagnostic-ai-rules-engine-analysis-20260715-132044.html",
+    "logFile": "output/logs/run-20260715-131435-ctind-clientdba-physician-diagnostic-ai-rules-engine.log",
+    "createdAt": "2026-07-15 13:20:44",
+    "contentHash": "4a87fc2eeb4a6154e4c2ca36b521195bd75915b86c5a6e83a4791fbb0f8b916b"
   }
 ]

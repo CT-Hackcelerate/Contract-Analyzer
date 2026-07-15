@@ -1,0 +1,25 @@
+{
+  "runId": "20260715-091402",
+  "ts": "2026-07-15T09:14:02.118Z",
+  "status": "ok",
+  "fileName": "Northstar-Health-Plans-SOW-1.pdf",
+  "durationMs": 94812,
+  "clientName": "Northstar Health Plans Inc.",
+  "outputFile": "output/northstar-health-plans-inc-northstar-health-plans-sow-1-analysis-20260715-091402.html",
+  "model": "claude-sonnet-4-5-20250929",
+  "fromCache": false,
+  "inputTokens": 8214,
+  "outputTokens": 4102,
+  "costEstimateUSD": 0.0862,
+  "truncated": false,
+  "totalPagesUploaded": "12",
+  "pagesScannedByAI": "12",
+  "injectionDetected": false,
+  "injectionHits": [],
+  "phiDetected": [],
+  "warnings": [
+    "counts.High (3) != actual rows (2); recomputed.",
+    "2 SLA row(s) have no numeric target; the benchmark cannot score them (verify manually)."
+  ],
+  "contentHash": "b31c9f2a7d0e4c8f1a6b5d3e9c7f2a1b8d4e6c0f9a2b7d5e3c1f8a6b4d2e0c9f"
+}

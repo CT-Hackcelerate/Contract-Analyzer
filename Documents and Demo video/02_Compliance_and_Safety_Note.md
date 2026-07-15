@@ -6,7 +6,7 @@ This note states how the Contract Analyzer handles data safety, responsible-AI s
 
 - The submission uses **synthetic / sample contracts only** (see `Submission/sample-data/`). No real Protected Health Information or personal data is included.
 - Uploaded files are written to a **temporary folder and deleted immediately after processing**; only the generated dashboard is retained (in `output/`).
-- **Logs and the audit trail are PII-masked** — emails, phone numbers, PAN, Aadhaar, **US SSN**, **medical record numbers (MRN)**, API keys, cloud keys and passwords are redacted before anything is written (`guardrails.js` → `maskPII` / `forLog`, used by `server.js`).
+- **Logs and the audit trail are PII-masked** — emails, phone numbers, PAN, Aadhaar, **US SSN**, **medical record numbers (MRN)**, API keys, cloud keys and passwords are redacted before anything is written (`guardrails.js` → `maskPII` / `forLog`, used by `server.js`). This applies to the rolling `output/audit.log` **and** the per-run log files written to `output/logs/` on every analyze click.
 - **PHI screening (above and beyond).** The tool analyzes contracts, not patient records. Every uploaded document is screened for patient identifiers — MRN, date of birth, SSN, ICD diagnosis codes, health-insurance claim/beneficiary IDs, and NPI (`guardrails.js` → `detectPHI`). Any hit is flagged in the audit log (`phi_flagged`), surfaced as a run warning, and called out in the dashboard's Limitations legend — so no real PHI can slip in unnoticed.
 - The **API key** lives only in a local `.env` file, which is git-ignored and excluded from the ZIP; a placeholder `.env.example` is shipped instead.
 

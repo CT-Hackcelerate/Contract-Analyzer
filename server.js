@@ -34,7 +34,9 @@ const PORT = process.env.PORT || 3000;
 const OUTPUT_DIR = path.join(__dirname, 'output');
 const HISTORY_PATH = path.join(OUTPUT_DIR, 'history.json');
 const AUDIT_PATH = path.join(OUTPUT_DIR, 'audit.log');
+const LOGS_DIR = path.join(OUTPUT_DIR, 'logs');   // one log file per analyze request
 fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+fs.mkdirSync(LOGS_DIR, { recursive: true });
 
 function readHistory() {
   try {
@@ -71,6 +73,22 @@ function audit(event) {
     const line = JSON.stringify({ ts: new Date().toISOString(), ...event });
     fs.appendFile(AUDIT_PATH, G.maskPII(line) + '\n', () => {});
   } catch (_) { /* logging must never break the request */ }
+}
+
+/**
+ * Write a dedicated, PII-masked log file for a single analyze request into
+ * output/logs/. Runs on every click (success, duplicate, or error). Returns the
+ * relative log path, or null on failure. Never throws.
+ */
+function writeRunLog(record) {
+  try {
+    const safe = safeSlug(record.fileName || 'contract');
+    const name = `run-${record.runId || nowStamp().file}-${safe}.log`;
+    fs.writeFileSync(path.join(LOGS_DIR, name), G.maskPII(JSON.stringify(record, null, 2)), 'utf8');
+    return `output/logs/${name}`;
+  } catch (_) {
+    return null;
+  }
 }
 
 function two(n) { return String(n).padStart(2, '0'); }
@@ -163,6 +181,19 @@ app.post('/analyze', rateLimit, upload.single('contract'), async (req, res) => {
   const originalName = req.file && req.file.originalname;
   const cleanup = () => { if (filePath) fs.promises.unlink(filePath).catch(() => {}); };
 
+  // Per-request output log (written once, on whatever exit the request takes).
+  const runId = nowStamp().file;
+  const runStart = Date.now();
+  let logWritten = false;
+  const flushLog = (status, extra) => {
+    if (logWritten) return null;
+    logWritten = true;
+    return writeRunLog(Object.assign(
+      { runId, ts: new Date().toISOString(), status, fileName: originalName, durationMs: Date.now() - runStart },
+      extra || {}
+    ));
+  };
+
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded.' });
 
@@ -179,6 +210,7 @@ app.post('/analyze', rateLimit, upload.single('contract'), async (req, res) => {
     if (priorByContent) {
       cleanup();
       audit({ event: 'content_duplicate', fileName: originalName, matched: priorByContent.fileName });
+      flushLog('duplicate_content', { matched: priorByContent.fileName, contentHash });
       return res.status(409).json({
         duplicate: true,
         reason: 'content',
@@ -191,6 +223,7 @@ app.post('/analyze', rateLimit, upload.single('contract'), async (req, res) => {
     if (fileNameExists(readHistory(), originalName)) {
       cleanup();
       audit({ event: 'name_conflict', fileName: originalName });
+      flushLog('duplicate_name', {});
       return res.status(409).json({
         duplicate: true,
         reason: 'name',
@@ -232,6 +265,7 @@ app.post('/analyze', rateLimit, upload.single('contract'), async (req, res) => {
     const history = readHistory();
     const raceByContent = findByContentHash(history, contentHash);
     if (raceByContent) {
+      flushLog('duplicate_content', { matched: raceByContent.fileName, contentHash });
       return res.status(409).json({
         duplicate: true,
         reason: 'content',
@@ -240,6 +274,7 @@ app.post('/analyze', rateLimit, upload.single('contract'), async (req, res) => {
       });
     }
     if (fileNameExists(history, originalName)) {
+      flushLog('duplicate_name', {});
       return res.status(409).json({
         duplicate: true,
         reason: 'name',
@@ -254,13 +289,33 @@ app.post('/analyze', rateLimit, upload.single('contract'), async (req, res) => {
     fs.writeFileSync(path.join(OUTPUT_DIR, outFileName), html, 'utf8');
     const outputFile = `output/${outFileName}`;
 
-    history.push({ clientName, fileName: originalName, outputFile, createdAt: stamp.pretty, contentHash });
+    // Per-run output log (created on every successful analyze click).
+    const logFile = flushLog('ok', {
+      clientName,
+      outputFile,
+      model: meta.model,
+      fromCache: meta.fromCache,
+      inputTokens: meta.inputTokens,
+      outputTokens: meta.outputTokens,
+      costEstimateUSD: meta.costEstimate,
+      truncated: meta.truncated,
+      totalPagesUploaded: data.metadata.totalPagesUploaded,
+      pagesScannedByAI: data.metadata.pagesScannedByAI,
+      injectionDetected: meta.injectionDetected,
+      injectionHits: meta.injectionHits,
+      phiDetected: meta.phiDetected,
+      warnings: meta.warnings,
+      contentHash
+    });
+
+    history.push({ clientName, fileName: originalName, outputFile, logFile, createdAt: stamp.pretty, contentHash });
     writeHistory(history);
 
     audit({
       event: 'analysis_ok',
       fileName: originalName,
       outputFile,
+      logFile,
       model: meta.model,
       fromCache: meta.fromCache,
       inputTokens: meta.inputTokens,
@@ -281,12 +336,14 @@ app.post('/analyze', rateLimit, upload.single('contract'), async (req, res) => {
       clientName,
       fileName: originalName,
       outputFile,
+      logFile,
       downloadName: `contract-analyzer-${safeSlug(originalName)}.html`
     });
   } catch (err) {
     cleanup();
     const message = (err && err.message) ? err.message : 'Unexpected error.';
     audit({ event: 'analysis_error', fileName: originalName, error: message });
+    flushLog('error', { error: message });
     console.error('Analysis failed:', G.forLog(message));
     return res.status(500).json({ error: message });
   }

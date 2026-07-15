@@ -1,73 +1,1347 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Contract Analyzer Dashboard</title><style>
-:root{--primary:#211CE8;--cyan:#73E3EA;--bg:#F7F9FE;--panel:#fff;--ink:#0F172A;--muted:#5C6B83;--line:#DDE5F2;--red:#D00000;--redBg:#FFE7E7;--orange:#F59E0B;--orangeBg:#FFF3D9;--shadow:0 10px 24px rgba(13,7,51,.08);--r:16px}*{box-sizing:border-box}html,body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow-x:auto}#scaleShell{overflow:visible;position:relative}.app{display:grid;grid-template-columns:260px 980px;width:1240px;min-width:1240px;min-height:100vh;transform-origin:top left}.side{background:#fff;border-right:1px solid var(--line);padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;gap:12px;align-items:center;margin-bottom:18px}.logo{width:46px;height:46px;border-radius:15px;background:#211CE8;color:#fff;display:grid;place-items:center;font-size:17px;font-weight:900}.brand h1{font-size:20px;font-weight:900;line-height:1.12;color:#0F172A;margin:0;white-space:nowrap}.brand p{font-size:12.5px;color:var(--muted);margin:4px 0 0}.nav button{width:100%;text-align:left;border:0;background:transparent;padding:11px;border-radius:13px;cursor:pointer;margin:3px 0;font-weight:700;color:#23324A}.nav button.active,.nav button:hover{background:#ECEBFF;color:var(--primary)}.note{font-size:12px;color:var(--muted);line-height:1.45;background:#F8FAFC;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:16px}.main{width:980px;padding:18px 18px 28px;overflow:hidden}.title h2{margin:0;font-size:24px}.title p{margin:5px 0 0;color:var(--muted);font-size:14px}.filters{display:none;gap:10px;flex-wrap:wrap;margin:14px 0}.filters input,.filters select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 11px;min-width:145px;max-width:240px}.page{display:none}.page.active{display:block}.grid{display:grid;gap:14px}.kpis{grid-template-columns:repeat(5,1fr);margin-top:14px}.one{grid-template-columns:1fr}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px;overflow:hidden}.card h3{margin:0 0 9px;font-size:15px}.kpi{height:88px;position:relative}.kpi:before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px}.kpi.high{background:linear-gradient(90deg,#FFE7E7,#fff)}.kpi.high:before{background:var(--red)}.kpi.decision{background:linear-gradient(90deg,#FFF3D9,#fff)}.kpi.decision:before{background:var(--orange)}.kpi.money{background:linear-gradient(90deg,#FFF1F2,#fff)}.kpi.money:before{background:#9F1239}.kpi.blue{background:linear-gradient(90deg,#ECEBFF,#fff)}.kpi.blue:before{background:var(--primary)}.kpi.positive{background:linear-gradient(90deg,#DDFBFD,#fff)}.kpi.positive:before{background:var(--cyan)}.label{font-size:10.5px;text-transform:uppercase;color:var(--muted);font-weight:900;letter-spacing:.04em}.value{font-size:18px;font-weight:900;line-height:1.28;white-space:normal;overflow:visible;text-overflow:clip;margin:6px 0 5px}.sub,.small{font-size:13px;color:var(--muted);line-height:1.5}.contextStrip{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:0!important;white-space:nowrap!important;overflow:hidden!important;transform:none!important;animation:none!important;min-height:46px!important;padding:9px 12px!important;background:linear-gradient(90deg,#F0F4FF,#fff);border:1px solid var(--line);border-left:5px solid var(--primary);border-radius:14px;box-shadow:var(--shadow);font-size:11.7px;margin-top:10px}.contextStrip>span{display:inline-flex!important;align-items:center!important;gap:4px!important;flex:0 0 auto!important;transform:none!important;rotate:0deg!important;white-space:nowrap!important;overflow:visible!important;padding:0 14px!important;margin:0!important;border-right:1px solid var(--line)!important}.contextStrip>span:first-child{padding-left:0!important}.contextStrip>span:last-child{border-right:0!important;padding-right:0!important}.contextStrip b{color:var(--primary)}.statusPill{display:inline-flex;align-items:center;justify-content:center;width:auto;white-space:nowrap;text-align:center;border-radius:999px;padding:5px 10px;font-weight:900;font-size:11px;background:#E6F4EA;color:#006A4E;border:1px solid #99D6B8}.execGrid{display:grid;grid-template-columns:1fr 300px;grid-template-rows:auto auto;gap:14px;margin-top:14px}.board{border-left:6px solid var(--orange);background:linear-gradient(90deg,#FFF8EA,#fff)}.summaryCard{border-left:6px solid var(--primary);background:linear-gradient(90deg,#F0F4FF,#fff)}.decisionList{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.decisionItem{border:1px solid var(--line);border-radius:14px;padding:11px 12px;background:#fff;font-size:13px;line-height:1.45}.decisionItem h4{margin:0 0 7px;font-size:13.5px;color:var(--primary);font-weight:900}.decisionItem ul{margin:0;padding-left:16px}.decisionItem li{margin:5px 0}.summary{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px;line-height:1.35;font-size:11.9px}.chart{height:285px;display:flex;align-items:end;gap:16px;padding:22px 18px 10px;border:1px solid var(--line);border-radius:14px;background:#FBFDFF;overflow:hidden}.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px}.colbar{width:54px;border-radius:9px 9px 4px 4px;color:white;display:grid;place-items:center;font-weight:900;font-size:15px}.riskBadge{display:inline-flex;gap:6px;align-items:center;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:900;white-space:nowrap;line-height:1}.High{background:var(--redBg);color:var(--red)}.Medium{background:var(--orangeBg);color:#9A5800}.Low{background:#ECEBFF;color:var(--primary)}.pill{border-radius:999px;padding:4px 7px;font-weight:800;font-size:11px;display:inline-block}.pill.blue{background:#ECEBFF;color:var(--primary)}.pill.purple{background:#F1EDFF;color:#5B21B6}.tableWrap{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;background:white;font-size:12px}#clausesTable{min-width:3300px}#clausesTable th,#clausesTable td{font-size:11px;line-height:1.3}th,td{padding:9px 10px;border-bottom:1px solid #EDF2F7;vertical-align:top}th{position:sticky;top:0;background:#F8FAFC;color:#475569;text-align:left;text-transform:uppercase;font-size:11px;letter-spacing:.035em;cursor:pointer;z-index:1}.insight{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:14px;background:#FBFDFF;margin:8px 0}.icon{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-weight:900;flex:0 0 auto}.iRed{background:var(--redBg);color:var(--red)}.rewrite{display:grid;grid-template-columns:1fr 1fr;gap:12px}.box{border:1px solid var(--line);border-radius:14px;padding:12px;background:#FBFDFF;line-height:1.4}.bad{border-left:5px solid var(--red)}.good{border-left:5px solid var(--primary)}.metadataGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.metadataGrid .wide{grid-column:1 / -1}.metaCard{padding:0}.metaHead{padding:12px 14px;color:#fff;font-weight:900;border-radius:16px 16px 0 0}.metaBody{padding:14px}.metaBlue .metaHead{background:linear-gradient(135deg,var(--primary),#665CFF)}.metaCyan .metaHead{background:linear-gradient(135deg,#087A83,var(--cyan));color:#fff}.metaOrange .metaHead{background:linear-gradient(135deg,#B45309,var(--orange))}.legendStack{display:grid;gap:14px;margin-top:14px}.footer{margin-top:16px;color:var(--muted);font-size:11px}
-.blist{margin:4px 0 0;padding-left:18px;font-size:13px;line-height:1.55;color:var(--ink)}.blist li{margin:6px 0}.blist li b{color:var(--ink)}.card p{font-size:13px;line-height:1.55;color:var(--ink);margin:6px 0}.summary .blist{font-size:13px}.evi{color:#087A83;font-weight:900}.rec{color:#5B21B6;font-weight:900}
-.prio{display:inline-block;border-radius:999px;padding:4px 9px;font-weight:900;font-size:11px;line-height:1;border:1px solid transparent;white-space:nowrap}.prio.P1{background:#FFE3E3;color:#B00020;border-color:#F2ABAB}.prio.P2{background:#FFEAD1;color:#B45309;border-color:#F0C489}.prio.P3{background:#FEF3C7;color:#8A6D00;border-color:#E7D07A}.prio.P4{background:#E6F4EA;color:#0E7A3B;border-color:#A6D7B7}
-.icon.P1{background:#FFE3E3;color:#B00020}.icon.P2{background:#FFEAD1;color:#B45309}.icon.P3{background:#FEF3C7;color:#8A6D00}.icon.P4{background:#E6F4EA;color:#0E7A3B}
-.statusPill.st-active{background:#E6F4EA;color:#006A4E;border-color:#99D6B8}.statusPill.st-upcoming{background:#E7EEFF;color:#1D4ED8;border-color:#B9CCF7}.statusPill.st-hold{background:#FFF3D9;color:#9A5800;border-color:#F0C489}.statusPill.st-expired{background:#FFE3E3;color:#B00020;border-color:#F2ABAB}.statusPill.st-unknown{background:#EEF1F5;color:#5C6B83;border-color:#D3DAE6}
-.pen{display:inline-block;border-radius:999px;padding:3px 9px;font-weight:900;font-size:10.5px;line-height:1;border:1px solid transparent;white-space:nowrap}.pen.pen-yes{background:#FFE3E3;color:#B00020;border-color:#F2ABAB}.pen.pen-none{background:#E6F4EA;color:#0E7A3B;border-color:#A6D7B7}.pen.pen-unk{background:#EEF1F5;color:#5C6B83;border-color:#D3DAE6}
-#slaCommitTable td,#slaCommitTable th{font-size:12px}#slaCommitTable .small{font-size:11px}.fin-big{font-size:42px;font-weight:900;color:#9F1239;line-height:1.05;margin:2px 0 12px;letter-spacing:.5px}.fin-big.na{font-size:22px}.bench{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;white-space:nowrap}.bMeet{background:#dcfce7;color:#047857}.bBelow{background:#fee2e2;color:#b91c1c}.bNa{background:#f1f5f9;color:#64748b}.benchNote{margin:0 0 8px}.benchBad{color:#b91c1c;font-weight:700}.benchOk{color:#047857;font-weight:700}.benchRefBar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 10px}#benchRefSearch{flex:1;min-width:220px;max-width:460px;padding:7px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px}.benchRefBtn{padding:6px 10px;border:1px solid #cbd5e1;background:#fff;border-radius:8px;font-size:12px;cursor:pointer;color:#334155}.benchRefBtn:hover{background:#eef2ff}.benchSec{margin:0 0 6px}.benchSecHead{cursor:pointer;user-select:none;margin:14px 0 6px;color:var(--primary)}.benchSecHead:hover{text-decoration:underline}.benchToggle{display:inline-block;width:14px;font-weight:800}.benchCount{color:#94a3b8;font-weight:400;font-size:12px}.benchSec.collapsed .benchSecBody{display:none}.benchNoHit{color:#94a3b8;font-size:13px;padding:6px 0}
-.piechart{min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;padding:16px 12px;border:1px solid var(--line);border-radius:14px;background:#FBFDFF;overflow:hidden}.pieWrap{position:relative;width:180px;height:180px;flex:0 0 auto}.pieCenter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}.pieCenter .t{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}.pieCenter .n{font-size:26px;font-weight:900;color:var(--ink);line-height:1}.pieLegend{width:100%;display:flex;flex-direction:column;gap:10px}.pieleg{display:flex;align-items:flex-start;gap:8px;font-size:12.5px}.pieleg .sw{width:13px;height:13px;border-radius:4px;flex:0 0 auto;margin-top:3px}.pieleg .pietext{display:flex;flex-direction:column;line-height:1.4}.pieleg .piecount{color:var(--ink)}.pieleg .pieval{color:var(--muted);font-size:12px}
-</style></head><body><div id="scaleShell"><div class="app" id="dashboardApp"><aside class="side"><div class="brand"><div class="logo">AI</div><div><h1>Contract Analyzer</h1><p id="brandSub">Contract Review</p></div></div><div class="nav" id="nav"></div><div class="note" id="sourceNote"></div></aside><main class="main"><div class="top"><div class="title"><h2 id="pageTitle">Executive Decision Brief</h2><p id="pageSub">Real contract risk, deal recommendation and board-ready summary.</p></div></div><div class="filters" id="filters"><input id="search" placeholder="Search clauses, risks, sections..." oninput="renderTables()"><select id="riskFilter" onchange="renderTables()"><option>All</option><option>High</option><option>Medium</option><option>Low</option></select><select id="priorityFilter" onchange="renderTables()"><option>All Priorities</option><option>P1</option><option>P2</option><option>P3</option><option>P4</option></select></div>
-<section class="page active" id="p0"><div class="grid kpis" id="kpis"></div><div class="contextStrip" id="contractSnapshot"></div><div class="execGrid"><div class="card board"><h3>Management-ready Decision</h3><div class="decisionList" id="decisionList"></div></div><div class="card" style="grid-column:2;grid-row:1 / span 2"><h3>Contract value at risk by bucket</h3><div class="piechart" id="penaltyChart"></div></div><div class="card summaryCard"><h3>Concise Management Summary</h3><div class="summary"><ul class="blist" id="boardSummary"></ul></div></div></div><div class="grid one" style="margin-top:14px"><div class="card"><h3>Key SLA Commitments</h3><div class="tableWrap"><table id="slaCommitTable"></table></div></div></div><div class="grid one" style="margin-top:14px"><div class="card"><h3>Top decision blockers</h3><div id="topBlockers"></div></div></div></section>
-<section class="page" id="pM"><div class="metadataGrid"><div class="card metaCard metaBlue"><div class="metaHead">Contract Identity</div><div class="metaBody"><div class="tableWrap"><table id="metadataIdentityTable"></table></div></div></div><div class="card metaCard metaCyan"><div class="metaHead">Contract Dates & Status</div><div class="metaBody"><div class="tableWrap"><table id="metadataDatesTable"></table></div></div></div><div class="card metaCard metaOrange wide"><div class="metaHead">Commercial, Category & Renewal Terms</div><div class="metaBody"><div class="tableWrap"><table id="metadataCommercialTable"></table></div></div></div></div></section>
-<section class="page" id="p3"><div class="grid one" style="margin-top:14px"><div class="card"><h3>High risks only</h3><div id="riskExplanations"></div></div></div></section><section class="page" id="p2"><div class="card" style="margin-top:14px"><h3>Extracted clause / risk ledger</h3><div class="tableWrap"><table id="clausesTable"></table></div></div></section><section class="page" id="p4"><div class="grid one" style="margin-top:14px"><div class="card"><h3>Financial interpretation</h3><div id="financialNotes"></div></div><div class="card"><h3>Commercial baseline summary</h3><div class="tableWrap"><table id="commercialBaselineTable"></table></div></div><div class="card"><h3>Revenue protection controls</h3><div id="revenueControls"></div></div><div class="card"><h3>Commercial leakage scenarios</h3><div class="tableWrap"><table id="leakageScenariosTable"></table></div></div><div class="card"><h3>Commercial exposure model</h3><div class="tableWrap"><table id="penaltyTable"></table></div></div></div></section><section class="page" id="p5"><div class="card" style="margin-top:14px"><h3>Actionable recommendations & improved clause rewrites</h3><div id="rewrites"></div></div></section><section class="page" id="p8"><div class="legendStack"><div class="card"><h3>Management Decision Legend</h3><div class="tableWrap"><table id="boardDecisionLegendTable"></table></div></div><div class="card"><h3>How Management-ready Decision is derived</h3><div class="tableWrap"><table id="decisionMethodTable"></table></div></div><div class="card"><h3>How Concise Management Summary is generated</h3><div class="tableWrap"><table id="summaryMethodTable"></table></div></div><div class="card"><h3>Risk Legend</h3><div class="tableWrap"><table id="riskLegendTable"></table></div></div><div class="card"><h3>Incident Priority Definitions</h3><div class="tableWrap"><table id="priorityLegendTable"></table></div></div><div class="card"><h3>Type Legend</h3><div class="tableWrap"><table id="typeLegendTable"></table></div></div><div class="card"><h3>Status Legend</h3><div class="tableWrap"><table id="statusLegendTable"></table></div></div><div class="card"><h3>Pricing Legend</h3><div class="tableWrap"><table id="pricingLegendTable"></table></div></div><div class="card"><h3>EM Level Legend</h3><div class="tableWrap"><table id="emLegendTable"></table></div></div><div class="card"><h3>SLA / Clause Type Legend</h3><div class="tableWrap"><table id="slaLegendTable"></table></div></div><div class="card"><h3>Key SLA Commitments — Remedy / Penalty</h3><div class="tableWrap"><table id="slaRemedyLegendTable"></table></div></div><div class="card"><h3>Confidence Legend</h3><div class="tableWrap"><table id="confidenceLegendTable"></table></div></div><div class="card"><h3>Benchmark Verdict Legend (Benchmark vs Standard)</h3><div class="tableWrap"><table id="benchLegendTable"></table></div></div><div class="card"><h3>Assumptions</h3><div class="tableWrap"><table id="assumptionsTable"></table></div></div><div class="card"><h3>Limitations</h3><div class="tableWrap"><table id="limitationsTable"></table></div></div></div></section><section class="page" id="p9"><div class="card"><h3 style="margin:0 0 6px">How to use this page</h3><p class="small">Every service-level commitment we extract is scored <b>automatically, in code</b> — never by the AI — against a fixed benchmark playbook, so the verdict is deterministic and cannot be invented. Read it in three steps:</p><ol class="small" style="margin:6px 0 0 18px;padding:0 0 0 4px"><li><b>Scorecard</b> — how many SLAs meet the standard, fall below it, or carry an uncapped penalty.</li><li><b>This contract vs standard</b> — each SLA's extracted target beside the applicable standard and the verdict:<br><span class="bench bMeet">✓ Meets standard</span> the stated target meets or beats the benchmark (<b>pass</b>). &nbsp; <span class="bench bBelow">⚠ Below standard</span> the stated target is worse than the benchmark (<b>fail — negotiate</b>). &nbsp; <span class="bench bBelow">⚠ Uncapped penalty</span> a credit/penalty exists with no cap (<b>fail — negotiate</b>). &nbsp; <span class="bench bNa">No target stated</span> the SLA clause was found but no measurable value was given (<b>missing — verify manually</b>).</li><li><b>Reference standards</b> — the full playbook the verdicts are based on.</li></ol><p class="small" style="margin-top:8px;color:#334155"><b>What is and isn't auto-scored.</b> Only <b>numeric threshold</b> checks get a pass/fail verdict above (a percentage or time the tool can read and compare). Everything else in the Reference Standards below — <b>Presence</b> ("is this protection in the contract at all?"), <b>Quality</b>, <b>Consistency</b>, <b>Risk-flag</b> and <b>Evidence</b> checks, including the Supplier and AI/Token safeguards and the ARR/funding items — is shown as the house standard <b>for human review and is NOT auto-graded</b>. A blank or absence there does not mean the contract complies; a reviewer must confirm it. Source: internal SLA / SOW / Project-Risk playbook (A–W).</p></div><div class="grid kpis" id="benchScore"></div><div class="grid one"><div class="card"><h3 style="margin:0 0 8px">This contract vs standard</h3><div class="tableWrap"><table id="benchResultsTable"></table></div></div></div><div class="grid one"><div class="card"><h3 style="margin:0 0 8px">Reference standards (benchmark playbook)</h3><p class="small" style="margin:0 0 6px;color:#64748b">The full house playbook the verdicts point to. Numeric items are auto-scored above; presence, quality, consistency and risk-flag items are for human review.</p><div class="benchRefBar"><input id="benchRefSearch" type="text" placeholder="Search sections… (e.g. availability, security, ARR, tokens, defects)" oninput="filterBenchSec(this.value)"><button type="button" class="benchRefBtn" onclick="allBenchSec(false)">Expand all</button><button type="button" class="benchRefBtn" onclick="allBenchSec(true)">Collapse all</button></div><div id="benchReference"></div></div></div></section><div class="footer" id="footer"></div></main></div></div><script type="application/json" id="dashboardData">__DASHBOARD_DATA__</script><script>
-const pages=[["p0","Executive Decision Brief","Real contract risk, deal recommendation and management-ready summary."],["pM","Contract Overview","Extracted contract identity, dates, status, category, renewal and pricing details."],["p3","Top Risks","High-risk explanation only."],["p2","SLA Risk Assessment","Detailed extracted clause and risk table."],["p4","Commercial Impact","Financial interpretation followed by exposure model."],["p5","Recommendations & Rewrites","Negotiation actions and safer clauses."],["p8","Legends & Assumptions","Management decision, risk, priority, clause type, confidence and assumptions."],["p9","Benchmark vs Standard","How each SLA scores against the standard playbook, plus the standards themselves."]];
-const data=JSON.parse(document.getElementById('dashboardData').textContent); const metadata=data.metadata||{}; const rows=data.rows||[];
-function $(id){return document.getElementById(id)} function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))} function num(n){return (n===null||n===undefined||n===''||isNaN(Number(n)))?null:Number(n)} function moneyK(n){const v=num(n);return v===null?'Not stated':'USD '+(v/1000).toFixed(2)+'K'} function moneyFull(n){const v=num(n);return v===null?'Not stated':'USD '+v.toLocaleString('en-US')} function riskBadge(r){return `<span class="riskBadge ${esc(r)}">● ${esc(r)}</span>`} function statusClass(s){s=String(s||'').toLowerCase();if(s.indexOf('active')>=0)return 'st-active';if(s.indexOf('upcoming')>=0)return 'st-upcoming';if(s.indexOf('hold')>=0)return 'st-hold';if(s.indexOf('expired')>=0)return 'st-expired';return 'st-unknown'} function statusBadge(s){return `<span class="statusPill ${statusClass(s)}">${esc(s)}</span>`} function fallback(v,d){return (v===null||v===undefined||v==='')?d:v}
-function prioClass(p){p=String(p||'').toUpperCase();return ['P1','P2','P3','P4'].indexOf(p)>=0?p:''} function prioBadge(p){return `<span class="prio ${prioClass(p)}">${esc(p)}</span>`}
-function penaltyKind(remedy,cap){const s=(String(remedy||'')+' '+String(cap||'')).toLowerCase();if(/no penalt|no service credit|without penalt|\bnone\b|not applicable|\bn\/a\b/.test(s))return 'none';if(/credit|penalt|liquidated|damages|\bcap\b|forfeit|withhold|deduction/.test(s))return 'yes';return 'unk'}
-function penaltyBadge(remedy,cap){const k=penaltyKind(remedy,cap);const label=k==='yes'?'Penalty / Credit':k==='none'?'No penalty':'Not stated';const detail=fallback(remedy,fallback(cap,''));const showDetail=detail&&!/^not stated/i.test(String(detail));return `<span class="pen pen-${k}">${label}</span>`+(showDetail?`<div class="small" style="margin-top:3px">${esc(detail)}</div>`:'')}
-function penClassFor(state){return state==='Penalty / Credit'?'pen-yes':state==='No penalty'?'pen-none':'pen-unk'}
-function isSlaRow(x){const t=String(x.slaType||'').toLowerCase();if(/sla|service level|service credit|penalty/.test(t))return true;const m=String(x.metric||'').trim(),tg=String(x.target||'').trim();return !!(m&&tg&&!/^not stated/i.test(m)&&!/^not stated/i.test(tg))}
-function liOne(x){if(x&&typeof x==='object'){const h=x.header?`<b>${esc(x.header)}:</b> `:'';return `<li>${h}${esc(x.statement!==undefined?x.statement:'')}</li>`;}return `<li>${esc(x)}</li>`}
-function liItems(arr,fb){arr=Array.isArray(arr)?arr.slice(0,5):[];if(!arr.length)return fb?`<li>${esc(fb)}</li>`:'';return arr.map(liOne).join('')}
-function bullets(arr,fb){return `<ul class="blist">${liItems(arr,fb)}</ul>`}
-function piePolar(cx,cy,r,ang){const a=(ang-90)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
-function pieSlice(cx,cy,r,start,end,col){const [sx,sy]=piePolar(cx,cy,r,end);const [ex,ey]=piePolar(cx,cy,r,start);const large=(end-start)<=180?0:1;return `<path d="M ${cx} ${cy} L ${sx.toFixed(2)} ${sy.toFixed(2)} A ${r} ${r} 0 ${large} 0 ${ex.toFixed(2)} ${ey.toFixed(2)} Z" fill="${col}"></path>`;}
-function renderPie(counts,bv){const items=[['High','#D00000'],['Medium','#F59E0B'],['Low','#211CE8']];const total=(counts.High||0)+(counts.Medium||0)+(counts.Low||0);const cx=90,cy=90,r=88;let slices='';if(total===0){slices=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#ECEBFF"></circle>`;}else{const nz=items.filter(it=>(counts[it[0]]||0)>0);if(nz.length===1){slices=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${nz[0][1]}"></circle>`;}else{let ang=0;for(const it of items){const c=counts[it[0]]||0;if(!c)continue;const end=ang+360*c/total;slices+=pieSlice(cx,cy,r,ang,end,it[1]);ang=end;}}}
- slices+=`<circle cx="${cx}" cy="${cy}" r="46" fill="#FBFDFF"></circle>`;
- const legend=items.map(it=>{const k=it[0],col=it[1];const c=counts[k]||0;const pct=total?Math.round(100*c/total):0;const cost=(bv&&num(bv[k])!==null)?moneyFull(bv[k]):'Value not stated';return `<div class="pieleg"><span class="sw" style="background:${col}"></span><div class="pietext"><span class="piecount"><b>${k}</b> — ${c} risk${c===1?'':'s'} (${pct}%)</span><span class="pieval">${esc(cost)}</span></div></div>`;}).join('');
- return `<div class="pieWrap"><svg viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="Risk distribution pie chart">${slices}</svg><div class="pieCenter"><span class="t">Total risks</span><span class="n">${total}</span></div></div><div class="pieLegend">${legend}</div>`;}
-function shortType(t){if(t===null||t===undefined||t==='')return 'Not stated';const s=String(t).trim();const low=s.toLowerCase();const map=[['statement of work','SOW'],['master services agreement','MSA'],['master service agreement','MSA'],['general services agreement','GSA'],['general service agreement','GSA'],['order form','Order Form'],['purchase order','PO'],['change order','CO'],['work order','WO'],['non-disclosure','NDA'],['nondisclosure','NDA'],['service level agreement','SLA'],['amendment','Amendment'],['addendum','Addendum'],['contract','Contract']];for(const kv of map){if(low.includes(kv[0]))return kv[1];}if(/^[A-Za-z]{2,6}$/.test(s))return s.toUpperCase();if(s.length<=12)return s;return 'Contract';}
-function fitDashboardToDisplay(){const app=$('dashboardApp'),shell=$('scaleShell');if(!app||!shell)return;const baseWidth=1240;const displayWidth=Math.max(900,Math.min(screen.availWidth||baseWidth,screen.width||baseWidth));const scale=Math.max(0.72,Math.min(1.08,displayWidth/baseWidth));app.style.transform='scale('+scale+')';shell.style.width=(baseWidth*scale)+'px';shell.style.minWidth=(baseWidth*scale)+'px';shell.style.height=(app.scrollHeight*scale)+'px';} window.addEventListener('resize',()=>setTimeout(fitDashboardToDisplay,50));
-function showPage(i){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const target=$(pages[i][0]);if(target)target.classList.add('active');document.querySelectorAll('.nav button').forEach((b,j)=>b.classList.toggle('active',i===j));if($('pageTitle'))$('pageTitle').textContent=pages[i][1];if($('pageSub'))$('pageSub').textContent=pages[i][2];if($('filters'))$('filters').style.display=(pages[i][0]==='p2')?'flex':'none';window.scrollTo({top:0,behavior:'smooth'});setTimeout(fitDashboardToDisplay,30)}
-function filteredRows(){let s=($('search')?.value||'').toLowerCase(),r=$('riskFilter')?.value||'All',p=$('priorityFilter')?.value||'All Priorities';return rows.filter(x=>(r==='All'||x.risk===r)&&(p==='All Priorities'||x.priority===p)&&Object.values(x).join(' ').toLowerCase().includes(s));}
-function table(id,cols,arr){const el=$(id);if(!el)return;el.innerHTML='<thead><tr>'+cols.map((c,i)=>`<th onclick="sortTable('${id}',${i})">${esc(c[0])}</th>`).join('')+'</tr></thead><tbody>'+(arr||[]).map(r=>'<tr>'+cols.map(c=>`<td>${c[1](r)}</td>`).join('')+'</tr>').join('')+'</tbody>';}
-function sortTable(id,n){let t=$(id);if(!t||!t.tBodies[0])return;let rs=[...t.tBodies[0].rows],asc=t.dataset.sort!==String(n);rs.sort((a,b)=>a.cells[n].innerText.localeCompare(b.cells[n].innerText,undefined,{numeric:true})*(asc?1:-1));rs.forEach(r=>t.tBodies[0].appendChild(r));t.dataset.sort=asc?String(n):''}
-function fields(keys){return keys.map(([label,key])=>({fieldName:label,extractedDetails:metadata[key]||'Not stated in uploaded contract'}))}
-function benchBadge(x){var s=x.vsStandardState||'',t=x.vsStandard||'';if(!s||!t)return '<span style="color:#94a3b8">—</span>';var cls=s==='meets'?'bMeet':(s==='below'||s==='uncapped')?'bBelow':'bNa';var ic=s==='meets'?'✓ ':(s==='below'||s==='uncapped')?'⚠ ':'';return '<span class="bench '+cls+'">'+ic+esc(t)+'</span>';}
-function toggleBenchSec(el){var sec=el.closest?el.closest('.benchSec'):null;if(!sec)return;var c=sec.classList.toggle('collapsed');var t=el.querySelector('.benchToggle');if(t)t.textContent=c?'+':'−';}
-function allBenchSec(collapse){document.querySelectorAll('#benchReference .benchSec').forEach(function(s){s.classList.toggle('collapsed',collapse);var t=s.querySelector('.benchToggle');if(t)t.textContent=collapse?'+':'−';});}
-function filterBenchSec(q){q=(q||'').trim().toLowerCase();var any=false;document.querySelectorAll('#benchReference .benchSec').forEach(function(s){var hay=s.getAttribute('data-sec')||'';var hit=!q||hay.indexOf(q)>=0;s.style.display=hit?'':'none';if(hit)any=true;});var nh=document.getElementById('benchNoHit');if(nh)nh.style.display=any?'none':'';}
-function renderTables(){let fr=filteredRows();table('clausesTable',[["Section",x=>esc(x.section)],["Page",x=>esc(x.pageNo)],["SLA / Clause Type",x=>`<span class="pill blue">${esc(x.slaType)}</span>`],["Priority",x=>prioBadge(x.priority)],["Service / Tower",x=>esc(x.service)],["Deliverable",x=>esc(x.deliverable)],["Metric",x=>esc(x.metric)],["Target",x=>esc(x.target)],["Measurement",x=>esc(x.measurement)],["vs Standard",x=>benchBadge(x)],["Clause / Obligation",x=>esc(x.clause)],["Risk",x=>riskBadge(x.risk)],["Value at Risk",x=>esc(x.valueAtRisk)],["Dependency",x=>esc(x.customerDependency)],["Exclusions / Gap",x=>esc(x.exclusions)],["Remedy",x=>esc(x.remedy)],["Cap",x=>esc(x.cap)],["Owner",x=>esc(x.owner)],["Status",x=>esc(x.negotiationStatus)],["Recommended Action",x=>esc(x.recommendedAction)],["Evidence",x=>esc(x.evidence)],["Reasoning",x=>esc(x.reason)],["Confidence",x=>esc(x.confidence)+'%']],fr);
- (function(){const sla=rows.filter(isSlaRow).slice(0,8);const el=$('slaCommitTable');if(!el)return;if(!sla.length){if(el.parentElement)el.parentElement.innerHTML='<p class="small">No SLA commitments were extracted from the uploaded contract.</p>';return;}table('slaCommitTable',[["SLA / Metric",x=>`<b>${esc(fallback(x.metric,x.slaType))}</b>`],["Target",x=>esc(x.target)],["Measurement",x=>esc(x.measurement)],["Remedy / Penalty",x=>penaltyBadge(x.remedy,x.cap)],["vs Standard",x=>benchBadge(x)],["Risk",x=>riskBadge(x.risk)]],sla);const nB=Number(data.slaBelowStandard||0),nE=Number(data.slaBenchmarked||0);if(nE&&el.parentElement){const msg=nB?('⚠ '+nB+' of '+nE+' SLA'+(nE>1?'s':'')+' below market standard / uncapped'):('✓ All '+nE+' benchmarked SLA'+(nE>1?'s':'')+' meet market standard');el.insertAdjacentHTML('beforebegin','<p class="small benchNote '+(nB?'benchBad':'benchOk')+'">'+msg+'</p>');}})();
- table('metadataIdentityTable',[["Field Name",x=>esc(x.fieldName)],["Extracted Details",x=>esc(x.extractedDetails)]],fields([["File Name","fileName"],["Contract Title","contractTitle"],["Contract Type","contractType"],["Client / Buyer / Customer","client"],["Supplier / Vendor / Service Provider","supplier"]]));
- table('metadataDatesTable',[["Field Name",x=>esc(x.fieldName)],["Extracted Details",x=>x.fieldName==='Current Contract Status'?statusBadge(x.extractedDetails):esc(x.extractedDetails)]],fields([["Effective Date","effectiveDate"],["Contract Start Date","startDate"],["Contract End Date","endDate"],["Contract Term / Duration","term"],["Current Contract Status","status"],["Signature / Execution Evidence","executionEvidence"]]));
- table('metadataCommercialTable',[["Field Name",x=>esc(x.fieldName)],["Extracted Details",x=>esc(x.extractedDetails)]],fields([["Contract Category","category"],["Contract Sub-category","subCategory"],["Renewal Terms","renewalTerms"],["Pricing Model","pricingFull"],["Contract Value / Budget / Annual Value / Monthly Fee","contractValue"],["Governing Agreement / MSA / GSA Reference","governingAgreement"],["EM Level","emLevel"],["Billing Cadence","billingCadence"],["Service Credit Caps","serviceCreditCaps"],["Termination Terms","terminationTerms"],["Security / Compliance Terms","securityTerms"],["SLA / Service Levels","slaTerms"],["Scope / Change-control Terms","scopeChangeTerms"],["Chargeable Events","chargeableEvents"],["Exit / Transition Obligations","exitObligations"],["Total Pages in Uploaded File","totalPagesUploaded"],["Total Pages Scanned by AI","pagesScannedByAI"]]));
- const counts=data.counts||{High:0,Medium:0,Low:0};const bv=data.bucketValues||null;
- table('penaltyTable',[["Risk Bucket",x=>riskBadge(x.risk)],["Row Count",x=>String(x.count)],["Directional Contract Value at Risk",x=>x.valueText],["Service-credit / Penalty Exposure",x=>esc(x.penalty)]],['High','Medium','Low'].map(k=>({risk:k,count:counts[k]||0,valueText:(bv&&num(bv[k])!==null)?moneyFull(bv[k]):'Contract value not stated',penalty:fallback((data.penaltyExposure||{})[k],'No stated service-credit or penalty amount in uploaded contract')})));
- table('commercialBaselineTable',[["Commercial Field",x=>`<b>${esc(x.field)}</b>`],["Extracted / Derived Value",x=>esc(x.value)],["Commercial Interpretation",x=>esc(x.interpretation)]],data.commercialBaseline||[]);
- table('leakageScenariosTable',[["Scenario",x=>esc(x.scenario)],["Commercial Impact",x=>esc(x.impact)],["Control",x=>esc(x.control)],["Evidence Basis",x=>esc(x.evidence)],["Owner",x=>esc(x.owner)]],data.leakageScenarios||[]);
- table('boardDecisionLegendTable',[["Decision",x=>esc(x.decision)],["Meaning",x=>esc(x.meaning)],["Typical Use",x=>esc(x.typicalUse)]],data.boardDecisionLegend||[]);table('riskLegendTable',[["Level",x=>riskBadge(x.level)],["Definition",x=>esc(x.definition)],["Management Action",x=>esc(x.managementAction)]],data.riskLegend||[]);table('priorityLegendTable',[["Priority",x=>prioBadge(x.priority)],["Impact",x=>esc(x.impact)],["Response Target",x=>esc(x.responseTarget)],["Resolution Target",x=>esc(x.resolutionTarget)],["Risk Note",x=>esc(x.riskNote)]],data.priorityLegend||[]);table('slaLegendTable',[["SLA / Clause Type",x=>`<span class="pill blue">${esc(x.type)}</span>`],["Meaning",x=>esc(x.meaning)]],data.slaLegend||[]);table('slaRemedyLegendTable',[["Remedy / Penalty",x=>`<span class="pen ${penClassFor(x.state)}">${esc(x.state)}</span>`],["Meaning",x=>esc(x.meaning)]],data.slaRemedyLegend||[]);table('confidenceLegendTable',[["Confidence",x=>esc(x.range)],["Interpretation",x=>esc(x.meaning)]],data.confidenceLegend||[]);table('decisionMethodTable',[["Aspect",x=>`<b>${esc(x.aspect)}</b>`],["How it is derived",x=>esc(x.detail)]],data.decisionMethodLegend||[]);table('summaryMethodTable',[["Aspect",x=>`<b>${esc(x.aspect)}</b>`],["Explanation",x=>esc(x.detail)]],data.summaryMethodLegend||[]);table('typeLegendTable',[["Type",x=>`<span class="pill blue">${esc(x.type)}</span>`],["Meaning",x=>esc(x.meaning)]],data.typeLegend||[]);table('statusLegendTable',[["Status",x=>statusBadge(x.status)],["Meaning",x=>esc(x.meaning)]],data.statusLegend||[]);table('pricingLegendTable',[["Pricing Model",x=>`<b>${esc(x.model)}</b>`],["Meaning",x=>esc(x.meaning)]],data.pricingLegend||[]);table('emLegendTable',[["EM Level",x=>`<b>${esc(x.level)}</b>`],["Meaning",x=>esc(x.meaning)]],data.emLegend||[]);table('assumptionsTable',[["Area",x=>`<b>${esc(x.area)}</b>`],["Assumption / Rule",x=>esc(x.assumption)]],data.assumptions||[]);table('limitationsTable',[["Area",x=>`<b>${esc(x.area)}</b>`],["Limitation",x=>esc(x.detail)]],data.limitationsLegend||[]);table('benchLegendTable',[["Verdict",x=>{var cls=x.state==='meets'?'bMeet':(x.state==='below'||x.state==='uncapped')?'bBelow':'bNa';var ic=x.state==='meets'?'✓ ':(x.state==='below'||x.state==='uncapped')?'⚠ ':'';return '<span class="bench '+cls+'">'+ic+esc(x.verdict)+'</span>';}],["Meaning",x=>esc(x.meaning)]],data.benchmarkLegend||[]);
- (function(){const el=$('benchResultsTable');if(!el)return;const br=rows.filter(x=>x.vsStandardState);if(!br.length){if(el.parentElement)el.parentElement.innerHTML='<p class="small">No SLA commitments with a benchmarkable target were found in this contract.</p>';return;}table('benchResultsTable',[["SLA / Metric",x=>`<b>${esc(fallback(x.metric,x.slaType))}</b>`],["Extracted Target",x=>esc(fallback(x.target,'Not stated'))],["Applicable Standard",x=>esc(x.benchStandard||'—')],["Verdict",x=>benchBadge(x)]],br);})();
- (function(){const host=$('benchReference');if(!host)return;const ref=data.benchmarkReference||[];host.innerHTML=ref.map(sec=>{const items=sec.items||[];const rs=items.map(it=>`<tr><td>${esc(it[0])}</td><td>${esc(it[1])}</td><td><b>${esc(it[2])}</b></td></tr>`).join('');const key=esc((sec.section+' '+items.map(it=>it[0]+' '+it[1]).join(' ')).toLowerCase());return `<div class="benchSec" data-sec="${key}"><h4 class="benchSecHead" onclick="toggleBenchSec(this)"><span class="benchToggle">−</span> ${esc(sec.section)} <span class="benchCount">(${items.length})</span></h4><div class="benchSecBody"><div class="tableWrap"><table><thead><tr><th style="width:20%">Category</th><th>Metric / Check</th><th style="width:26%">Standard</th></tr></thead><tbody>${rs}</tbody></table></div></div></div>`;}).join('')+'<p id="benchNoHit" class="benchNoHit" style="display:none">No sections match your search.</p>';})();
- renderDynamic();}
-function renderDynamic(){const set=(id,html)=>{const e=$(id);if(e)e.innerHTML=html;};const m=metadata;const counts=data.counts||{High:0,Medium:0,Low:0};const bv=data.bucketValues||null;const subs=data.kpiSubs||{};const overall=data.overall||'Not stated';const overallColor=overall==='High'?'var(--red)':overall==='Medium'?'var(--orange)':'var(--primary)';
- if($('brandSub'))$('brandSub').textContent=(m.client&&m.client!=='Not stated in uploaded contract'&&m.client!=='Not stated')?(m.client+' Contract Review'):'Contract Review';
- {const note=$('sourceNote');if(note){const sn=String(data.sourceNote||'').trim();if(sn){note.innerHTML=sn;note.style.display='';}else{note.style.display='none';}}}
- if($('footer'))$('footer').textContent=fallback(data.footer,'Risk bucket values are directional allocations, not contractual penalties.');
- const cvNumeric=num(m.contractValueNumeric);
- set('kpis',`<div class="card kpi high"><div class="label">Overall Risk</div><div class="value" style="color:${overallColor}">${esc(overall)}</div></div><div class="card kpi decision"><div class="label">Management Decision</div><div class="value" style="color:#9A5800">${esc(data.boardDecision||'Not stated')}</div></div><div class="card kpi money"><div class="label">Contract Value at Risk</div><div class="value" style="color:#9F1239">${cvNumeric===null?'Not stated':moneyK(cvNumeric)}</div></div><div class="card kpi blue"><div class="label"># High Risks</div><div class="value" style="color:var(--primary)">${counts.High||0}</div></div><div class="card kpi positive"><div class="label">Total Risks</div><div class="value" style="color:#087A83">${rows.length}</div></div>`);
- set('contractSnapshot',`<span><b>Type:</b> ${esc(shortType(m.contractType))}</span><span><b>Status:</b> ${statusBadge(fallback(m.status,'Not stated'))}</span><span><b>Term:</b> ${esc(fallback(m.term,'Not stated'))}</span><span><b>Pricing:</b> ${esc(fallback(m.pricingModel,'Not stated'))}</span><span><b>EM:</b> ${esc(fallback(m.emDisplay,fallback(m.emShort,'Not stated')))}</span>`);
- const dl=data.decisionList||{};set('decisionList',`<div class="decisionItem"><h4>Proceed if</h4>${bullets(dl.proceedIf,'Conditions to validate before execution were not derived.')}</div><div class="decisionItem"><h4>Renegotiate now</h4>${bullets(dl.renegotiate,'Terms to renegotiate were not derived.')}</div>`);
- set('boardSummary',liItems(data.boardSummary,''));
- set('penaltyChart',renderPie(counts,bv));
- set('topBlockers',rows.filter(x=>x.risk==='High').map(x=>`<div class="insight"><div class="icon ${prioClass(x.priority)||'iRed'}">${esc(x.priority)}</div><div><b>${esc(x.section)} • Page ${esc(x.pageNo)} • ${esc(x.slaType)}</b><br><span class="small">${esc(x.reason)} Action: ${esc(x.recommendedAction)}</span></div></div>`).join('')||'<p class="small">No High-risk rows were extracted from the uploaded contract.</p>');
- set('riskExplanations',rows.filter(x=>x.risk==='High').map(x=>`<div class="insight"><div class="icon ${prioClass(x.priority)||'iRed'}">${esc(x.priority)}</div><div><b>${esc(x.section)} • Page ${esc(x.pageNo)} • ${esc(x.slaType)}</b><br>${esc(x.reason)}<br><span class="small"><b class="evi">Evidence:</b> ${esc(x.evidence)}<br><b class="rec">Recommended action:</b> ${esc(x.recommendedAction)}</span></div></div>`).join('')||'<p class="small">No High-risk rows were extracted from the uploaded contract.</p>');
- const finBig=cvNumeric===null?`<div class="fin-big na">Contract value not stated</div>`:`<div class="fin-big">${moneyFull(cvNumeric)}</div>`;set('financialNotes',finBig+bullets(data.financialNotes,'Financial interpretation was not available from the uploaded contract.'));
- set('revenueControls',(data.revenueControls||[]).map((c,i)=>`<div class="insight"><div class="icon" style="background:#ECEBFF;color:#211CE8">${i+1}</div><div><b>${esc(c.title)}</b>${c.owner?` <span class="pill blue">${esc(c.owner)}</span>`:''}<br><span class="small">${esc(c.detail)}</span></div></div>`).join('')||'<p class="small">No revenue protection controls were derived from the uploaded contract.</p>');
- set('rewrites',(data.recos||[]).map(r=>`<div class="card" style="box-shadow:none;margin-bottom:12px"><h3>${riskBadge(r.risk)} ${esc(r.contract)}: ${esc(r.action)}</h3><div class="rewrite"><div class="box bad"><b>Original wording or summarized risky wording</b><br>${esc(r.original)}</div><div class="box good"><b>Improved negotiation wording</b><br>${esc(r.rewrite)}</div></div></div>`).join(''));
- {const nB=Number(data.slaBenchmarked||0),mk=Number(data.slaMeets||0),bl=Number(data.slaBelow||0),uc=Number(data.slaUncapped||0);const tile=(l,v,c)=>`<div class="card kpi"><div class="label">${l}</div><div class="value" style="color:${c}">${v}</div></div>`;set('benchScore',nB?(tile('Benchmarked SLAs',nB,'var(--primary)')+tile('Meets standard',mk,'#087A83')+tile('Below standard',bl,'var(--red)')+tile('Uncapped',uc,'#9A5800')):'<p class="small">No SLAs with a benchmarkable target were found in this contract.</p>');}
- setTimeout(fitDashboardToDisplay,30)}
-function init(){const nav=$('nav');if(nav)nav.innerHTML=pages.map((p,i)=>`<button class="${i===0?'active':''}" onclick="showPage(${i})">${i+1}. ${esc(p[1])}</button>`).join('');renderTables();if($('filters'))$('filters').style.display='none';fitDashboardToDisplay()}try{init()}catch(e){document.body.insertAdjacentHTML('afterbegin','<div style="padding:12px;background:#FDE8E8;color:#991B1B;border:1px solid #EF4444;font-family:Segoe UI"><b>Dashboard script warning:</b> '+esc(e.message)+'. Download and open locally.</div>')}
-</script></body></html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Analyzer Dashboard</title>
+    <style>
+        :root {
+            --primary: #211CE8;
+            --cyan: #73E3EA;
+            --bg: #F7F9FE;
+            --panel: #fff;
+            --ink: #0F172A;
+            --muted: #5C6B83;
+            --line: #DDE5F2;
+            --red: #D00000;
+            --redBg: #FFE7E7;
+            --orange: #F59E0B;
+            --orangeBg: #FFF3D9;
+            --shadow: 0 10px 24px rgba(13, 7, 51, .08);
+            --r: 16px
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0;
+            font-family: Segoe UI, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            overflow-x: auto
+        }
+
+        #scaleShell {
+            overflow: visible;
+            position: relative
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 260px 980px;
+            width: 1240px;
+            min-width: 1240px;
+            min-height: 100vh;
+            transform-origin: top left
+        }
+
+        .side {
+            background: #fff;
+            border-right: 1px solid var(--line);
+            padding: 18px 14px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: auto
+        }
+
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 18px
+        }
+
+        .logo {
+            width: 46px;
+            height: 46px;
+            border-radius: 15px;
+            background: #211CE8;
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 17px;
+            font-weight: 900
+        }
+
+        .brand h1 {
+            font-size: 20px;
+            font-weight: 900;
+            line-height: 1.12;
+            color: #0F172A;
+            margin: 0;
+            white-space: nowrap
+        }
+
+        .brand p {
+            font-size: 12.5px;
+            color: var(--muted);
+            margin: 4px 0 0
+        }
+
+        .nav button {
+            width: 100%;
+            text-align: left;
+            border: 0;
+            background: transparent;
+            padding: 11px;
+            border-radius: 13px;
+            cursor: pointer;
+            margin: 3px 0;
+            font-weight: 700;
+            color: #23324A
+        }
+
+        .nav button.active,
+        .nav button:hover {
+            background: #ECEBFF;
+            color: var(--primary)
+        }
+
+        .note {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.45;
+            background: #F8FAFC;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            margin-top: 16px
+        }
+
+        .main {
+            width: 980px;
+            padding: 18px 18px 28px;
+            overflow: hidden
+        }
+
+        .title h2 {
+            margin: 0;
+            font-size: 24px
+        }
+
+        .title p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        .filters {
+            display: none;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 14px 0
+        }
+
+        .filters input,
+        .filters select {
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 12px;
+            padding: 9px 11px;
+            min-width: 145px;
+            max-width: 240px
+        }
+
+        .page {
+            display: none
+        }
+
+        .page.active {
+            display: block
+        }
+
+        .grid {
+            display: grid;
+            gap: 14px
+        }
+
+        .kpis {
+            grid-template-columns: repeat(5, 1fr);
+            margin-top: 14px
+        }
+
+        .one {
+            grid-template-columns: 1fr
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--r);
+            box-shadow: var(--shadow);
+            padding: 14px;
+            overflow: hidden
+        }
+
+        .card h3 {
+            margin: 0 0 9px;
+            font-size: 15px
+        }
+
+        .kpi {
+            height: 88px;
+            position: relative
+        }
+
+        .kpi:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px
+        }
+
+        .kpi.high {
+            background: linear-gradient(90deg, #FFE7E7, #fff)
+        }
+
+        .kpi.high:before {
+            background: var(--red)
+        }
+
+        .kpi.decision {
+            background: linear-gradient(90deg, #FFF3D9, #fff)
+        }
+
+        .kpi.decision:before {
+            background: var(--orange)
+        }
+
+        .kpi.money {
+            background: linear-gradient(90deg, #FFF1F2, #fff)
+        }
+
+        .kpi.money:before {
+            background: #9F1239
+        }
+
+        .kpi.blue {
+            background: linear-gradient(90deg, #ECEBFF, #fff)
+        }
+
+        .kpi.blue:before {
+            background: var(--primary)
+        }
+
+        .kpi.positive {
+            background: linear-gradient(90deg, #DDFBFD, #fff)
+        }
+
+        .kpi.positive:before {
+            background: var(--cyan)
+        }
+
+        .label {
+            font-size: 10.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 900;
+            letter-spacing: .04em
+        }
+
+        .value {
+            font-size: 18px;
+            font-weight: 900;
+            line-height: 1.28;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            margin: 6px 0 5px
+        }
+
+        .sub,
+        .small {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5
+        }
+
+        .contextStrip {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 0 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            transform: none !important;
+            animation: none !important;
+            min-height: 46px !important;
+            padding: 9px 12px !important;
+            background: linear-gradient(90deg, #F0F4FF, #fff);
+            border: 1px solid var(--line);
+            border-left: 5px solid var(--primary);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            font-size: 11.7px;
+            margin-top: 10px
+        }
+
+        .contextStrip>span {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            flex: 0 0 auto !important;
+            transform: none !important;
+            rotate: 0deg !important;
+            white-space: nowrap !important;
+            overflow: visible !important;
+            padding: 0 14px !important;
+            margin: 0 !important;
+            border-right: 1px solid var(--line) !important
+        }
+
+        .contextStrip>span:first-child {
+            padding-left: 0 !important
+        }
+
+        .contextStrip>span:last-child {
+            border-right: 0 !important;
+            padding-right: 0 !important
+        }
+
+        .contextStrip b {
+            color: var(--primary)
+        }
+
+        .statusPill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+            white-space: nowrap;
+            text-align: center;
+            border-radius: 999px;
+            padding: 5px 10px;
+            font-weight: 900;
+            font-size: 11px;
+            background: #E6F4EA;
+            color: #006A4E;
+            border: 1px solid #99D6B8
+        }
+
+        .execGrid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            grid-template-rows: auto auto;
+            gap: 14px;
+            margin-top: 14px
+        }
+
+        .board {
+            border-left: 6px solid var(--orange);
+            background: linear-gradient(90deg, #FFF8EA, #fff)
+        }
+
+        .summaryCard {
+            border-left: 6px solid var(--primary);
+            background: linear-gradient(90deg, #F0F4FF, #fff)
+        }
+
+        .decisionList {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px
+        }
+
+        .decisionItem {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 11px 12px;
+            background: #fff;
+            font-size: 13px;
+            line-height: 1.45
+        }
+
+        .decisionItem h4 {
+            margin: 0 0 7px;
+            font-size: 13.5px;
+            color: var(--primary);
+            font-weight: 900
+        }
+
+        .decisionItem ul {
+            margin: 0;
+            padding-left: 16px
+        }
+
+        .decisionItem li {
+            margin: 5px 0
+        }
+
+        .summary {
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 14px;
+            padding: 10px;
+            line-height: 1.35;
+            font-size: 11.9px
+        }
+
+        .chart {
+            height: 285px;
+            display: flex;
+            align-items: end;
+            gap: 16px;
+            padding: 22px 18px 10px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #FBFDFF;
+            overflow: hidden
+        }
+
+        .col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 5px
+        }
+
+        .colbar {
+            width: 54px;
+            border-radius: 9px 9px 4px 4px;
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 15px
+        }
+
+        .riskBadge {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            border-radius: 999px;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 900;
+            white-space: nowrap;
+            line-height: 1
+        }
+
+        .High {
+            background: var(--redBg);
+            color: var(--red)
+        }
+
+        .Medium {
+            background: var(--orangeBg);
+            color: #9A5800
+        }
+
+        .Low {
+            background: #ECEBFF;
+            color: var(--primary)
+        }
+
+        .pill {
+            border-radius: 999px;
+            padding: 4px 7px;
+            font-weight: 800;
+            font-size: 11px;
+            display: inline-block
+        }
+
+        .pill.blue {
+            background: #ECEBFF;
+            color: var(--primary)
+        }
+
+        .pill.purple {
+            background: #F1EDFF;
+            color: #5B21B6
+        }
+
+        .tableWrap {
+            overflow: auto;
+            border: 1px solid var(--line);
+            border-radius: 14px
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 12px
+        }
+
+        #clausesTable {
+            min-width: 3300px
+        }
+
+        #clausesTable th,
+        #clausesTable td {
+            font-size: 11px;
+            line-height: 1.3
+        }
+
+        th,
+        td {
+            padding: 9px 10px;
+            border-bottom: 1px solid #EDF2F7;
+            vertical-align: top
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            background: #F8FAFC;
+            color: #475569;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: .035em;
+            cursor: pointer;
+            z-index: 1
+        }
+
+        .insight {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 10px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #FBFDFF;
+            margin: 8px 0
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            flex: 0 0 auto
+        }
+
+        .iRed {
+            background: var(--redBg);
+            color: var(--red)
+        }
+
+        .rewrite {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .box {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            background: #FBFDFF;
+            line-height: 1.4
+        }
+
+        .bad {
+            border-left: 5px solid var(--red)
+        }
+
+        .good {
+            border-left: 5px solid var(--primary)
+        }
+
+        .metadataGrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 14px
+        }
+
+        .metadataGrid .wide {
+            grid-column: 1 / -1
+        }
+
+        .metaCard {
+            padding: 0
+        }
+
+        .metaHead {
+            padding: 12px 14px;
+            color: #fff;
+            font-weight: 900;
+            border-radius: 16px 16px 0 0
+        }
+
+        .metaBody {
+            padding: 14px
+        }
+
+        .metaBlue .metaHead {
+            background: linear-gradient(135deg, var(--primary), #665CFF)
+        }
+
+        .metaCyan .metaHead {
+            background: linear-gradient(135deg, #087A83, var(--cyan));
+            color: #fff
+        }
+
+        .metaOrange .metaHead {
+            background: linear-gradient(135deg, #B45309, var(--orange))
+        }
+
+        .legendStack {
+            display: grid;
+            gap: 14px;
+            margin-top: 14px
+        }
+
+        .footer {
+            margin-top: 16px;
+            color: var(--muted);
+            font-size: 11px
+        }
+
+        .blist {
+            margin: 4px 0 0;
+            padding-left: 18px;
+            font-size: 13px;
+            line-height: 1.55;
+            color: var(--ink)
+        }
+
+        .blist li {
+            margin: 6px 0
+        }
+
+        .blist li b {
+            color: var(--ink)
+        }
+
+        .card p {
+            font-size: 13px;
+            line-height: 1.55;
+            color: var(--ink);
+            margin: 6px 0
+        }
+
+        .summary .blist {
+            font-size: 13px
+        }
+
+        .evi {
+            color: #087A83;
+            font-weight: 900
+        }
+
+        .rec {
+            color: #5B21B6;
+            font-weight: 900
+        }
+
+        .prio {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 4px 9px;
+            font-weight: 900;
+            font-size: 11px;
+            line-height: 1;
+            border: 1px solid transparent;
+            white-space: nowrap
+        }
+
+        .prio.P1 {
+            background: #FFE3E3;
+            color: #B00020;
+            border-color: #F2ABAB
+        }
+
+        .prio.P2 {
+            background: #FFEAD1;
+            color: #B45309;
+            border-color: #F0C489
+        }
+
+        .prio.P3 {
+            background: #FEF3C7;
+            color: #8A6D00;
+            border-color: #E7D07A
+        }
+
+        .prio.P4 {
+            background: #E6F4EA;
+            color: #0E7A3B;
+            border-color: #A6D7B7
+        }
+
+        .icon.P1 {
+            background: #FFE3E3;
+            color: #B00020
+        }
+
+        .icon.P2 {
+            background: #FFEAD1;
+            color: #B45309
+        }
+
+        .icon.P3 {
+            background: #FEF3C7;
+            color: #8A6D00
+        }
+
+        .icon.P4 {
+            background: #E6F4EA;
+            color: #0E7A3B
+        }
+
+        .statusPill.st-active {
+            background: #E6F4EA;
+            color: #006A4E;
+            border-color: #99D6B8
+        }
+
+        .statusPill.st-upcoming {
+            background: #E7EEFF;
+            color: #1D4ED8;
+            border-color: #B9CCF7
+        }
+
+        .statusPill.st-hold {
+            background: #FFF3D9;
+            color: #9A5800;
+            border-color: #F0C489
+        }
+
+        .statusPill.st-expired {
+            background: #FFE3E3;
+            color: #B00020;
+            border-color: #F2ABAB
+        }
+
+        .statusPill.st-unknown {
+            background: #EEF1F5;
+            color: #5C6B83;
+            border-color: #D3DAE6
+        }
+
+        .pen {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 3px 9px;
+            font-weight: 900;
+            font-size: 10.5px;
+            line-height: 1;
+            border: 1px solid transparent;
+            white-space: nowrap
+        }
+
+        .pen.pen-yes {
+            background: #FFE3E3;
+            color: #B00020;
+            border-color: #F2ABAB
+        }
+
+        .pen.pen-none {
+            background: #E6F4EA;
+            color: #0E7A3B;
+            border-color: #A6D7B7
+        }
+
+        .pen.pen-unk {
+            background: #EEF1F5;
+            color: #5C6B83;
+            border-color: #D3DAE6
+        }
+
+        #slaCommitTable td,
+        #slaCommitTable th {
+            font-size: 12px
+        }
+
+        #slaCommitTable .small {
+            font-size: 11px
+        }
+
+        .fin-big {
+            font-size: 42px;
+            font-weight: 900;
+            color: #9F1239;
+            line-height: 1.05;
+            margin: 2px 0 12px;
+            letter-spacing: .5px
+        }
+
+        .fin-big.na {
+            font-size: 22px
+        }
+
+        .bench {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 5px;
+            white-space: nowrap
+        }
+
+        .bMeet {
+            background: #dcfce7;
+            color: #047857
+        }
+
+        .bBelow {
+            background: #fee2e2;
+            color: #b91c1c
+        }
+
+        .bNa {
+            background: #f1f5f9;
+            color: #64748b
+        }
+
+        .benchNote {
+            margin: 0 0 8px
+        }
+
+        .benchBad {
+            color: #b91c1c;
+            font-weight: 700
+        }
+
+        .benchOk {
+            color: #047857;
+            font-weight: 700
+        }
+
+        .benchRefBar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 0 0 10px
+        }
+
+        #benchRefSearch {
+            flex: 1;
+            min-width: 220px;
+            max-width: 460px;
+            padding: 7px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 13px
+        }
+
+        .benchRefBtn {
+            padding: 6px 10px;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #334155
+        }
+
+        .benchRefBtn:hover {
+            background: #eef2ff
+        }
+
+        .benchSec {
+            margin: 0 0 6px
+        }
+
+        .benchSecHead {
+            cursor: pointer;
+            user-select: none;
+            margin: 14px 0 6px;
+            color: var(--primary)
+        }
+
+        .benchSecHead:hover {
+            text-decoration: underline
+        }
+
+        .benchToggle {
+            display: inline-block;
+            width: 14px;
+            font-weight: 800
+        }
+
+        .benchCount {
+            color: #94a3b8;
+            font-weight: 400;
+            font-size: 12px
+        }
+
+        .benchSec.collapsed .benchSecBody {
+            display: none
+        }
+
+        .benchNoHit {
+            color: #94a3b8;
+            font-size: 13px;
+            padding: 6px 0
+        }
+
+        .piechart {
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 14px;
+            padding: 16px 12px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #FBFDFF;
+            overflow: hidden
+        }
+
+        .pieWrap {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            flex: 0 0 auto
+        }
+
+        .pieCenter {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none
+        }
+
+        .pieCenter .t {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .04em
+        }
+
+        .pieCenter .n {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--ink);
+            line-height: 1
+        }
+
+        .pieLegend {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .pieleg {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 12.5px
+        }
+
+        .pieleg .sw {
+            width: 13px;
+            height: 13px;
+            border-radius: 4px;
+            flex: 0 0 auto;
+            margin-top: 3px
+        }
+
+        .pieleg .pietext {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.4
+        }
+
+        .pieleg .piecount {
+            color: var(--ink)
+        }
+
+        .pieleg .pieval {
+            color: var(--muted);
+            font-size: 12px
+        }
+    </style>
+</head>
+
+<body>
+    <div id="scaleShell">
+        <div class="app" id="dashboardApp">
+            <aside class="side">
+                <div class="brand">
+                    <div class="logo">AI</div>
+                    <div>
+                        <h1>Contract Analyzer</h1>
+                        <p id="brandSub">Contract Review</p>
+                    </div>
+                </div>
+                <div class="nav" id="nav"></div>
+                <div class="note" id="sourceNote"></div>
+            </aside>
+            <main class="main">
+                <div class="top">
+                    <div class="title">
+                        <h2 id="pageTitle">Executive Decision Brief</h2>
+                        <p id="pageSub">Real contract risk, deal recommendation and board-ready summary.</p>
+                    </div>
+                </div>
+                <div class="filters" id="filters"><input id="search" placeholder="Search clauses, risks, sections..."
+                        oninput="renderTables()"><select id="riskFilter" onchange="renderTables()">
+                        <option>All</option>
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select><select id="priorityFilter" onchange="renderTables()">
+                        <option>All Priorities</option>
+                        <option>P1</option>
+                        <option>P2</option>
+                        <option>P3</option>
+                        <option>P4</option>
+                    </select></div>
+                <section class="page active" id="p0">
+                    <div class="grid kpis" id="kpis"></div>
+                    <div class="contextStrip" id="contractSnapshot"></div>
+                    <div class="execGrid">
+                        <div class="card board">
+                            <h3>Management-ready Decision</h3>
+                            <div class="decisionList" id="decisionList"></div>
+                        </div>
+                        <div class="card" style="grid-column:2;grid-row:1 / span 2">
+                            <h3>Contract value at risk by bucket</h3>
+                            <div class="piechart" id="penaltyChart"></div>
+                        </div>
+                        <div class="card summaryCard">
+                            <h3>Concise Management Summary</h3>
+                            <div class="summary">
+                                <ul class="blist" id="boardSummary"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid one" style="margin-top:14px">
+                        <div class="card">
+                            <h3>Key SLA Commitments</h3>
+                            <div class="tableWrap">
+                                <table id="slaCommitTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid one" style="margin-top:14px">
+                        <div class="card">
+                            <h3>Top decision blockers</h3>
+                            <div id="topBlockers"></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="page" id="pM">
+                    <div class="metadataGrid">
+                        <div class="card metaCard metaBlue">
+                            <div class="metaHead">Contract Identity</div>
+                            <div class="metaBody">
+                                <div class="tableWrap">
+                                    <table id="metadataIdentityTable"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card metaCard metaCyan">
+                            <div class="metaHead">Contract Dates & Status</div>
+                            <div class="metaBody">
+                                <div class="tableWrap">
+                                    <table id="metadataDatesTable"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card metaCard metaOrange wide">
+                            <div class="metaHead">Commercial, Category & Renewal Terms</div>
+                            <div class="metaBody">
+                                <div class="tableWrap">
+                                    <table id="metadataCommercialTable"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="page" id="p3">
+                    <div class="grid one" style="margin-top:14px">
+                        <div class="card">
+                            <h3>High risks only</h3>
+                            <div id="riskExplanations"></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="page" id="p2">
+                    <div class="card" style="margin-top:14px">
+                        <h3>Extracted clause / risk ledger</h3>
+                        <div class="tableWrap">
+                            <table id="clausesTable"></table>
+                        </div>
+                    </div>
+                </section>
+                <section class="page" id="p4">
+                    <div class="grid one" style="margin-top:14px">
+                        <div class="card">
+                            <h3>Financial interpretation</h3>
+                            <div id="financialNotes"></div>
+                        </div>
+                        <div class="card">
+                            <h3>Commercial baseline summary</h3>
+                            <div class="tableWrap">
+                                <table id="commercialBaselineTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Revenue protection controls</h3>
+                            <div id="revenueControls"></div>
+                        </div>
+                        <div class="card">
+                            <h3>Commercial leakage scenarios</h3>
+                            <div class="tableWrap">
+                                <table id="leakageScenariosTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Commercial exposure model</h3>
+                            <div class="tableWrap">
+                                <table id="penaltyTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="page" id="p5">
+                    <div class="card" style="margin-top:14px">
+                        <h3>Actionable recommendations & improved clause rewrites</h3>
+                        <div id="rewrites"></div>
+                    </div>
+                </section>
+                <section class="page" id="p8">
+                    <div class="legendStack">
+                        <div class="card">
+                            <h3>Management Decision Legend</h3>
+                            <div class="tableWrap">
+                                <table id="boardDecisionLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>How Management-ready Decision is derived</h3>
+                            <div class="tableWrap">
+                                <table id="decisionMethodTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>How Concise Management Summary is generated</h3>
+                            <div class="tableWrap">
+                                <table id="summaryMethodTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Risk Legend</h3>
+                            <div class="tableWrap">
+                                <table id="riskLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Incident Priority Definitions</h3>
+                            <div class="tableWrap">
+                                <table id="priorityLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Type Legend</h3>
+                            <div class="tableWrap">
+                                <table id="typeLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Status Legend</h3>
+                            <div class="tableWrap">
+                                <table id="statusLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Pricing Legend</h3>
+                            <div class="tableWrap">
+                                <table id="pricingLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>EM Level Legend</h3>
+                            <div class="tableWrap">
+                                <table id="emLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>SLA / Clause Type Legend</h3>
+                            <div class="tableWrap">
+                                <table id="slaLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Key SLA Commitments — Remedy / Penalty</h3>
+                            <div class="tableWrap">
+                                <table id="slaRemedyLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Confidence Legend</h3>
+                            <div class="tableWrap">
+                                <table id="confidenceLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Benchmark Verdict Legend (Benchmark vs Standard)</h3>
+                            <div class="tableWrap">
+                                <table id="benchLegendTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Assumptions</h3>
+                            <div class="tableWrap">
+                                <table id="assumptionsTable"></table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Limitations</h3>
+                            <div class="tableWrap">
+                                <table id="limitationsTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="page" id="p9">
+                    <div class="card">
+                        <h3 style="margin:0 0 6px">How to use this page</h3>
+                        <p class="small">Every service-level commitment we extract is scored <b>automatically, in
+                                code</b> — never by the AI — against a fixed benchmark playbook, so the verdict is
+                            deterministic and cannot be invented. Read it in three steps:</p>
+                        <ol class="small" style="margin:6px 0 0 18px;padding:0 0 0 4px">
+                            <li><b>Scorecard</b> — how many SLAs meet the standard, fall below it, or carry an uncapped
+                                penalty.</li>
+                            <li><b>This contract vs standard</b> — each SLA's extracted target beside the applicable
+                                standard and the verdict:<br><span class="bench bMeet">✓ Meets standard</span> the
+                                stated target meets or beats the benchmark (<b>pass</b>). &nbsp; <span
+                                    class="bench bBelow">⚠ Below standard</span> the stated target is worse than the
+                                benchmark (<b>fail — negotiate</b>). &nbsp; <span class="bench bBelow">⚠ Uncapped
+                                    penalty</span> a credit/penalty exists with no cap (<b>fail — negotiate</b>). &nbsp;
+                                <span class="bench bNa">No target stated</span> the SLA clause was found but no
+                                measurable value was given (<b>missing — verify manually</b>).</li>
+                            <li><b>Reference standards</b> — the full playbook the verdicts are based on.</li>
+                        </ol>
+                        <p class="small" style="margin-top:8px;color:#334155"><b>What is and isn't auto-scored.</b> Only
+                            <b>numeric threshold</b> checks get a pass/fail verdict above (a percentage or time the tool
+                            can read and compare). Everything else in the Reference Standards below — <b>Presence</b>
+                            ("is this protection in the contract at all?"), <b>Quality</b>, <b>Consistency</b>,
+                            <b>Risk-flag</b> and <b>Evidence</b> checks, including the Supplier and AI/Token safeguards
+                            and the ARR/funding items — is shown as the house standard <b>for human review and is NOT
+                                auto-graded</b>. A blank or absence there does not mean the contract complies; a
+                            reviewer must confirm it. Source: internal SLA / SOW / Project-Risk playbook (A–W).</p>
+                    </div>
+                    <div class="grid kpis" id="benchScore"></div>
+                    <div class="grid one">
+                        <div class="card">
+                            <h3 style="margin:0 0 8px">This contract vs standard</h3>
+                            <div class="tableWrap">
+                                <table id="benchResultsTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid one">
+                        <div class="card">
+                            <h3 style="margin:0 0 8px">Reference standards (benchmark playbook)</h3>
+                            <p class="small" style="margin:0 0 6px;color:#64748b">The full house playbook the verdicts
+                                point to. Numeric items are auto-scored above; presence, quality, consistency and
+                                risk-flag items are for human review.</p>
+                            <div class="benchRefBar"><input id="benchRefSearch" type="text"
+                                    placeholder="Search sections… (e.g. availability, security, ARR, tokens, defects)"
+                                    oninput="filterBenchSec(this.value)"><button type="button" class="benchRefBtn"
+                                    onclick="allBenchSec(false)">Expand all</button><button type="button"
+                                    class="benchRefBtn" onclick="allBenchSec(true)">Collapse all</button></div>
+                            <div id="benchReference"></div>
+                        </div>
+                    </div>
+                </section>
+                <div class="footer" id="footer"></div>
+            </main>
+        </div>
+    </div>
+    <script type="application/json" id="dashboardData">__DASHBOARD_DATA__</script>
+    <script>
+        const pages = [["p0", "Executive Decision Brief", "Real contract risk, deal recommendation and management-ready summary."], ["pM", "Contract Overview", "Extracted contract identity, dates, status, category, renewal and pricing details."], ["p3", "Top Risks", "High-risk explanation only."], ["p2", "SLA Risk Assessment", "Detailed extracted clause and risk table."], ["p4", "Commercial Impact", "Financial interpretation followed by exposure model."], ["p5", "Recommendations & Rewrites", "Negotiation actions and safer clauses."], ["p8", "Legends & Assumptions", "Management decision, risk, priority, clause type, confidence and assumptions."], ["p9", "Benchmark vs Standard", "How each SLA scores against the standard playbook, plus the standards themselves."]];
+        const data = JSON.parse(document.getElementById('dashboardData').textContent); const metadata = data.metadata || {}; const rows = data.rows || [];
+        function $(id) { return document.getElementById(id) } function esc(v) { return String(v ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])) } function num(n) { return (n === null || n === undefined || n === '' || isNaN(Number(n))) ? null : Number(n) } function moneyK(n) { const v = num(n); return v === null ? 'Not stated' : 'USD ' + (v / 1000).toFixed(2) + 'K' } function moneyFull(n) { const v = num(n); return v === null ? 'Not stated' : 'USD ' + v.toLocaleString('en-US') } function riskBadge(r) { return `<span class="riskBadge ${esc(r)}">● ${esc(r)}</span>` } function statusClass(s) { s = String(s || '').toLowerCase(); if (s.indexOf('active') >= 0) return 'st-active'; if (s.indexOf('upcoming') >= 0) return 'st-upcoming'; if (s.indexOf('hold') >= 0) return 'st-hold'; if (s.indexOf('expired') >= 0) return 'st-expired'; return 'st-unknown' } function statusBadge(s) { return `<span class="statusPill ${statusClass(s)}">${esc(s)}</span>` } function fallback(v, d) { return (v === null || v === undefined || v === '') ? d : v }
+        function prioClass(p) { p = String(p || '').toUpperCase(); return ['P1', 'P2', 'P3', 'P4'].indexOf(p) >= 0 ? p : '' } function prioBadge(p) { return `<span class="prio ${prioClass(p)}">${esc(p)}</span>` }
+        function penaltyKind(remedy, cap) { const s = (String(remedy || '') + ' ' + String(cap || '')).toLowerCase(); if (/no penalt|no service credit|without penalt|\bnone\b|not applicable|\bn\/a\b/.test(s)) return 'none'; if (/credit|penalt|liquidated|damages|\bcap\b|forfeit|withhold|deduction/.test(s)) return 'yes'; return 'unk' }
+        function penaltyBadge(remedy, cap) { const k = penaltyKind(remedy, cap); const label = k === 'yes' ? 'Penalty / Credit' : k === 'none' ? 'No penalty' : 'Not stated'; const detail = fallback(remedy, fallback(cap, '')); const showDetail = detail && !/^not stated/i.test(String(detail)); return `<span class="pen pen-${k}">${label}</span>` + (showDetail ? `<div class="small" style="margin-top:3px">${esc(detail)}</div>` : '') }
+        function penClassFor(state) { return state === 'Penalty / Credit' ? 'pen-yes' : state === 'No penalty' ? 'pen-none' : 'pen-unk' }
+        function isSlaRow(x) { const t = String(x.slaType || '').toLowerCase(); if (/sla|service level|service credit|penalty/.test(t)) return true; const m = String(x.metric || '').trim(), tg = String(x.target || '').trim(); return !!(m && tg && !/^not stated/i.test(m) && !/^not stated/i.test(tg)) }
+        function liOne(x) { if (x && typeof x === 'object') { const h = x.header ? `<b>${esc(x.header)}:</b> ` : ''; return `<li>${h}${esc(x.statement !== undefined ? x.statement : '')}</li>`; } return `<li>${esc(x)}</li>` }
+        function liItems(arr, fb) { arr = Array.isArray(arr) ? arr.slice(0, 5) : []; if (!arr.length) return fb ? `<li>${esc(fb)}</li>` : ''; return arr.map(liOne).join('') }
+        function bullets(arr, fb) { return `<ul class="blist">${liItems(arr, fb)}</ul>` }
+        function piePolar(cx, cy, r, ang) { const a = (ang - 90) * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+        function pieSlice(cx, cy, r, start, end, col) { const [sx, sy] = piePolar(cx, cy, r, end); const [ex, ey] = piePolar(cx, cy, r, start); const large = (end - start) <= 180 ? 0 : 1; return `<path d="M ${cx} ${cy} L ${sx.toFixed(2)} ${sy.toFixed(2)} A ${r} ${r} 0 ${large} 0 ${ex.toFixed(2)} ${ey.toFixed(2)} Z" fill="${col}"></path>`; }
+        function renderPie(counts, bv) {
+            const items = [['High', '#D00000'], ['Medium', '#F59E0B'], ['Low', '#211CE8']]; const total = (counts.High || 0) + (counts.Medium || 0) + (counts.Low || 0); const cx = 90, cy = 90, r = 88; let slices = ''; if (total === 0) { slices = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#ECEBFF"></circle>`; } else { const nz = items.filter(it => (counts[it[0]] || 0) > 0); if (nz.length === 1) { slices = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${nz[0][1]}"></circle>`; } else { let ang = 0; for (const it of items) { const c = counts[it[0]] || 0; if (!c) continue; const end = ang + 360 * c / total; slices += pieSlice(cx, cy, r, ang, end, it[1]); ang = end; } } }
+            slices += `<circle cx="${cx}" cy="${cy}" r="46" fill="#FBFDFF"></circle>`;
+            const legend = items.map(it => { const k = it[0], col = it[1]; const c = counts[k] || 0; const pct = total ? Math.round(100 * c / total) : 0; const cost = (bv && num(bv[k]) !== null) ? moneyFull(bv[k]) : 'Value not stated'; return `<div class="pieleg"><span class="sw" style="background:${col}"></span><div class="pietext"><span class="piecount"><b>${k}</b> — ${c} risk${c === 1 ? '' : 's'} (${pct}%)</span><span class="pieval">${esc(cost)}</span></div></div>`; }).join('');
+            return `<div class="pieWrap"><svg viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="Risk distribution pie chart">${slices}</svg><div class="pieCenter"><span class="t">Total risks</span><span class="n">${total}</span></div></div><div class="pieLegend">${legend}</div>`;
+        }
+        function shortType(t) { if (t === null || t === undefined || t === '') return 'Not stated'; const s = String(t).trim(); const low = s.toLowerCase(); const map = [['statement of work', 'SOW'], ['master services agreement', 'MSA'], ['master service agreement', 'MSA'], ['general services agreement', 'GSA'], ['general service agreement', 'GSA'], ['order form', 'Order Form'], ['purchase order', 'PO'], ['change order', 'CO'], ['work order', 'WO'], ['non-disclosure', 'NDA'], ['nondisclosure', 'NDA'], ['service level agreement', 'SLA'], ['amendment', 'Amendment'], ['addendum', 'Addendum'], ['contract', 'Contract']]; for (const kv of map) { if (low.includes(kv[0])) return kv[1]; } if (/^[A-Za-z]{2,6}$/.test(s)) return s.toUpperCase(); if (s.length <= 12) return s; return 'Contract'; }
+        function fitDashboardToDisplay() { const app = $('dashboardApp'), shell = $('scaleShell'); if (!app || !shell) return; const baseWidth = 1240; const displayWidth = Math.max(900, Math.min(screen.availWidth || baseWidth, screen.width || baseWidth)); const scale = Math.max(0.72, Math.min(1.08, displayWidth / baseWidth)); app.style.transform = 'scale(' + scale + ')'; shell.style.width = (baseWidth * scale) + 'px'; shell.style.minWidth = (baseWidth * scale) + 'px'; shell.style.height = (app.scrollHeight * scale) + 'px'; } window.addEventListener('resize', () => setTimeout(fitDashboardToDisplay, 50));
+        function showPage(i) { document.querySelectorAll('.page').forEach(x => x.classList.remove('active')); const target = $(pages[i][0]); if (target) target.classList.add('active'); document.querySelectorAll('.nav button').forEach((b, j) => b.classList.toggle('active', i === j)); if ($('pageTitle')) $('pageTitle').textContent = pages[i][1]; if ($('pageSub')) $('pageSub').textContent = pages[i][2]; if ($('filters')) $('filters').style.display = (pages[i][0] === 'p2') ? 'flex' : 'none'; window.scrollTo({ top: 0, behavior: 'smooth' }); setTimeout(fitDashboardToDisplay, 30) }
+        function filteredRows() { let s = ($('search')?.value || '').toLowerCase(), r = $('riskFilter')?.value || 'All', p = $('priorityFilter')?.value || 'All Priorities'; return rows.filter(x => (r === 'All' || x.risk === r) && (p === 'All Priorities' || x.priority === p) && Object.values(x).join(' ').toLowerCase().includes(s)); }
+        function table(id, cols, arr) { const el = $(id); if (!el) return; el.innerHTML = '<thead><tr>' + cols.map((c, i) => `<th onclick="sortTable('${id}',${i})">${esc(c[0])}</th>`).join('') + '</tr></thead><tbody>' + (arr || []).map(r => '<tr>' + cols.map(c => `<td>${c[1](r)}</td>`).join('') + '</tr>').join('') + '</tbody>'; }
+        function sortTable(id, n) { let t = $(id); if (!t || !t.tBodies[0]) return; let rs = [...t.tBodies[0].rows], asc = t.dataset.sort !== String(n); rs.sort((a, b) => a.cells[n].innerText.localeCompare(b.cells[n].innerText, undefined, { numeric: true }) * (asc ? 1 : -1)); rs.forEach(r => t.tBodies[0].appendChild(r)); t.dataset.sort = asc ? String(n) : '' }
+        function fields(keys) { return keys.map(([label, key]) => ({ fieldName: label, extractedDetails: metadata[key] || 'Not stated in uploaded contract' })) }
+        function benchBadge(x) { var s = x.vsStandardState || '', t = x.vsStandard || ''; if (!s || !t) return '<span style="color:#94a3b8">—</span>'; var cls = s === 'meets' ? 'bMeet' : (s === 'below' || s === 'uncapped') ? 'bBelow' : 'bNa'; var ic = s === 'meets' ? '✓ ' : (s === 'below' || s === 'uncapped') ? '⚠ ' : ''; return '<span class="bench ' + cls + '">' + ic + esc(t) + '</span>'; }
+        function toggleBenchSec(el) { var sec = el.closest ? el.closest('.benchSec') : null; if (!sec) return; var c = sec.classList.toggle('collapsed'); var t = el.querySelector('.benchToggle'); if (t) t.textContent = c ? '+' : '−'; }
+        function allBenchSec(collapse) { document.querySelectorAll('#benchReference .benchSec').forEach(function (s) { s.classList.toggle('collapsed', collapse); var t = s.querySelector('.benchToggle'); if (t) t.textContent = collapse ? '+' : '−'; }); }
+        function filterBenchSec(q) { q = (q || '').trim().toLowerCase(); var any = false; document.querySelectorAll('#benchReference .benchSec').forEach(function (s) { var hay = s.getAttribute('data-sec') || ''; var hit = !q || hay.indexOf(q) >= 0; s.style.display = hit ? '' : 'none'; if (hit) any = true; }); var nh = document.getElementById('benchNoHit'); if (nh) nh.style.display = any ? 'none' : ''; }
+        function renderTables() {
+            let fr = filteredRows(); table('clausesTable', [["Section", x => esc(x.section)], ["Page", x => esc(x.pageNo)], ["SLA / Clause Type", x => `<span class="pill blue">${esc(x.slaType)}</span>`], ["Priority", x => prioBadge(x.priority)], ["Service / Tower", x => esc(x.service)], ["Deliverable", x => esc(x.deliverable)], ["Metric", x => esc(x.metric)], ["Target", x => esc(x.target)], ["Measurement", x => esc(x.measurement)], ["vs Standard", x => benchBadge(x)], ["Clause / Obligation", x => esc(x.clause)], ["Risk", x => riskBadge(x.risk)], ["Value at Risk", x => esc(x.valueAtRisk)], ["Dependency", x => esc(x.customerDependency)], ["Exclusions / Gap", x => esc(x.exclusions)], ["Remedy", x => esc(x.remedy)], ["Cap", x => esc(x.cap)], ["Owner", x => esc(x.owner)], ["Status", x => esc(x.negotiationStatus)], ["Recommended Action", x => esc(x.recommendedAction)], ["Evidence", x => esc(x.evidence)], ["Reasoning", x => esc(x.reason)], ["Confidence", x => esc(x.confidence) + '%']], fr);
+            (function () { const sla = rows.filter(isSlaRow).slice(0, 8); const el = $('slaCommitTable'); if (!el) return; if (!sla.length) { if (el.parentElement) el.parentElement.innerHTML = '<p class="small">No SLA commitments were extracted from the uploaded contract.</p>'; return; } table('slaCommitTable', [["SLA / Metric", x => `<b>${esc(fallback(x.metric, x.slaType))}</b>`], ["Target", x => esc(x.target)], ["Measurement", x => esc(x.measurement)], ["Remedy / Penalty", x => penaltyBadge(x.remedy, x.cap)], ["vs Standard", x => benchBadge(x)], ["Risk", x => riskBadge(x.risk)]], sla); const nB = Number(data.slaBelowStandard || 0), nE = Number(data.slaBenchmarked || 0); if (nE && el.parentElement) { const msg = nB ? ('⚠ ' + nB + ' of ' + nE + ' SLA' + (nE > 1 ? 's' : '') + ' below market standard / uncapped') : ('✓ All ' + nE + ' benchmarked SLA' + (nE > 1 ? 's' : '') + ' meet market standard'); el.insertAdjacentHTML('beforebegin', '<p class="small benchNote ' + (nB ? 'benchBad' : 'benchOk') + '">' + msg + '</p>'); } })();
+            table('metadataIdentityTable', [["Field Name", x => esc(x.fieldName)], ["Extracted Details", x => esc(x.extractedDetails)]], fields([["File Name", "fileName"], ["Contract Title", "contractTitle"], ["Contract Type", "contractType"], ["Client / Buyer / Customer", "client"], ["Supplier / Vendor / Service Provider", "supplier"]]));
+            table('metadataDatesTable', [["Field Name", x => esc(x.fieldName)], ["Extracted Details", x => x.fieldName === 'Current Contract Status' ? statusBadge(x.extractedDetails) : esc(x.extractedDetails)]], fields([["Effective Date", "effectiveDate"], ["Contract Start Date", "startDate"], ["Contract End Date", "endDate"], ["Contract Term / Duration", "term"], ["Current Contract Status", "status"], ["Signature / Execution Evidence", "executionEvidence"]]));
+            table('metadataCommercialTable', [["Field Name", x => esc(x.fieldName)], ["Extracted Details", x => esc(x.extractedDetails)]], fields([["Contract Category", "category"], ["Contract Sub-category", "subCategory"], ["Renewal Terms", "renewalTerms"], ["Pricing Model", "pricingFull"], ["Contract Value / Budget / Annual Value / Monthly Fee", "contractValue"], ["Governing Agreement / MSA / GSA Reference", "governingAgreement"], ["EM Level", "emLevel"], ["Billing Cadence", "billingCadence"], ["Service Credit Caps", "serviceCreditCaps"], ["Termination Terms", "terminationTerms"], ["Security / Compliance Terms", "securityTerms"], ["SLA / Service Levels", "slaTerms"], ["Scope / Change-control Terms", "scopeChangeTerms"], ["Chargeable Events", "chargeableEvents"], ["Exit / Transition Obligations", "exitObligations"], ["Total Pages in Uploaded File", "totalPagesUploaded"], ["Total Pages Scanned by AI", "pagesScannedByAI"]]));
+            const counts = data.counts || { High: 0, Medium: 0, Low: 0 }; const bv = data.bucketValues || null;
+            table('penaltyTable', [["Risk Bucket", x => riskBadge(x.risk)], ["Row Count", x => String(x.count)], ["Directional Contract Value at Risk", x => x.valueText], ["Service-credit / Penalty Exposure", x => esc(x.penalty)]], ['High', 'Medium', 'Low'].map(k => ({ risk: k, count: counts[k] || 0, valueText: (bv && num(bv[k]) !== null) ? moneyFull(bv[k]) : 'Contract value not stated', penalty: fallback((data.penaltyExposure || {})[k], 'No stated service-credit or penalty amount in uploaded contract') })));
+            table('commercialBaselineTable', [["Commercial Field", x => `<b>${esc(x.field)}</b>`], ["Extracted / Derived Value", x => esc(x.value)], ["Commercial Interpretation", x => esc(x.interpretation)]], data.commercialBaseline || []);
+            table('leakageScenariosTable', [["Scenario", x => esc(x.scenario)], ["Commercial Impact", x => esc(x.impact)], ["Control", x => esc(x.control)], ["Evidence Basis", x => esc(x.evidence)], ["Owner", x => esc(x.owner)]], data.leakageScenarios || []);
+            table('boardDecisionLegendTable', [["Decision", x => esc(x.decision)], ["Meaning", x => esc(x.meaning)], ["Typical Use", x => esc(x.typicalUse)]], data.boardDecisionLegend || []); table('riskLegendTable', [["Level", x => riskBadge(x.level)], ["Definition", x => esc(x.definition)], ["Management Action", x => esc(x.managementAction)]], data.riskLegend || []); table('priorityLegendTable', [["Priority", x => prioBadge(x.priority)], ["Impact", x => esc(x.impact)], ["Response Target", x => esc(x.responseTarget)], ["Resolution Target", x => esc(x.resolutionTarget)], ["Risk Note", x => esc(x.riskNote)]], data.priorityLegend || []); table('slaLegendTable', [["SLA / Clause Type", x => `<span class="pill blue">${esc(x.type)}</span>`], ["Meaning", x => esc(x.meaning)]], data.slaLegend || []); table('slaRemedyLegendTable', [["Remedy / Penalty", x => `<span class="pen ${penClassFor(x.state)}">${esc(x.state)}</span>`], ["Meaning", x => esc(x.meaning)]], data.slaRemedyLegend || []); table('confidenceLegendTable', [["Confidence", x => esc(x.range)], ["Interpretation", x => esc(x.meaning)]], data.confidenceLegend || []); table('decisionMethodTable', [["Aspect", x => `<b>${esc(x.aspect)}</b>`], ["How it is derived", x => esc(x.detail)]], data.decisionMethodLegend || []); table('summaryMethodTable', [["Aspect", x => `<b>${esc(x.aspect)}</b>`], ["Explanation", x => esc(x.detail)]], data.summaryMethodLegend || []); table('typeLegendTable', [["Type", x => `<span class="pill blue">${esc(x.type)}</span>`], ["Meaning", x => esc(x.meaning)]], data.typeLegend || []); table('statusLegendTable', [["Status", x => statusBadge(x.status)], ["Meaning", x => esc(x.meaning)]], data.statusLegend || []); table('pricingLegendTable', [["Pricing Model", x => `<b>${esc(x.model)}</b>`], ["Meaning", x => esc(x.meaning)]], data.pricingLegend || []); table('emLegendTable', [["EM Level", x => `<b>${esc(x.level)}</b>`], ["Meaning", x => esc(x.meaning)]], data.emLegend || []); table('assumptionsTable', [["Area", x => `<b>${esc(x.area)}</b>`], ["Assumption / Rule", x => esc(x.assumption)]], data.assumptions || []); table('limitationsTable', [["Area", x => `<b>${esc(x.area)}</b>`], ["Limitation", x => esc(x.detail)]], data.limitationsLegend || []); table('benchLegendTable', [["Verdict", x => { var cls = x.state === 'meets' ? 'bMeet' : (x.state === 'below' || x.state === 'uncapped') ? 'bBelow' : 'bNa'; var ic = x.state === 'meets' ? '✓ ' : (x.state === 'below' || x.state === 'uncapped') ? '⚠ ' : ''; return '<span class="bench ' + cls + '">' + ic + esc(x.verdict) + '</span>'; }], ["Meaning", x => esc(x.meaning)]], data.benchmarkLegend || []);
+            (function () { const el = $('benchResultsTable'); if (!el) return; const br = rows.filter(x => x.vsStandardState); if (!br.length) { if (el.parentElement) el.parentElement.innerHTML = '<p class="small">No SLA commitments with a benchmarkable target were found in this contract.</p>'; return; } table('benchResultsTable', [["SLA / Metric", x => `<b>${esc(fallback(x.metric, x.slaType))}</b>`], ["Extracted Target", x => esc(fallback(x.target, 'Not stated'))], ["Applicable Standard", x => esc(x.benchStandard || '—')], ["Verdict", x => benchBadge(x)]], br); })();
+            (function () { const host = $('benchReference'); if (!host) return; const ref = data.benchmarkReference || []; host.innerHTML = ref.map(sec => { const items = sec.items || []; const rs = items.map(it => `<tr><td>${esc(it[0])}</td><td>${esc(it[1])}</td><td><b>${esc(it[2])}</b></td></tr>`).join(''); const key = esc((sec.section + ' ' + items.map(it => it[0] + ' ' + it[1]).join(' ')).toLowerCase()); return `<div class="benchSec" data-sec="${key}"><h4 class="benchSecHead" onclick="toggleBenchSec(this)"><span class="benchToggle">−</span> ${esc(sec.section)} <span class="benchCount">(${items.length})</span></h4><div class="benchSecBody"><div class="tableWrap"><table><thead><tr><th style="width:20%">Category</th><th>Metric / Check</th><th style="width:26%">Standard</th></tr></thead><tbody>${rs}</tbody></table></div></div></div>`; }).join('') + '<p id="benchNoHit" class="benchNoHit" style="display:none">No sections match your search.</p>'; })();
+            renderDynamic();
+        }
+        function renderDynamic() {
+            const set = (id, html) => { const e = $(id); if (e) e.innerHTML = html; }; const m = metadata; const counts = data.counts || { High: 0, Medium: 0, Low: 0 }; const bv = data.bucketValues || null; const subs = data.kpiSubs || {}; const overall = data.overall || 'Not stated'; const overallColor = overall === 'High' ? 'var(--red)' : overall === 'Medium' ? 'var(--orange)' : 'var(--primary)';
+            if ($('brandSub')) $('brandSub').textContent = (m.client && m.client !== 'Not stated in uploaded contract' && m.client !== 'Not stated') ? (m.client + ' Contract Review') : 'Contract Review';
+            { const note = $('sourceNote'); if (note) { const sn = String(data.sourceNote || '').trim(); if (sn) { note.innerHTML = sn; note.style.display = ''; } else { note.style.display = 'none'; } } }
+            if ($('footer')) $('footer').textContent = fallback(data.footer, 'Risk bucket values are directional allocations, not contractual penalties.');
+            const cvNumeric = num(m.contractValueNumeric);
+            set('kpis', `<div class="card kpi high"><div class="label">Overall Risk</div><div class="value" style="color:${overallColor}">${esc(overall)}</div></div><div class="card kpi decision"><div class="label">Management Decision</div><div class="value" style="color:#9A5800">${esc(data.boardDecision || 'Not stated')}</div></div><div class="card kpi money"><div class="label">Contract Value at Risk</div><div class="value" style="color:#9F1239">${cvNumeric === null ? 'Not stated' : moneyK(cvNumeric)}</div></div><div class="card kpi blue"><div class="label"># High Risks</div><div class="value" style="color:var(--primary)">${counts.High || 0}</div></div><div class="card kpi positive"><div class="label">Total Risks</div><div class="value" style="color:#087A83">${rows.length}</div></div>`);
+            set('contractSnapshot', `<span><b>Type:</b> ${esc(shortType(m.contractType))}</span><span><b>Status:</b> ${statusBadge(fallback(m.status, 'Not stated'))}</span><span><b>Term:</b> ${esc(fallback(m.term, 'Not stated'))}</span><span><b>Pricing:</b> ${esc(fallback(m.pricingModel, 'Not stated'))}</span><span><b>EM:</b> ${esc(fallback(m.emDisplay, fallback(m.emShort, 'Not stated')))}</span>`);
+            const dl = data.decisionList || {}; set('decisionList', `<div class="decisionItem"><h4>Proceed if</h4>${bullets(dl.proceedIf, 'Conditions to validate before execution were not derived.')}</div><div class="decisionItem"><h4>Renegotiate now</h4>${bullets(dl.renegotiate, 'Terms to renegotiate were not derived.')}</div>`);
+            set('boardSummary', liItems(data.boardSummary, ''));
+            set('penaltyChart', renderPie(counts, bv));
+            set('topBlockers', rows.filter(x => x.risk === 'High').map(x => `<div class="insight"><div class="icon ${prioClass(x.priority) || 'iRed'}">${esc(x.priority)}</div><div><b>${esc(x.section)} • Page ${esc(x.pageNo)} • ${esc(x.slaType)}</b><br><span class="small">${esc(x.reason)} Action: ${esc(x.recommendedAction)}</span></div></div>`).join('') || '<p class="small">No High-risk rows were extracted from the uploaded contract.</p>');
+            set('riskExplanations', rows.filter(x => x.risk === 'High').map(x => `<div class="insight"><div class="icon ${prioClass(x.priority) || 'iRed'}">${esc(x.priority)}</div><div><b>${esc(x.section)} • Page ${esc(x.pageNo)} • ${esc(x.slaType)}</b><br>${esc(x.reason)}<br><span class="small"><b class="evi">Evidence:</b> ${esc(x.evidence)}<br><b class="rec">Recommended action:</b> ${esc(x.recommendedAction)}</span></div></div>`).join('') || '<p class="small">No High-risk rows were extracted from the uploaded contract.</p>');
+            const finBig = cvNumeric === null ? `<div class="fin-big na">Contract value not stated</div>` : `<div class="fin-big">${moneyFull(cvNumeric)}</div>`; set('financialNotes', finBig + bullets(data.financialNotes, 'Financial interpretation was not available from the uploaded contract.'));
+            set('revenueControls', (data.revenueControls || []).map((c, i) => `<div class="insight"><div class="icon" style="background:#ECEBFF;color:#211CE8">${i + 1}</div><div><b>${esc(c.title)}</b>${c.owner ? ` <span class="pill blue">${esc(c.owner)}</span>` : ''}<br><span class="small">${esc(c.detail)}</span></div></div>`).join('') || '<p class="small">No revenue protection controls were derived from the uploaded contract.</p>');
+            set('rewrites', (data.recos || []).map(r => `<div class="card" style="box-shadow:none;margin-bottom:12px"><h3>${riskBadge(r.risk)} ${esc(r.contract)}: ${esc(r.action)}</h3><div class="rewrite"><div class="box bad"><b>Original wording or summarized risky wording</b><br>${esc(r.original)}</div><div class="box good"><b>Improved negotiation wording</b><br>${esc(r.rewrite)}</div></div></div>`).join(''));
+            { const nB = Number(data.slaBenchmarked || 0), mk = Number(data.slaMeets || 0), bl = Number(data.slaBelow || 0), uc = Number(data.slaUncapped || 0); const tile = (l, v, c) => `<div class="card kpi"><div class="label">${l}</div><div class="value" style="color:${c}">${v}</div></div>`; set('benchScore', nB ? (tile('Benchmarked SLAs', nB, 'var(--primary)') + tile('Meets standard', mk, '#087A83') + tile('Below standard', bl, 'var(--red)') + tile('Uncapped', uc, '#9A5800')) : '<p class="small">No SLAs with a benchmarkable target were found in this contract.</p>'); }
+            setTimeout(fitDashboardToDisplay, 30)
+        }
+        function init() { const nav = $('nav'); if (nav) nav.innerHTML = pages.map((p, i) => `<button class="${i === 0 ? 'active' : ''}" onclick="showPage(${i})">${i + 1}. ${esc(p[1])}</button>`).join(''); renderTables(); if ($('filters')) $('filters').style.display = 'none'; fitDashboardToDisplay() } try { init() } catch (e) { document.body.insertAdjacentHTML('afterbegin', '<div style="padding:12px;background:#FDE8E8;color:#991B1B;border:1px solid #EF4444;font-family:Segoe UI"><b>Dashboard script warning:</b> ' + esc(e.message) + '. Download and open locally.</div>') }
+    </script>
+</body>
+
+</html>
