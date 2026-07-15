@@ -6,5 +6,21 @@
     "logFile": "output/logs/run-20260715-131435-ctind-clientdba-physician-diagnostic-ai-rules-engine.log",
     "createdAt": "2026-07-15 13:20:44",
     "contentHash": "4a87fc2eeb4a6154e4c2ca36b521195bd75915b86c5a6e83a4791fbb0f8b916b"
+  },
+  {
+    "clientName": "INVKLM",
+    "fileName": "CTIND_INVKLM_Physician_Diagnostic_AI_Rules_Engine_AWS_Funding.pdf",
+    "outputFile": "output/invklm-ctind-invklm-physician-diagnostic-ai-rules-engine-aws-funding-analysis-20260715-152217.html",
+    "logFile": "output/logs/run-20260715-151610-ctind-invklm-physician-diagnostic-ai-rules-engine-aws-funding.log",
+    "createdAt": "2026-07-15 15:22:17",
+    "contentHash": "4bc6f2b5a91c132e122858597961c066191206f6920acb9b4cfe2ecd7ceb8dbc"
+  },
+  {
+    "clientName": "Yen Corp. Ltd.",
+    "fileName": "SOW_CTIND_YenCorp_Server_Maintenance.pdf",
+    "outputFile": "output/yen-corp-ltd-sow-ctind-yencorp-server-maintenance-analysis-20260715-155544.html",
+    "logFile": "output/logs/run-20260715-154950-sow-ctind-yencorp-server-maintenance.log",
+    "createdAt": "2026-07-15 15:55:44",
+    "contentHash": "242eed0713c132118d438a9fac59886d66d51fe65f605a44597cca368a211d34"
   }
 ]

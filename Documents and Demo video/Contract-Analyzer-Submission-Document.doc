@@ -155,6 +155,7 @@
 <tr><td class="extra">◆ Guardrails</td><td>Input validation, prompt-injection/jailbreak screening, PII masking, output/schema validation, grounding checks, EM↔pricing consistency, rate limiting, access control, audit trail.</td></tr>
 <tr><td class="extra">◆ Multi-format &amp; multi-contract-type</td><td>PDF/DOCX; SOW/MSA/GSA/Order Form/Amendment/…; healthcare and general services contracts.</td></tr>
 <tr><td class="extra">◆ History, dedup &amp; self-contained output</td><td>Analysis history, content de-duplication, and offline-openable HTML dashboards.</td></tr>
+<tr><td class="extra">◆ Per-run output logs</td><td>A PII-masked log file is written to <code>output/logs/</code> on every analyze click (success, duplicate or error) — status, model, tokens, cost, page counts, injection/PHI flags and warnings — alongside the rolling <code>audit.log</code>, for full run traceability.</td></tr>
 </table>
 
 <h1 id="s7">7. How It Works — Architecture &amp; Pipeline</h1>

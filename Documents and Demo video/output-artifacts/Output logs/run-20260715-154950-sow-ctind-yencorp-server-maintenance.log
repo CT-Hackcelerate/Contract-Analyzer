@@ -1,0 +1,25 @@
+{
+  "runId": "[phone]",
+  "ts": "[phone]T10:25:44.915Z",
+  "status": "ok",
+  "fileName": "SOW_CTIND_YenCorp_Server_Maintenance.pdf",
+  "durationMs": 354366,
+  "clientName": "Yen Corp. Ltd.",
+  "outputFile": "output/yen-corp-ltd-sow-ctind-yencorp-server-maintenance-analysis-[phone].html",
+  "model": "claude-sonnet-[phone]",
+  "fromCache": false,
+  "inputTokens": 34832,
+  "outputTokens": 21469,
+  "costEstimateUSD": 0.4265,
+  "truncated": false,
+  "totalPagesUploaded": "9",
+  "pagesScannedByAI": "9",
+  "injectionDetected": false,
+  "injectionHits": [],
+  "phiDetected": [],
+  "warnings": [
+    "counts.Medium (18) != actual rows (17); recomputed.",
+    "counts.Low (3) != actual rows (4); recomputed."
+  ],
+  "contentHash": "242eed0713c132118d438a9fac59886d66d51fe65f605a44597cca368a211d34"
+}
