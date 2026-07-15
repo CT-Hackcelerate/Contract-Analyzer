@@ -525,7 +525,7 @@ function normalize(data) {
   d.sourceNote = hasExternalRef
     ? '<b>Note:</b> External references cited in the contract have not been validated and must be reviewed manually.'
     : '';
-  d.footer = 'CitiusTech Confidential';
+  d.footer = 'Disclaimer: This is an AI generated analysis; final decision require human judgement';
 
   return d;
 }
