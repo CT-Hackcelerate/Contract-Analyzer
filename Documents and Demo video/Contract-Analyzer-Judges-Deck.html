@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contract Analyzer — Judges Deck</title>
+<style>
+  :root{
+    --indigo:#4f46e5; --purple:#7c3aed; --cyan:#06b6d4;
+    --ink:#0f172a; --sub:#475569; --line:#e2e8f0; --bg:#f5f6fb; --card:#ffffff;
+    --good:#059669; --warn:#d97706; --bad:#dc2626;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:#1e1b4b}
+  .deck{max-width:1160px;margin:0 auto}
+  .slide{position:relative;background:var(--bg);min-height:660px;padding:48px 56px 70px;display:none;border-radius:18px;margin:22px auto;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden}
+  .slide.active{display:block}
+  .slide::before{content:"";position:absolute;left:0;top:0;height:8px;width:100%;background:linear-gradient(90deg,var(--indigo),var(--purple),var(--cyan))}
+  .kicker{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);background:#efeafe;padding:5px 12px;border-radius:999px;margin-bottom:12px}
+  h1{font-size:34px;line-height:1.12;margin:.1em 0 .3em}
+  h2{font-size:27px;line-height:1.15;margin:.1em 0 .5em}
+  h3{margin:.1em 0 .3em;font-size:16px}
+  p{font-size:15.5px;line-height:1.5;color:var(--sub);margin:.4em 0}
+  .lead{font-size:18px;color:var(--ink)}
+  .grid{display:grid;gap:14px;margin-top:12px}
+  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+  .card p{font-size:13.5px;margin:.2em 0}
+  .card.hd{border-top:3px solid var(--indigo)}
+  .num{font-size:26px;font-weight:800}
+  .grad{background:linear-gradient(90deg,var(--indigo),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .cyan{color:var(--cyan)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+  ul.clean{margin:.3em 0 0;padding-left:0;list-style:none}
+  ul.clean li{font-size:14.5px;color:var(--sub);padding:5px 0 5px 26px;position:relative;line-height:1.4}
+  ul.clean li::before{content:"";position:absolute;left:0;top:10px;width:11px;height:11px;border-radius:3px;background:linear-gradient(135deg,var(--indigo),var(--cyan))}
+  ul.tick li::before{content:"✓";background:none;color:var(--good);font-weight:800;top:4px;width:auto;height:auto}
+  .flow{display:flex;align-items:stretch;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .step{flex:1;min-width:120px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .step .n{width:24px;height:24px;border-radius:50%;background:var(--indigo);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:13px}
+  .step b{font-size:13.5px}.step p{font-size:12px;margin:3px 0 0}
+  .arrow{align-self:center;color:var(--purple);font-size:20px;font-weight:700}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px}
+  th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#334155;font-size:11px;letter-spacing:.05em;text-transform:uppercase;background:#eef0f8}
+  td b{color:var(--ink)}
+  .pill{display:inline-block;font-size:11.5px;font-weight:600;color:#3730a3;background:#e0e7ff;padding:3px 9px;border-radius:999px;margin:3px 4px 3px 0}
+  .shot{border:2px dashed #c4b5fd;border-radius:12px;background:#faf9ff;min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;color:#8b7fd6;font-size:12.5px;padding:12px}
+  .foot{position:absolute;left:56px;right:56px;bottom:16px;display:flex;justify-content:space-between;font-size:11.5px;color:#94a3b8;border-top:1px solid var(--line);padding-top:8px}
+  .ref{font-size:12px;color:#7c3aed;background:#f3effe;border:1px solid #e0d8fb;border-radius:8px;padding:8px 10px;margin-top:10px}
+  .title{background:radial-gradient(1200px 500px at 15% 0%,#312e81,#1e1b4b)}
+  .title::before{height:0}.title h1{color:#fff;font-size:40px}.title p{color:#c7d2fe}
+  .bar{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:10}
+  .bar button{background:#fff;border:1px solid #cbd5e1;color:#1e293b;font-size:14px;font-weight:600;padding:9px 16px;border-radius:10px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  .bar button:hover{background:#eef2ff}.count{background:#312e81;color:#fff;border:none}
+  @media print{body{background:#fff}.slide{display:block;page-break-after:always;box-shadow:none;margin:0;border-radius:0;min-height:96vh}.slide::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar{display:none}.title{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1 PROBLEM / SOLUTION / IMPACT -->
+  <section class="slide active">
+    <span class="kicker">Contract Analyzer · Overview</span>
+    <h1>Read the contract. Decide with confidence.</h1>
+    <p class="lead" style="margin-bottom:4px">Use case: first-pass risk review of customer / healthcare services &amp; SDLC contracts (SOW, MSA, GSA, Order Forms).</p><br>
+    <div class="grid g3">
+      <div class="card hd"><h3>The problem</h3><p>Manual contract &amp; SLA review takes <b>hours</b>, varies reviewer-to-reviewer, and buries penalties, uptime SLAs and commercial terms across dozens of pages. Leadership needs a fast, consistent proceed / renegotiate call.</p></div>
+      <div class="card hd"><h3>The solution</h3><p>An AI agent, <b>built with Claude Code</b>: upload a PDF/DOCX, it extracts and analyzes the contract under a strict grounded prompt, and produces a management-ready <b>8-page dashboard</b> in ~10–15 minutes.</p></div>
+      <div class="card hd"><h3>Business impact</h3><p><b>~90%</b> less first-pass effort; hours&nbsp;→&nbsp;minutes; every finding evidence-backed and reproducible; penalty &amp; SLA exposure surfaced <b>before signature</b>. Applies across payers, providers, MedTech &amp; SDLC.</p></div>
+    </div><br>
+    <div class="grid g4" style="margin-top:6px">
+      <div class="card"><div class="num grad">~10–15 min</div><p>upload → decision</p></div>
+      <div class="card"><div class="num grad">~90%</div><p>less review effort</p></div>
+      <div class="card"><div class="num grad">100%</div><p>findings evidence-backed</p></div>
+      <div class="card"><div class="num grad">8 pages</div><p>self-contained dashboard</p></div>
+    </div>
+    <div class="foot"><span><b>Team Name:</b> Contract Analyzer &nbsp;·&nbsp; <b>Team Members:</b> Karan Mhaske (TL), Prathmesh Mhatre, Vibhav Patil, Pritesh Badgujar</span><span>1 · Problem · Solution · Impact</span></div>
+  </section>
+
+  <!-- 2 SOLUTION OVERVIEW / APPROACH -->
+  <section class="slide">
+    <span class="kicker">Approach</span>
+    <h2>Solution overview — a grounded, self-verifying pipeline</h2>
+	<br>
+    <div class="flow">
+      <div class="step"><div class="n">1</div><b>Upload</b><p>One PDF / DOCX (≤25 MB), validated</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">2</div><b>Extract</b><p>Text + <code>[[PAGE n]]</code> markers</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">3</div><b>Guard</b><p>Injection &amp; PHI screen; untrusted-data wrap</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">4</div><b>Analyze</b><p>Claude at temp 0 → grounded JSON</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">5</div><b>Reconcile</b><p>Counts · EM↔pricing · pages · SLA benchmark</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">6</div><b>Build</b><p>Inject data into fixed template</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">7</div><b>Save + log</b><p>Dashboard, history, per-run log</p></div>
+    </div>
+	<br>
+    <div class="grid g3" style="margin-top:16px">
+      <div class="card"><h3>Grounded</h3><p>The model uses only the uploaded contract; missing values render "Not stated," never invented. Every risk quotes the clause + page + confidence.</p></div>
+      <div class="card"><h3>Verified in code</h3><p>Risk counts, status, money, page numbers, EM↔pricing and SLA benchmarks are recomputed in code — not trusted from the model.</p></div>
+      <div class="card"><h3>Deterministic</h3><p>Temperature 0 + a content-addressed cache: the same contract always yields the same report; duplicates never re-spend tokens.</p></div>
+    </div>
+	<br>
+    <div class="card"><h3>Technology used</h3><p><span class="pill">Node.js</span><span class="pill">Express</span><span class="pill">Claude API (Anthropic SDK)</span><span class="pill">pdf-parse</span><span class="pill">mammoth</span><span class="pill">HTML / CSS / JS</span><span class="pill">dotenv</span><span class="pill">Built with Claude Code</span></p></div>
+    <div class="foot"><span> </span><span>2 · Solution overview / approach</span></div>
+  </section>
+
+  <!-- 3 GUARDRAILS & VALIDATION -->
+  <section class="slide">
+    <span class="kicker">Well made &amp; safe</span>
+    <h2>Guardrails &amp; validation controls — and why</h2>
+    <table>
+      <tr><th style="width:30%">Control</th><th>Why it's there</th></tr>
+      <tr><td><b>Input validation</b></td><td>PDF/DOCX only, 25 MB cap, safe file name — blocks malformed, oversized or path-traversing uploads.</td></tr>
+      <tr><td><b>Prompt-injection / jailbreak screening</b></td><td>Contract wrapped as untrusted data in markers + hardened system prompt — hidden "ignore instructions" text can't hijack the agent; hits are logged.</td></tr>
+      <tr><td><b>PII / secret masking</b></td><td>Emails, phones, PAN, Aadhaar, SSN, MRN, API keys, passwords redacted from every log — sensitive data never lands in a file.</td></tr>
+      <tr><td><b>PHI screening</b></td><td>Every upload scanned for patient identifiers (MRN, DOB, SSN, ICD, NPI) — flagged &amp; audited so no real patient data slips in.</td></tr>
+      <tr><td><b>Grounding + evidence</b></td><td>"Not stated" for anything missing; a verbatim clause quote and confidence on every finding — prevents fabrication.</td></tr>
+      <tr><td><b>Deterministic re-computation</b></td><td>Counts, status, money and page numbers computed in code — the numbers a manager reads are always correct.</td></tr>
+      <tr><td><b>EM ↔ pricing consistency</b></td><td>Engagement model and pricing forced to agree — an impossible pair (e.g. T&amp;M + EM4 Fixed) can never display.</td></tr>
+      <tr><td><b>SLA benchmark (in code)</b></td><td>Each SLA scored against a fixed playbook deterministically — verdicts can never be hallucinated.</td></tr>
+      <tr><td><b>Output schema validation</b></td><td>Model JSON checked against the schema with one corrective retry — malformed output never reaches the UI.</td></tr>
+      <tr><td><b>Determinism (temp 0 + cache)</b></td><td>Same contract → same result across runs; reproducible for judges and auditors.</td></tr>
+      <tr><td><b>Rate limiting</b></td><td>Per-IP sliding window on <code>/analyze</code> — guards against abuse and runaway cost.</td></tr>
+      <tr><td><b>Access control</b></td><td>Only the app pages &amp; generated dashboards are served; prompt, source, cache, logs &amp; history are not exposed over HTTP.</td></tr>
+      <tr><td><b>Audit trail + per-run logs</b></td><td>Every run appends a PII-masked audit line and writes a per-run log file — full traceability.</td></tr>
+    </table>
+    <div class="foot"><span> </span><span>3 · Guardrails &amp; validation</span></div>
+  </section>
+
+  <!-- 4 DOD & ADDITIONAL -->
+  <section class="slide">
+    <span class="kicker">Completeness</span>
+    <h2>Definition of Done &amp; additional achievements</h2>
+    <div class="grid g2">
+      <div class="card hd">
+        <h3>Definition of Done — all met ✓</h3>
+        <ul class="clean tick">
+          <li>Extract key SLA clauses (deliverables, availability, response/resolution, penalties)</li>
+          <li>Classify SLA / clause types</li>
+          <li>Identify risky clauses via AI reasoning</li>
+          <li>Highlight top risk areas with explanations</li>
+          <li>Actionable recommendations + improved clause rewrites</li>
+          <li>Concise executive summary + overall contract risk</li>
+        </ul>
+      </div>
+      <div class="card hd">
+        <h3>Over &amp; above the DoD</h3>
+        <ul class="clean">
+          <li>Contract metadata + EM-level classification with inference basis</li>
+          <li>Commercial impact: value-at-risk, baseline, leakage, exposure model</li>
+          <li>Priority (P1–P4) + confidence + page-level traceability</li>
+          <li>Management decision + risk chart + Key SLA Commitments table</li>
+          <li><b>Benchmark vs Standard</b> — SLAs scored in code vs a full A–W playbook</li>
+          <li>Supplier &amp; AI/Token safeguards reference; PHI safety</li>
+          <li>Determinism, content dedup, guardrails, per-run output logs</li>
+          <li>PDF/DOCX; SOW/MSA/GSA/Order Form/Amendment; self-contained output</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot"><span> </span><span>4 · DoD &amp; additional achievements</span></div>
+  </section>
+
+  <!-- 5 OUTPUT AS PER DOD -->
+  <section class="slide">
+    <span class="kicker">The output</span>
+    <h2>Output explained — mapped to the DoD</h2>
+    <table>
+      <tr><th style="width:42%">DoD item</th><th>Where it appears in the output</th></tr>
+      <tr><td>Extract key SLA clauses</td><td><b>Key SLA Commitments</b> table + <b>SLA Risk Assessment</b> ledger — metric, target, measurement, remedy/penalty per clause.</td></tr>
+      <tr><td>Classify SLA types</td><td><code>slaType</code> per row + <b>SLA / Clause-Type legend</b> (SLA, Service Credit, Termination, Cost, Security, Governance, Referenced Agreement).</td></tr>
+      <tr><td>Identify risky clauses (AI reasoning)</td><td>Each row carries Risk (High/Medium/Low), a reasoning field, and a confidence score.</td></tr>
+      <tr><td>Highlight top risks with explanations</td><td><b>Top Risks</b> page + top decision blockers — reason, evidence, recommended action.</td></tr>
+      <tr><td>Recommendations + clause rewrites</td><td><b>Recommendations &amp; Rewrites</b> page (original vs improved wording) + Management-ready Decision.</td></tr>
+      <tr><td>Concise summary + overall risk</td><td><b>Executive Decision Brief</b> — Overall Risk KPI, Management Decision, 5-point summary.</td></tr>
+      <tr><td><i>Beyond DoD:</i> judge the SLAs</td><td><b>Benchmark vs Standard</b> — Meets / Below / Uncapped / No-target verdicts + full reference playbook.</td></tr>
+    </table>
+    <div class="foot"><span> </span><span>5 · Output as per DoD</span></div>
+  </section>
+
+  <!-- 6 VIDEO DEMO & SCREENSHOTS -->
+  <section class="slide">
+    <span class="kicker">See it run</span>
+    <h2>Video demo</h2>
+    <p class="lead">A ~2-minute walkthrough — problem, solution, then a live run producing the dashboard.</p>
+    <div class="grid g3">
+      <div class="card hd"><h3>1 · Problem &amp; context <span class="pill">30s</span></h3><p>Why manual SLA/contract review is slow, inconsistent, and costly.</p></div>
+      <div class="card hd"><h3>2 · Solution overview <span class="pill">20–30s</span></h3><p>Upload → grounded Claude analysis → 8-page management dashboard, built with Claude Code.</p></div>
+      <div class="card hd"><h3>3 · Live demo + output <span class="pill">60–90s</span></h3><p>Upload a synthetic contract; walk the Executive Brief, a High risk with evidence, and the Benchmark vs Standard page.</p></div>
+    </div>
+    <div class="ref"><b>Refer Github Repo: Contract-Analyzer/Documents and Demo video/Contract Analyzer Demo Video.mp4</b></div>
+	<br>
+	<br>
+	<h2>Steps & Screenshots</h2>
+    <p class="lead">Detailed steps and screenshots for easy generation of output</p>
+    <div class="ref"><b>Refer Github Repo: Contract-Analyzer/Documents and Demo video/Detailed Output Generation Steps & Output Screenshots.pdf </b></div>
+    <div class="foot"><span> </span><span>6 · Video demo</span></div>
+  </section>
+
+  <!-- 7 LESSONS & FUTURE -->
+  <section class="slide">
+    <span class="kicker">Reflection &amp; roadmap</span>
+    <h2>Lessons learnt &amp; future enhancements</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Lessons learnt</h3>
+        <ul class="clean">
+          <li>Ground everything and <b>recompute critical facts in code</b> — don't trust the model for numbers.</li>
+          <li>Determinism (temperature 0 + cache) is essential for trust and reproducibility.</li>
+          <li>Treat the uploaded contract as <b>untrusted data</b> — injection defense matters.</li>
+          <li>Keep the output template fixed; have the model return <b>data only</b>, not HTML.</li>
+          <li>Validate output + one corrective retry beats a single best-effort call.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Future enhancements</h3>
+        <ul class="clean">
+          <li><b>Multi-document analysis</b> — MSA + SOW + annexures with cross-checks.</li>
+		  <li><b>Configurable playbook</b> per client / business unit with approval workflow.</li>
+          <li><b>Portfolio &amp; batch mode</b> + trend analytics.</li>
+          <li><b>Connectors &amp; redline export</b> — SharePoint and rewrites into Word.</li>
+		  <li><b>SSO Login</b> — Added security.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot"><span> </span><span>7 · Lessons learnt &amp; future enhancements</span></div>
+  </section>
+
+  
+</div>
+
+<div class="bar">
+  <button onclick="go(-1)">‹ Prev</button>
+  <button class="count" id="count">1 / 7</button>
+  <button onclick="go(1)">Next ›</button>
+</div>
+
+<script>
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var i=0;
+  function show(n){slides[i].classList.remove('active');i=(n+slides.length)%slides.length;slides[i].classList.add('active');document.getElementById('count').textContent=(i+1)+' / '+slides.length;window.scrollTo(0,0);}
+  function go(d){show(i+d);}
+  document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')go(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')go(-1);});
+  show(0);
+</script>
+</body>
+</html>

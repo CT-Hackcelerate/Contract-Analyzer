@@ -1,0 +1,26 @@
+{
+  "runId": "[phone]",
+  "ts": "[phone]T07:50:44.968Z",
+  "status": "ok",
+  "fileName": "CTIND_ClientDBA_Physician_Diagnostic_AI_Rules_Engine.pdf",
+  "durationMs": 369904,
+  "clientName": "ClientDBA",
+  "outputFile": "output/clientdba-ctind-clientdba-physician-diagnostic-ai-rules-engine-analysis-[phone].html",
+  "model": "claude-sonnet-[phone]",
+  "fromCache": false,
+  "inputTokens": 32488,
+  "outputTokens": 23535,
+  "costEstimateUSD": 0.4505,
+  "truncated": false,
+  "totalPagesUploaded": "4",
+  "pagesScannedByAI": "4",
+  "injectionDetected": false,
+  "injectionHits": [],
+  "phiDetected": [],
+  "warnings": [
+    "counts.Medium (29) != actual rows (26); recomputed.",
+    "counts.Low (2) != actual rows (5); recomputed.",
+    "2 SLA row(s) have no numeric target; the benchmark cannot score them (verify manually)."
+  ],
+  "contentHash": "4a87fc2eeb4a6154e4c2ca36b521195bd75915b86c5a6e83a4791fbb0f8b916b"
+}

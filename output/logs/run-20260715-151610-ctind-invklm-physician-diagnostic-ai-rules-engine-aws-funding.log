@@ -1,0 +1,24 @@
+{
+  "runId": "[phone]",
+  "ts": "[phone]T09:52:17.568Z",
+  "status": "ok",
+  "fileName": "CTIND_INVKLM_Physician_Diagnostic_AI_Rules_Engine_AWS_Funding.pdf",
+  "durationMs": 367526,
+  "clientName": "INVKLM",
+  "outputFile": "output/invklm-ctind-invklm-physician-diagnostic-ai-rules-engine-aws-funding-analysis-[phone].html",
+  "model": "claude-sonnet-[phone]",
+  "fromCache": false,
+  "inputTokens": 39282,
+  "outputTokens": 19419,
+  "costEstimateUSD": 0.4091,
+  "truncated": false,
+  "totalPagesUploaded": "7",
+  "pagesScannedByAI": "7",
+  "injectionDetected": false,
+  "injectionHits": [],
+  "phiDetected": [],
+  "warnings": [
+    "3 SLA row(s) have no numeric target; the benchmark cannot score them (verify manually)."
+  ],
+  "contentHash": "4bc6f2b5a91c132e[phone]c066191206f6920acb9b4cfe2ecd7ceb8dbc"
+}
