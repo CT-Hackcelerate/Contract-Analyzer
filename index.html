@@ -367,7 +367,7 @@
     e.preventDefault();
     if (!fileInput.files[0]) return;
     submit.disabled = true;
-    setStatus('working', '<span class="spinner"></span>Extracting text and analyzing the contract… this can take few minutes.');
+    setStatus('working', '<span class="spinner"></span>Extracting text and analyzing the contract… this can take 5 to 15 minutes.');
 
     try {
       const body = new FormData();
